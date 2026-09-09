@@ -76,12 +76,13 @@ npm run dev        # http://localhost:5173
 
 ## Desplegar
 
-Camino recomendado: **repo propio en GitHub + proyecto en Vercel** (cada push a
-`main` publica solo, como el sitio de campana). Pasos detallados en
+Destino: **hosting de Namecheap (cPanel)**. Pasos detallados en
 [`DEPLOY.md`](./DEPLOY.md).
 
-En corto: `npm run build` genera `dist/` estatico; Vercel detecta Vite y lo hace
-por ti. `vercel.json` ya esta incluido.
+En corto: `npm run build` genera `dist/` estatico; la GitHub Action en
+`.github/workflows/deploy.yml` lo compila y lo sube por FTP a `public_html/` en
+cada push a `main`. (El archivo `vercel.json` queda sin efecto en Namecheap; se
+mantiene por si algun dia se usa Vercel.)
 
 No hay backend: el boton "Ir a pagar" es un marcador. Ver la seccion siguiente
 para conectarlo a una tienda real.

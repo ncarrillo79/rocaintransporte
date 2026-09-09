@@ -1,0 +1,40 @@
+name: Build y deploy a Namecheap (FTP)
+
+# Cada push a main compila el proyecto y sube SOLO dist/ al hosting por FTP.
+# Requiere 3 secrets en el repo (Settings -> Secrets and variables -> Actions):
+#   FTP_HOST      servidor FTP de cPanel (p.ej. ftp.tudominio.com o serverNNN.web-hosting.com)
+#   FTP_USERNAME  usuario de la cuenta FTP de cPanel
+#   FTP_PASSWORD  su contrasena
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+      - run: npm run build
+
+      - name: Subir dist/ por FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps            # si falla por el certificado, cambia a: ftp
+          local-dir: ./dist/
+          # Carpeta destino en el hosting:
+          #  - si la cuenta FTP apunta a public_html:   ./
+          #  - cuenta principal de cPanel:              ./public_html/
+          #  - subdominio o subcarpeta:                 ./public_html/tienda/
+          server-dir: ./public_html/
