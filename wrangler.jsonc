@@ -1,0 +1,12 @@
+{
+  // Deploy explicito: Worker de solo assets estaticos (sin script "main").
+  // "wrangler deploy" sube ./dist tal cual, sin autodetectar el framework
+  // (era la autodeteccion la que exigia Vite >= 6).
+  "name": "tienda-puente",
+  "compatibility_date": "2026-09-09",
+  "assets": {
+    "directory": "./dist",
+    // Rutas no encontradas -> index.html (red de seguridad; el router usa #/).
+    "not_found_handling": "single-page-application"
+  }
+}
