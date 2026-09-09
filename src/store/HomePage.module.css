@@ -1,0 +1,196 @@
+.home {
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.kicker {
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--oficio);
+  margin: 0;
+}
+.h1 {
+  font-family: var(--serif);
+  font-size: clamp(1.9rem, 5vw, 2.8rem);
+  font-weight: 600;
+  margin: 0.2rem 0 0.3rem;
+}
+.lead {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  color: var(--ink-soft);
+  max-width: 52ch;
+  margin: 0 0 1.25rem;
+}
+
+.doors {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(4, 1fr);
+}
+@media (max-width: 860px) {
+  .doors {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 460px) {
+  .doors {
+    grid-template-columns: 1fr;
+  }
+}
+.door {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 1.15rem 1.2rem 1.1rem;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-top: 3px solid var(--muted);
+  border-radius: var(--radius);
+  text-decoration: none;
+  color: var(--ink);
+}
+.door[data-world='trabajo'] {
+  border-top-color: var(--trabajo);
+}
+.door[data-world='oficio'] {
+  border-top-color: var(--oficio);
+}
+.door[data-world='gala'] {
+  border-top-color: var(--gala);
+}
+.door[data-world='navidad'] {
+  border-top-color: var(--navidad);
+}
+.doorTitle {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+.doorText {
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  flex: 1;
+}
+.doorGo {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--trabajo);
+}
+
+.trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  padding: 0.9rem 1.1rem;
+  background: var(--surface-2);
+  border-radius: var(--radius);
+  font-family: var(--mono);
+  font-size: 0.76rem;
+  color: var(--muted);
+}
+.trust strong {
+  color: var(--ink-soft);
+  font-weight: 600;
+}
+
+.band {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+.h2 {
+  font-family: var(--serif);
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.chip {
+  border: 1px solid var(--hairline-strong);
+  border-radius: 999px;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.86rem;
+  text-decoration: none;
+  color: var(--ink-soft);
+  background: var(--surface);
+}
+.chip:hover {
+  border-color: var(--trabajo);
+  color: var(--trabajo);
+}
+.custom {
+  font-size: 0.86rem;
+  color: var(--muted);
+  margin: 0.4rem 0 0;
+}
+
+.xmas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.15rem 1.25rem;
+  background: var(--navidad-soft);
+  border: 1px solid var(--navidad);
+  border-radius: 8px;
+}
+.xmasText {
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  margin: 0.3rem 0 0;
+  max-width: 60ch;
+}
+.xmasLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.xmasBtn {
+  flex: none;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #fff;
+  background: #8a3b2f;
+  border: 1px solid #8a3b2f;
+  border-radius: 5px;
+  padding: 0.6rem 1rem;
+  text-decoration: none;
+}
+.xmasBtnAlt {
+  flex: none;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--navidad);
+  background: var(--surface);
+  border: 1px solid var(--navidad);
+  border-radius: 5px;
+  padding: 0.6rem 1rem;
+  text-decoration: none;
+}
+
+.grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+}
