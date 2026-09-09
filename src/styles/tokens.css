@@ -29,6 +29,9 @@
   /* Botones de marca: superficies propias, texto claro fijo en ambos temas. */
   --brand-btn: #1e5b57;
   --brand-btn-ink: #ffffff;
+
+  /* Acento de la marca activa. lib/brand.ts lo redefine segun el dominio. */
+  --brand-accent: var(--trabajo);
   --kit-btn: #8a5f22;
   --kit-btn-ink: #ffffff;
 

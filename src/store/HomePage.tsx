@@ -1,9 +1,18 @@
-import { CONFIG, filterProducts } from '../lib/catalog';
+import { BRAND } from '../lib/brand';
+import { CONFIG, getCollectionProducts } from '../lib/catalog';
 import { Link } from '../lib/router';
+import type { World } from '../types';
 import { ProductCard } from './ProductCard';
 import styles from './HomePage.module.css';
 
-const DOORS = [
+interface Door {
+  world: World;
+  title: string;
+  text: string;
+  to: string;
+}
+
+const DOORS: Door[] = [
   {
     world: 'trabajo',
     title: 'Trabajo',
@@ -28,7 +37,12 @@ const DOORS = [
     text: 'Regalos personales y detalles corporativos. Preventa con anticipo y cupos.',
     to: '/c/navidad',
   },
-] as const;
+];
+
+// Los mundos propios de la marca activa van primero.
+const orderedDoors = [...DOORS].sort(
+  (a, b) => Number(BRAND.worlds.includes(b.world)) - Number(BRAND.worlds.includes(a.world)),
+);
 
 const BY_PROFESSION = [
   { label: 'Para un odontologo', to: '/c/regalar-odontologia' },
@@ -38,22 +52,18 @@ const BY_PROFESSION = [
 ];
 
 export function HomePage() {
-  const featured = [
-    ...filterProducts({ roles: ['anchor'] }),
-    ...filterProducts({ roles: ['gift'] }),
-  ].slice(0, 6);
+  const featured = getCollectionProducts(BRAND.homeCollectionId).slice(0, 6);
 
   return (
     <div className={styles.home}>
       <section className={styles.intro}>
-        <p className={styles.kicker}>Creado desde Brasil - producido y despachado en Venezuela</p>
-        <h1 className={styles.h1}>Una sola tienda, varios mundos</h1>
-        <p className={styles.lead}>
-          Uniformes y textil profesional, gala y tradicion, artesania y Navidad. Todo unido por un
-          puente: el regalo con intencion profesional.
+        <p className={styles.kicker}>
+          Creado desde Brasil - producido y despachado en Venezuela
         </p>
+        <h1 className={styles.h1}>{BRAND.heroTitle}</h1>
+        <p className={styles.lead}>{BRAND.tagline}</p>
         <div className={styles.doors}>
-          {DOORS.map((d) => (
+          {orderedDoors.map((d) => (
             <Link key={d.world} to={d.to} className={styles.door} data-world={d.world}>
               <span className={styles.doorTitle}>{d.title}</span>
               <span className={styles.doorText}>{d.text}</span>
@@ -61,6 +71,16 @@ export function HomePage() {
             </Link>
           ))}
         </div>
+      </section>
+
+      <section className={styles.sibling}>
+        <p>
+          <strong>{BRAND.name}</strong> y <strong>{BRAND.sibling.name}</strong> comparten carrito y
+          despacho. {BRAND.sibling.blurb}
+        </p>
+        <a className={styles.siblingBtn} href={BRAND.sibling.url}>
+          Ir a {BRAND.sibling.name} &#8599;
+        </a>
       </section>
 
       <section className={styles.trust}>

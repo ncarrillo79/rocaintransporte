@@ -74,15 +74,24 @@ npm run dev        # http://localhost:5173
 
 ---
 
+## Dos marcas, una plataforma
+
+- **GF Textil** (confeccion) -> `gftextil.com`
+- **Artesika** (artesania) -> `artesika.com`
+
+Mismo codigo, mismo carrito, mismo despacho. La marca se decide por el dominio
+en `src/lib/brand.ts`; los textos y colores estan en `src/data/brands.ts`.
+En local, prueba la otra marca con `?brand=artesika`.
+
 ## Desplegar
 
-Destino: **hosting de Namecheap (cPanel)**. Pasos detallados en
+Destino: **Cloudflare Pages** (gratis, uso comercial permitido) con los dos
+dominios registrados en **Namecheap**. Pasos detallados en
 [`DEPLOY.md`](./DEPLOY.md).
 
-En corto: `npm run build` genera `dist/` estatico; la GitHub Action en
-`.github/workflows/deploy.yml` lo compila y lo sube por FTP a `public_html/` en
-cada push a `main`. (El archivo `vercel.json` queda sin efecto en Namecheap; se
-mantiene por si algun dia se usa Vercel.)
+En corto: conectas el repo a Cloudflare Pages una vez (build `npm run build`,
+salida `dist`); cada push a `main` publica solo. Los dos dominios apuntan al
+mismo proyecto.
 
 No hay backend: el boton "Ir a pagar" es un marcador. Ver la seccion siguiente
 para conectarlo a una tienda real.
@@ -96,6 +105,7 @@ src/
   types.ts                 Modelo de datos (leer esto primero)
   data/
     products.ts            CATALOGO: productos y kits  <- administracion diaria
+    brands.ts              GF Textil / Artesika: nombre, color, portada
     lines.ts               Lineas de producto -> mundo
     collections.ts         Colecciones (cada una es un filtro del catalogo)
     specialties.ts         Lista de profesiones
@@ -107,6 +117,7 @@ src/
     catalog.ts             Consultas: getProduct, getCrossSell, priceKit,
                            filterProducts, getCollection, productWorld, ...
     format.ts              Formato de precios (USD / Bs)
+    brand.ts               Marca activa segun el dominio (BRAND, applyBrand)
     router.tsx             Router minimo de hash + <Link>
   store/
     HomePage.tsx           Home: 3 mundos + regala por profesion + destacados

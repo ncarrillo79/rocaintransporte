@@ -1,129 +1,69 @@
-# Publicar la tienda en Namecheap
+# Publicar: Cloudflare Pages + dominios en Namecheap
 
-## Lo primero: este proyecto se compila
+Una sola plataforma, dos marcas:
 
-No subas `src/` al hosting. El flujo es:
+- **GF Textil** -> `gftextil.com`
+- **Artesika** -> `artesika.com`
 
-```
-npm run build   ->   genera dist/   ->   se publica el contenido de dist/
-```
-
-`dist/` es HTML/CSS/JS estatico. Funciona en cualquier hosting sin Node en el
-servidor. El router usa rutas con `#/` (hash), asi que **no hace falta
-configurar el servidor ni .htaccess**.
-
-## Necesitas un plan de HOSTING de Namecheap (cPanel)
-
-Namecheap vende dos cosas distintas:
-
-- **Dominio + DNS**: solo apunta un nombre a algun servidor. No aloja archivos.
-- **Hosting** (Stellar / Stellar Plus / Stellar Business): cPanel, aloja los
-  archivos. **Esto es lo que hace falta.**
-
-Comprueba en tu cuenta Namecheap -> *Dashboard* si tienes un producto de
-**Hosting**. Si solo tienes el dominio, o compras un plan de hosting, o vuelves
-a Vercel (gratis para esto).
+Ambos dominios apuntan al **mismo** proyecto de Cloudflare Pages (mismo codigo,
+mismo carrito, mismo despacho). La marca se decide por el dominio
+(`src/lib/brand.ts`).
 
 ---
 
-## Opcion A (recomendada): GitHub Actions + FTP
+## 1. Registrar los dominios (Namecheap)
 
-Ya incluida en `.github/workflows/deploy.yml`. Cada push a `main` compila y sube
-`dist/` al hosting. Mantiene el "push = actualiza al instante".
+namecheap.com -> buscar `gftextil.com` y `artesika.com`. Si `.com` no esta
+disponible, `.com.ve`. Registrar ambos (~USD 10/ano c/u).
 
-### 1. Crear una cuenta FTP en cPanel
+## 2. Crear el proyecto en Cloudflare Pages
 
-Namecheap -> *cPanel* -> **FTP Accounts**. Crea una cuenta cuyo *Directory* sea
-`public_html` (o la carpeta del dominio). Anota:
+1. Cuenta gratis en **dash.cloudflare.com**
+2. **Workers & Pages** -> **Create** -> pestana **Pages** -> **Connect to Git**
+3. Autoriza GitHub y elige `ncarrillo79/tienda-puente`
+4. Configuracion de build:
+   - Framework preset: **Vite**
+   - Build command: `npm run build`
+   - Build output directory: `dist`
+5. **Save and Deploy**
 
-- **servidor / host**: aparece en cPanel -> *FTP Accounts* -> "Configure FTP
-  Client" (algo como `ftp.tudominio.com` o `serverNNN.web-hosting.com`)
-- **usuario** (suele ser `algo@tudominio.com`)
-- **contrasena**
+Primer deploy -> te da una URL `tienda-puente.pages.dev`. Desde aca, **cada push
+a `main` publica solo** (Cloudflare compila el proyecto, no hace falta ninguna
+GitHub Action).
 
-### 2. Guardar los datos como secrets en GitHub
+### Probar las dos marcas antes de tener dominios
 
-Repo -> *Settings* -> *Secrets and variables* -> *Actions* -> *New repository secret*:
+- `tienda-puente.pages.dev` -> GF Textil (marca por defecto)
+- `tienda-puente.pages.dev/?brand=artesika` -> Artesika (se recuerda en la sesion)
 
-| Secret | Valor |
-|---|---|
-| `FTP_HOST` | el servidor FTP |
-| `FTP_USERNAME` | el usuario |
-| `FTP_PASSWORD` | la contrasena |
+## 3. Conectar los dominios
 
-### 3. Ajustar `server-dir` en `deploy.yml`
+La forma mas simple es que Cloudflare lleve el DNS de los dos dominios:
 
-- Si la cuenta FTP ya apunta a `public_html`: `server-dir: ./`
-- Cuenta principal de cPanel: `server-dir: ./public_html/`
-- Subdominio o subcarpeta: `server-dir: ./public_html/tienda/`
-  (funciona porque `vite.config.ts` usa `base: './'`)
+1. En Cloudflare: **Add a site** -> `gftextil.com` -> plan **Free**
+2. Cloudflare te da **2 nameservers** (algo como `xxx.ns.cloudflare.com`)
+3. En Namecheap: Domain List -> `gftextil.com` -> **Manage** -> *Nameservers* ->
+   **Custom DNS** -> pega los 2 nameservers de Cloudflare -> guardar
+4. Repite 1-3 con `artesika.com`
+5. En el proyecto de Pages -> **Custom domains** -> **Set up a custom domain** ->
+   agrega `gftextil.com`, `www.gftextil.com`, `artesika.com`, `www.artesika.com`.
+   Cloudflare crea los registros solo.
 
-### 4. `git push` a `main`
+La propagacion de nameservers puede tardar de minutos a 24 h.
 
-La pestana **Actions** del repo muestra el progreso. Si el paso de FTP falla con
-un error de certificado TLS, cambia en `deploy.yml` `protocol: ftps` por
-`protocol: ftp`.
-
-> Aviso: la accion **sincroniza** `server-dir` (borra del servidor lo que no
-> este en `dist/`). Si en esa carpeta hay otra web, usa un subdominio o
-> subcarpeta propia para la tienda.
-
----
-
-## Opcion B: manual (sin automatizacion)
-
-1. `npm run build`
-2. cPanel -> *File Manager* -> entra a `public_html`
-3. Sube **el contenido** de `dist/` (no la carpeta, su contenido)
-4. Cada vez que cambies algo, repite
-
-Sencillo pero sin "push = live".
+> Alternativa sin cambiar nameservers: en Namecheap -> *Advanced DNS* agrega un
+> `CNAME` de `www` -> `tienda-puente.pages.dev`, y para el dominio raiz usa el
+> registro **ALIAS**/**CNAME** de Namecheap hacia el mismo destino. Cambiar los
+> nameservers a Cloudflare es mas limpio y da HTTPS y CDN automaticos.
 
 ---
 
-## Opcion C: cPanel Git Version Control
+## Notas
 
-Si prefieres empujar a un repo dentro de cPanel:
-
-1. Quita `dist` de `.gitignore` y quita la linea `vite.config.js` / `.d.ts`.
-2. `npm run build` **antes de cada push** y commitea `dist/`.
-3. `.cpanel.yml` en la raiz (reemplaza `USUARIO` por tu usuario de cPanel):
-
-   ```yaml
-   ---
-   deployment:
-     tasks:
-       - export DEPLOYPATH=/home/USUARIO/public_html/
-       - /bin/cp -R dist/. $DEPLOYPATH
-   ```
-
-Menos comodo porque el build lo haces tu a mano.
-
----
-
-## Dominio
-
-Si el sitio va en el dominio principal del plan de hosting, no hay que tocar
-nada. Si va en un subdominio (`tienda.tudominio.com`):
-
-cPanel -> *Domains* / *Subdomains* -> crea `tienda` apuntando a
-`public_html/tienda`, y en `deploy.yml` pon `server-dir: ./public_html/tienda/`.
-
----
-
-## Si mas adelante quieres URLs sin `#`
-
-Cambiar el router a modo `history` y poner este `.htaccess` en la raiz del sitio:
-
-```apache
-<IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteBase /
-  RewriteRule ^index\.html$ - [L]
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule . /index.html [L]
-</IfModule>
-```
-
-Con el router actual (`#/`) no hace falta.
+- **HTTPS**: automatico en Cloudflare, sin configurar nada.
+- **`public/_redirects`**: incluido. Manda cualquier ruta a `index.html` (red de
+  seguridad; el router usa `#/` y ya funcionaria sin el).
+- **Correo `@gftextil.com`**: Cloudflare no da buzones. Si los quieres, usa
+  *Email Routing* de Cloudflare (reenvio gratis) o un servicio como Zoho Mail.
+- **Cambiar de marca los textos/colores**: `src/data/brands.ts`.
+- **Un solo despliegue**: no dupliques el repo. Los dos dominios -> un proyecto.

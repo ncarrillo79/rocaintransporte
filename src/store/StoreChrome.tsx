@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { BRAND } from '../lib/brand';
 import { Link } from '../lib/router';
 import { useCart } from './Cart';
 import { PrimaryNav } from './MegaMenu';
@@ -13,9 +14,12 @@ export function StoreHeader() {
   return (
     <header className={styles.head}>
       <div className={styles.headInner}>
-        <Link to="/" className={styles.wordmark}>
-          TALLER<sup>logo</sup>
+        <Link to="/" className={styles.wordmark} data-brand={BRAND.id}>
+          {BRAND.wordmark}
         </Link>
+        <a className={styles.sibling} href={BRAND.sibling.url}>
+          {BRAND.sibling.name} &#8599;
+        </a>
         <div className={styles.navWrap}>
           <PrimaryNav />
         </div>

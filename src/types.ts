@@ -6,6 +6,9 @@
 /** Los cuatro mundos de la tienda. */
 export type World = 'trabajo' | 'oficio' | 'gala' | 'navidad';
 
+/** Marcas que comparten esta plataforma (mismo carrito y despacho). */
+export type BrandId = 'gftextil' | 'artesika';
+
 /**
  * Linea de producto. Subdivide el mundo "trabajo" (que es muy amplio) y
  * ordena el catalogo. Cada linea pertenece a un mundo (ver src/data/lines.ts).

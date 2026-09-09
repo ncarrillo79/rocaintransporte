@@ -20,21 +20,38 @@
 .wordmark {
   font-family: var(--serif);
   font-weight: 600;
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   letter-spacing: 0.02em;
   color: var(--ink);
   text-decoration: none;
   flex: none;
+  border-bottom: 2px solid var(--brand-accent);
+  padding-bottom: 2px;
 }
-.wordmark sup {
+.wordmark[data-brand='artesika'] {
+  font-weight: 500;
+  letter-spacing: 0.06em;
+}
+.sibling {
+  flex: none;
   font-family: var(--mono);
-  font-size: 0.55rem;
+  font-size: 0.72rem;
   color: var(--muted);
-  letter-spacing: 0.1em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.sibling:hover {
+  color: var(--ink);
 }
 .navWrap {
   flex: 1;
   min-width: 0;
+}
+
+@media (max-width: 720px) {
+  .sibling {
+    display: none;
+  }
 }
 .cartBtn {
   flex: none;
