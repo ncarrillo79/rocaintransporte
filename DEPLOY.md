@@ -61,8 +61,10 @@ La propagacion de nameservers puede tardar de minutos a 24 h.
 ## Notas
 
 - **HTTPS**: automatico en Cloudflare, sin configurar nada.
-- **`public/_redirects`**: incluido. Manda cualquier ruta a `index.html` (red de
-  seguridad; el router usa `#/` y ya funcionaria sin el).
+- **Rutas SPA**: `wrangler.jsonc` trae `not_found_handling: "single-page-application"`
+  (manda cualquier ruta desconocida a `index.html`). El router usa `#/`, asi que
+  funciona igual sin eso. No usar `public/_redirects`: el flujo Worker lo rechaza
+  por "bucle infinito" en la regla `/* -> /index.html 200`.
 - **Correo `@gftextil.com`**: Cloudflare no da buzones. Si los quieres, usa
   *Email Routing* de Cloudflare (reenvio gratis) o un servicio como Zoho Mail.
 - **Cambiar de marca los textos/colores**: `src/data/brands.ts`.
