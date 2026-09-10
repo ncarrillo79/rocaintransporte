@@ -60,4 +60,4 @@ export const CORPORATE_KITS: CorporateKit[] = [
   },
 ];
 
-export const CITIES = ['Barquisimeto', 'Caracas', 'Valencia', 'Maracaibo', 'Otra'];
+export const CITIES = ['La Victoria', 'Maracay', 'Valencia', 'Caracas'];

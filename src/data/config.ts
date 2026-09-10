@@ -14,7 +14,7 @@ export const CONFIG: StoreConfig = {
   whatsapp: '584243018032',
   freeShippingThreshold: 35,
   couriers: ['MRW', 'Zoom', 'Tealca', 'Domesa'],
-  pickupCities: ['Barquisimeto'],
+  pickupCities: ['La Victoria', 'Maracay', 'Valencia', 'Caracas'],
   season: {
     christmasEnabled: true,
     depositPct: 0.5,
