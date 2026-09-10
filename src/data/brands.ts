@@ -1,12 +1,17 @@
 import type { BrandId, World } from '../types';
 
 // ---------------------------------------------------------------------------
-// LAS DOS MARCAS. Una sola plataforma, dos caras.
-//  - GF Textil : confeccion (kimonos, uniformes, salud, gastronomia, gala...)
-//  - Artesika  : artesania (pulseras, cocuizas, lamparas, decoracion)
+// LAS DOS MARCAS. Una sola plataforma tecnica, dos tiendas independientes.
+//  - GF Textil : confeccion profesional. Mundos trabajo y gala.
+//  - Artesika  : artesania y regalos. Mundos oficio y navidad.
 //
-// Comparten catalogo, carrito, checkout, WhatsApp y cola de pedidos. Lo que
-// cambia por marca: nombre, portada, color de acento y coleccion destacada.
+// Cada marca se comporta como su propia tienda: navegacion, home, colecciones
+// y cross-sell NO cruzan de una a la otra. Lo unico compartido es el carrito y
+// el despacho a nivel tecnico (mismo Cart.tsx). El unico enlace entre marcas es
+// un link discreto en el footer.
+//
+// El aislamiento se aplica una sola vez en src/lib/catalog.ts, que filtra el
+// catalogo a los `worlds` de la marca activa.
 //
 // La marca se decide por el dominio (ver src/lib/brand.ts). Para probar en
 // local: agrega ?brand=artesika a la URL.
@@ -27,12 +32,18 @@ export interface Brand {
   button: string;
   /** Coleccion que la home de esta marca destaca. */
   homeCollectionId: string;
-  /** Mundos propios de la marca: se muestran primero en la home. */
+  /**
+   * Mundos de la marca. El catalogo, la navegacion y el cross-sell se limitan
+   * a estos mundos (ver src/lib/catalog.ts). Un producto de otro mundo no
+   * aparece nunca en esta marca.
+   */
   worlds: World[];
+  /** WhatsApp de esta marca, formato internacional sin '+'. Para cotizacion y a medida. */
+  whatsapp: string;
   /** Dominios que resuelven a esta marca. */
   hostnames: string[];
-  /** La otra marca (el puente). */
-  sibling: { id: BrandId; name: string; url: string; blurb: string };
+  /** La otra marca: solo para el link discreto del footer. */
+  sibling: { id: BrandId; name: string; url: string; footerText: string };
 }
 
 export const BRANDS: Record<BrandId, Brand> = {
@@ -47,12 +58,14 @@ export const BRANDS: Record<BrandId, Brand> = {
     button: '#1e5b57',
     homeCollectionId: 'uniformes',
     worlds: ['trabajo', 'gala'],
+    // PENDIENTE: numero real de WhatsApp de GF Textil (ver CONTENIDO-PENDIENTE.md).
+    whatsapp: '584243018032',
     hostnames: ['gftextil.com', 'www.gftextil.com'],
     sibling: {
       id: 'artesika',
       name: 'Artesika',
       url: 'https://artesika.com',
-      blurb: 'Pulseras por profesion, cocuizas, lamparas y decoracion artesanal.',
+      footerText: 'Buscas artesania, bisuteria o regalos hechos a mano?',
     },
   },
   artesika: {
@@ -65,13 +78,15 @@ export const BRANDS: Record<BrandId, Brand> = {
     accent: 'var(--oficio)',
     button: '#8a5f22',
     homeCollectionId: 'artesania',
-    worlds: ['oficio'],
+    worlds: ['oficio', 'navidad'],
+    // PENDIENTE: numero real de WhatsApp de Artesika (ver CONTENIDO-PENDIENTE.md).
+    whatsapp: '584243018032',
     hostnames: ['artesika.com', 'www.artesika.com'],
     sibling: {
       id: 'gftextil',
       name: 'GF Textil',
       url: 'https://gftextil.com',
-      blurb: 'Kimonos, uniformes de salud y gastronomia, escolares y trajes de gala a medida.',
+      footerText: 'Buscas uniformes o confeccion textil a medida?',
     },
   },
 };

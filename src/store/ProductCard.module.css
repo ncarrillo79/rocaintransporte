@@ -6,6 +6,11 @@
   overflow: hidden;
   background: var(--surface);
 }
+:global(html[data-brand='artesika']) .card {
+  border-radius: var(--radius-lg);
+  border-color: transparent;
+  background: transparent;
+}
 
 .media {
   display: block;
@@ -47,6 +52,15 @@
   line-height: 1.25;
   color: var(--ink);
   text-decoration: none;
+}
+:global(html[data-brand='artesika']) .name {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 0.98rem;
+}
+:global(html[data-brand='artesika']) .media {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
 }
 .name:hover {
   text-decoration: underline;

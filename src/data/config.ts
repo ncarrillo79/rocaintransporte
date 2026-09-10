@@ -15,6 +15,9 @@ export const CONFIG: StoreConfig = {
   freeShippingThreshold: 35,
   couriers: ['MRW', 'Zoom', 'Tealca', 'Domesa'],
   pickupCities: ['La Victoria', 'Maracay', 'Valencia', 'Caracas'],
+  // Solo nombres de metodo (sin numeros de cuenta). Por ahora son cuentas
+  // personales en Banesco y Mercantil; los datos se envian al confirmar el pedido.
+  paymentMethods: ['Pago Movil', 'Transferencia bancaria (Banesco, Mercantil)', 'Efectivo (retiro en tienda)'],
   season: {
     christmasEnabled: true,
     depositPct: 0.5,

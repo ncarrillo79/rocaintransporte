@@ -1,3 +1,4 @@
+import { BRAND } from '../lib/brand';
 import { CONFIG, getCrossSell, getKitFor, priceKit, productWorld, worldLabel } from '../lib/catalog';
 import { round2, usd } from '../lib/format';
 import { SPECIALTIES } from '../data/specialties';
@@ -155,8 +156,9 @@ export function KitBundle({
 }
 
 // ===========================================================================
-// PUENTE 3 - Navidad (envoltorio + reserva con anticipo)
-// Se apaga entero con CONFIG.season.christmasEnabled = false
+// Navidad dentro de la ficha (envoltorio + reserva con anticipo).
+// Solo Artesika (la marca duena del mundo navidad). Se apaga entero con
+// CONFIG.season.christmasEnabled = false.
 // ===========================================================================
 
 export function ChristmasBridge({
@@ -170,7 +172,7 @@ export function ChristmasBridge({
 }) {
   const { add } = useCart();
   const season = CONFIG.season;
-  if (!season.christmasEnabled) return null;
+  if (!BRAND.worlds.includes('navidad') || !season.christmasEnabled) return null;
 
   const kit = getKitFor(product, specialty);
   const base = kit ? priceKit(kit).kitTotal : product.price;

@@ -8,7 +8,9 @@ Todo el contenido de la tienda vive en esta carpeta. No hace falta tocar compone
 | `lines.ts` | Lineas de producto y a que mundo pertenece cada una. |
 | `collections.ts` | Colecciones: cada una es un filtro del catalogo (lo que enlaza el menu). |
 | `specialties.ts` | Lista de profesiones (etiquetas). |
-| `config.ts` | Envio gratis, tasa Bs, campana de Navidad, envoltorios, couriers, WhatsApp. |
+| `config.ts` | Envio gratis, tasa Bs, campana de Navidad, envoltorios, couriers, WhatsApp, metodos de pago. |
+| `corporate.ts` | Tipos de prenda y ciudades para el presupuesto de GF Textil (`#/cotizar`). |
+| `brands.ts` | GF Textil / Artesika: nombre, color, `worlds`, `whatsapp`, portada. El catalogo se acota a los `worlds` de la marca activa (`src/lib/catalog.ts`). |
 
 ## Mundos y lineas
 

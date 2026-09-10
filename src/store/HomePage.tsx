@@ -1,8 +1,9 @@
 import { BRAND } from '../lib/brand';
 import { CONFIG, getCollectionProducts } from '../lib/catalog';
 import { Link } from '../lib/router';
-import type { World } from '../types';
+import type { BrandId, ProductImage, World } from '../types';
 import { ProductCard } from './ProductCard';
+import { ImagePanel } from './ui';
 import styles from './HomePage.module.css';
 
 interface Door {
@@ -34,15 +35,28 @@ const DOORS: Door[] = [
   {
     world: 'navidad',
     title: 'Navidad',
-    text: 'Regalos personales y detalles corporativos. Preventa con anticipo y cupos.',
+    text: 'Decoracion y regalos hechos a mano. Preventa con anticipo y cupos por semana.',
     to: '/c/navidad',
   },
 ];
 
-// Los mundos propios de la marca activa van primero.
-const orderedDoors = [...DOORS].sort(
-  (a, b) => Number(BRAND.worlds.includes(b.world)) - Number(BRAND.worlds.includes(a.world)),
-);
+// Categorias con foto real en la primera pantalla, por marca.
+const CATEGORIES: Record<BrandId, { label: string; collectionId: string }[]> = {
+  gftextil: [
+    { label: 'Salud y quirurgico', collectionId: 'salud' },
+    { label: 'Gastronomia', collectionId: 'gastronomia' },
+    { label: 'Escolar', collectionId: 'escolar' },
+    { label: 'Corporativo y Columbia', collectionId: 'uniformes-corporativo' },
+    { label: 'Seguridad industrial', collectionId: 'industrial' },
+    { label: 'Gala y tradicion', collectionId: 'gala' },
+  ],
+  artesika: [
+    { label: 'Bisuteria y pulseras', collectionId: 'bisuteria' },
+    { label: 'Decoracion', collectionId: 'decoracion' },
+    { label: 'Regalos', collectionId: 'regalar-detalles' },
+    { label: 'Navidad', collectionId: 'navidad' },
+  ],
+};
 
 const BY_PROFESSION = [
   { label: 'Para un odontologo', to: '/c/regalar-odontologia' },
@@ -51,37 +65,54 @@ const BY_PROFESSION = [
   { label: 'Detalles hasta $10', to: '/c/regalos-hasta-10' },
 ];
 
+/** Imagen representativa de una categoria: la primera foto real que encuentre. */
+function categoryImage(collectionId: string): ProductImage {
+  const products = getCollectionProducts(collectionId);
+  for (const p of products) {
+    const photo = p.images.find((i) => i.kind === 'photo');
+    if (photo) return photo;
+  }
+  if (products[0]) return products[0].images[0];
+  return { kind: 'placeholder', glyph: 'caja', caption: 'FOTO por subir' };
+}
+
 export function HomePage() {
-  const featured = getCollectionProducts(BRAND.homeCollectionId).slice(0, 6);
+  const isArtesika = BRAND.id === 'artesika';
+  const hasChristmas = BRAND.worlds.includes('navidad');
+  const doors = DOORS.filter((d) => BRAND.worlds.includes(d.world));
+  const categories = CATEGORIES[BRAND.id];
+  const featured = getCollectionProducts(BRAND.homeCollectionId).slice(0, isArtesika ? 4 : 8);
 
   return (
     <div className={styles.home}>
       <section className={styles.intro}>
-        <p className={styles.kicker}>
-          Creado desde Brasil - producido y despachado en Venezuela
-        </p>
+        <p className={styles.kicker}>Producido y despachado en Venezuela</p>
         <h1 className={styles.h1}>{BRAND.heroTitle}</h1>
         <p className={styles.lead}>{BRAND.tagline}</p>
-        <div className={styles.doors}>
-          {orderedDoors.map((d) => (
+      </section>
+
+      <section className={styles.catGrid} aria-label="Categorias">
+        {categories.map((c) => (
+          <Link key={c.collectionId} to={`/c/${c.collectionId}`} className={styles.catCard}>
+            <span className={styles.catMedia}>
+              <ImagePanel image={categoryImage(c.collectionId)} ratio={isArtesika ? '4 / 5' : '4 / 3'} compact />
+            </span>
+            <span className={styles.catLabel}>{c.label}</span>
+          </Link>
+        ))}
+      </section>
+
+      {doors.length > 1 && (
+        <section className={styles.doors}>
+          {doors.map((d) => (
             <Link key={d.world} to={d.to} className={styles.door} data-world={d.world}>
               <span className={styles.doorTitle}>{d.title}</span>
               <span className={styles.doorText}>{d.text}</span>
               <span className={styles.doorGo}>Ver &rarr;</span>
             </Link>
           ))}
-        </div>
-      </section>
-
-      <section className={styles.sibling}>
-        <p>
-          <strong>{BRAND.name}</strong> y <strong>{BRAND.sibling.name}</strong> comparten carrito y
-          despacho. {BRAND.sibling.blurb}
-        </p>
-        <a className={styles.siblingBtn} href={BRAND.sibling.url}>
-          Ir a {BRAND.sibling.name} &#8599;
-        </a>
-      </section>
+        </section>
+      )}
 
       <section className={styles.trust}>
         <span>
@@ -93,22 +124,60 @@ export function HomePage() {
         <span>Cambios de talla en 7 dias</span>
       </section>
 
-      <section className={styles.band}>
-        <h2 className={styles.h2}>Regala por profesion</h2>
-        <div className={styles.chips}>
-          {BY_PROFESSION.map((p) => (
-            <Link key={p.to} to={p.to} className={styles.chip}>
-              {p.label}
+      {!isArtesika && (
+        <section className={styles.made}>
+          <div>
+            <h2 className={styles.h2}>Lo fabricamos a medida</h2>
+            <p className={styles.madeText}>
+              GF Textil es un taller de confeccion, no una tienda de stock fijo. Si no ves
+              lo que necesitas, o es un pedido por volumen para tu equipo, lo producimos
+              para ti.
+            </p>
+          </div>
+          <div className={styles.madeLinks}>
+            <Link to="/otros" className={styles.madeBtn}>
+              Pedir a medida
             </Link>
-          ))}
-        </div>
-        <p className={styles.custom}>
-          Necesitas algo que no ves en el catalogo?{' '}
-          <Link to="/otros">Lo fabricamos a medida &rarr;</Link>
-        </p>
-      </section>
+            <Link to="/cotizar" className={styles.madeBtnAlt}>
+              Solicitar presupuesto
+            </Link>
+          </div>
+        </section>
+      )}
 
-      {CONFIG.season.christmasEnabled && (
+      {isArtesika && (
+        <section className={styles.story}>
+          {/* PLACEHOLDER - texto tipo Etsy adaptado a Venezuela. Cambiar por el tuyo. */}
+          <h2 className={styles.h2}>Hecho a mano, aqui</h2>
+          <p className={styles.storyText}>
+            En Artesika cada pieza sale de manos venezolanas. Tejemos las pulseras, engarzamos
+            las piedras, tallamos la madera y armamos las cocuizas una por una, sin prisa y en
+            casa. Lo que llega a tus manos no salio de una maquina: lo hizo una artesana a la
+            que conocemos por su nombre.
+          </p>
+          <p className={styles.storyText}>
+            Trabajamos con lo que da la region &mdash; hilo encerado, semillas, fibras
+            naturales, madera de saqui-saqui &mdash; y casi todo se puede personalizar con un
+            nombre, unas iniciales o el color que quieras regalar. Piezas pensadas para durar y
+            para contar una historia.
+          </p>
+        </section>
+      )}
+
+      {isArtesika && (
+        <section className={styles.band}>
+          <h2 className={styles.h2}>Regala por profesion</h2>
+          <div className={styles.chips}>
+            {BY_PROFESSION.map((p) => (
+              <Link key={p.to} to={p.to} className={styles.chip}>
+                {p.label}
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {hasChristmas && CONFIG.season.christmasEnabled && (
         <section className={styles.xmas}>
           <div>
             <h2 className={styles.h2}>Navidad - preventa abierta</h2>
@@ -119,13 +188,10 @@ export function HomePage() {
           </div>
           <div className={styles.xmasLinks}>
             <Link to="/c/navidad" className={styles.xmasBtn}>
-              Regalos
+              Ver Navidad
             </Link>
             <Link to="/preventa" className={styles.xmasBtnAlt}>
               Preventa
-            </Link>
-            <Link to="/b2b" className={styles.xmasBtnAlt}>
-              Empresas
             </Link>
           </div>
         </section>

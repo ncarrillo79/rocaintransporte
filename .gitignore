@@ -7,6 +7,11 @@ dist-ssr
 .vercel
 *.tsbuildinfo
 
+# Fotos crudas de origen (WhatsApp, sin recortar, + material personal).
+# NO se publican ni se versionan; las fotos usadas ya estan en public/img/.
+# Guarda una copia de esta carpeta aparte (Drive / disco).
+_fotos-fuente/
+
 # salida accidental de "tsc -b" sobre vite.config.ts
 vite.config.js
 vite.config.d.ts

@@ -1,15 +1,18 @@
 import { useEffect } from 'react';
+import { BRAND } from './lib/brand';
 import { getProductBySlug } from './lib/catalog';
 import { useRoute } from './lib/router';
-import { B2BCatalog } from './store/B2BCatalog';
 import { CartDrawer } from './store/Cart';
 import { CollectionPage } from './store/CollectionPage';
 import { CustomOrderPage } from './store/CustomOrderPage';
 import { HomePage } from './store/HomePage';
+import { ContactPage, PaymentPage } from './store/InfoPages';
 import { PresalePage } from './store/PresalePage';
 import { ProductPage } from './store/ProductPage';
 import { QuoteForm } from './store/QuoteForm';
-import { PageShell, StoreHeader } from './store/StoreChrome';
+import { PageShell, StoreFooter, StoreHeader } from './store/StoreChrome';
+
+const HAS_CHRISTMAS = BRAND.worlds.includes('navidad');
 
 export function App() {
   const route = useRoute();
@@ -24,11 +27,13 @@ export function App() {
       {route.name === 'home' && <HomePage />}
       {route.name === 'collection' && <CollectionPage id={route.id} />}
       {route.name === 'product' && <ProductRoute slug={route.slug} />}
-      {route.name === 'presale' && <PresalePage />}
-      {route.name === 'b2b' && <B2BCatalog />}
-      {route.name === 'quote' && <QuoteForm kitId={route.kitId} />}
+      {route.name === 'presale' && (HAS_CHRISTMAS ? <PresalePage /> : <NotFound />)}
+      {route.name === 'quote' && <QuoteForm garmentId={route.garmentId} />}
       {route.name === 'custom' && <CustomOrderPage />}
+      {route.name === 'payment' && <PaymentPage />}
+      {route.name === 'contact' && <ContactPage />}
       {route.name === 'notfound' && <NotFound />}
+      <StoreFooter />
       <CartDrawer />
     </PageShell>
   );

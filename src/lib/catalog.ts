@@ -3,12 +3,17 @@ import { CONFIG } from '../data/config';
 import { LINES } from '../data/lines';
 import { KITS, PRODUCTS } from '../data/products';
 import type { Collection, Kit, Product, ProductFilter, Specialty, World } from '../types';
+import { BRAND } from './brand';
 import { round2 } from './format';
 
 // ---------------------------------------------------------------------------
 // Consultas al catalogo. Los componentes solo hablan con estas funciones,
 // nunca con los arrays crudos: manana esto puede leer de Shopify o un CMS
 // sin cambiar un solo componente.
+//
+// AISLAMIENTO POR MARCA: todo lo visible se limita a los `worlds` de la marca
+// activa (src/data/brands.ts). GF Textil nunca ve artesania ni Navidad;
+// Artesika nunca ve trabajo ni gala. Esto se aplica aqui, una sola vez.
 // ---------------------------------------------------------------------------
 
 /** El mundo de un producto se deriva de su linea. */
@@ -16,24 +21,41 @@ export function productWorld(p: Product): World {
   return LINES[p.line].world;
 }
 
-export function getProduct(id: string): Product | undefined {
+/** Catalogo visible en la marca activa. */
+export const BRAND_POOL: Product[] = PRODUCTS.filter((p) =>
+  BRAND.worlds.includes(productWorld(p)),
+);
+
+/** Un kit pertenece a la marca solo si su ancla y todos sus componentes lo son. */
+const inPool = (id: string) => BRAND_POOL.some((p) => p.id === id);
+export const BRAND_KITS: Kit[] = KITS.filter(
+  (k) => inPool(k.anchorProductId) && k.componentProductIds.every(inPool),
+);
+
+/** Busca en TODO el catalogo, sin filtrar por marca. Solo para calculos internos. */
+function findProductAny(id: string): Product | undefined {
   return PRODUCTS.find((p) => p.id === id);
 }
 
-export function getProductBySlug(slug: string): Product | undefined {
-  return PRODUCTS.find((p) => p.slug === slug);
+export function getProduct(id: string): Product | undefined {
+  return BRAND_POOL.find((p) => p.id === id);
 }
 
-// El puente real es hacia el Mundo 2: mostramos "oficio" antes que el resto.
-function worldRank(p: Product): number {
-  const w = productWorld(p);
-  return w === 'oficio' ? 0 : w === 'gala' ? 1 : w === 'navidad' ? 2 : 3;
+export function getProductBySlug(slug: string): Product | undefined {
+  return BRAND_POOL.find((p) => p.slug === slug);
+}
+
+// Orden de los complementos dentro de la ficha: primero el mismo mundo que la
+// pieza, luego el resto de mundos de la marca. (Antes esto empujaba "oficio"
+// para cruzar de una marca a la otra; ese puente se elimino.)
+function worldRank(anchor: Product, p: Product): number {
+  return productWorld(p) === productWorld(anchor) ? 0 : 1;
 }
 
 /**
  * Complementos para el modulo "Combina con tu especialidad".
- * Se llena solo: productos add_on que comparten la especialidad seleccionada.
- * Si faltan, rellena con regalos universales de temporada.
+ * Se llena solo: productos add_on de la misma marca que comparten la
+ * especialidad seleccionada. Si faltan, rellena con regalos universales.
  */
 export function getCrossSell(
   product: Product,
@@ -43,19 +65,18 @@ export function getCrossSell(
   const wanted = specialty ?? product.specialties[0] ?? null;
   const sharesSpecialty = (p: Product) => wanted !== null && p.specialties.includes(wanted);
 
-  const primary = PRODUCTS.filter(
+  const primary = BRAND_POOL.filter(
     (p) => p.id !== product.id && p.roles.includes('add_on') && sharesSpecialty(p),
-  ).sort((a, b) => worldRank(a) - worldRank(b));
+  ).sort((a, b) => worldRank(product, a) - worldRank(product, b));
 
   if (primary.length >= limit) return primary.slice(0, limit);
 
-  const filler = PRODUCTS.filter(
+  const filler = BRAND_POOL.filter(
     (p) =>
       p.id !== product.id &&
       !primary.some((x) => x.id === p.id) &&
       p.roles.includes('gift') &&
-      p.specialties.length === 0 &&
-      p.occasions.includes('navidad'),
+      p.specialties.length === 0,
   );
 
   return [...primary, ...filler].slice(0, limit);
@@ -63,7 +84,7 @@ export function getCrossSell(
 
 /** El kit que corresponde a esta ficha y a la especialidad elegida (si existe). */
 export function getKitFor(product: Product, specialty: Specialty | null): Kit | undefined {
-  return KITS.find(
+  return BRAND_KITS.find(
     (k) => k.anchorProductId === product.id && (specialty === null || k.specialty === specialty),
   );
 }
@@ -78,9 +99,9 @@ export interface KitPricing {
 
 /** Calcula el precio del kit a partir de sus piezas y el descuento. */
 export function priceKit(kit: Kit): KitPricing {
-  const anchor = getProduct(kit.anchorProductId);
+  const anchor = findProductAny(kit.anchorProductId);
   const components = kit.componentProductIds
-    .map(getProduct)
+    .map(findProductAny)
     .filter((p): p is Product => Boolean(p));
   const listTotal = round2((anchor?.price ?? 0) + components.reduce((s, p) => s + p.price, 0));
   const kitTotal = round2(listTotal * (1 - kit.discountPct));
@@ -89,7 +110,7 @@ export function priceKit(kit: Kit): KitPricing {
 
 /** Sugerencias baratas para empujar la barra de envio gratis. */
 export function cheapAddOns(excludeIds: string[], limit = 3): Product[] {
-  return PRODUCTS.filter((p) => p.roles.includes('add_on') && !excludeIds.includes(p.id))
+  return BRAND_POOL.filter((p) => p.roles.includes('add_on') && !excludeIds.includes(p.id))
     .sort((a, b) => a.price - b.price)
     .slice(0, limit);
 }
@@ -98,8 +119,8 @@ export function cheapAddOns(excludeIds: string[], limit = 3): Product[] {
 // Colecciones y filtrado de catalogo.
 // ---------------------------------------------------------------------------
 
-/** Aplica un filtro declarativo sobre un conjunto de productos. */
-export function filterProducts(f: ProductFilter, pool: Product[] = PRODUCTS): Product[] {
+/** Aplica un filtro declarativo. El pool por defecto ya esta acotado a la marca. */
+export function filterProducts(f: ProductFilter, pool: Product[] = BRAND_POOL): Product[] {
   return pool.filter((p) => {
     if (f.worlds && f.worlds.length > 0 && !f.worlds.includes(productWorld(p))) return false;
     if (f.lines && f.lines.length > 0 && !f.lines.includes(p.line)) return false;

@@ -1,63 +1,25 @@
-import type { GlyphName } from '../types';
-
 // ---------------------------------------------------------------------------
-// KITS CORPORATIVOS. No van al carrito: llevan al formulario de cotizacion.
-//  - unitPriceFrom : precio referencial por persona (se confirma en cotizacion)
-//  - minUnits      : cantidad minima para produccion
+// PRESUPUESTO DE CONFECCION POR VOLUMEN (GF Textil).
+// Alimenta el formulario #/cotizar. No va al carrito: genera un resumen para
+// enviar por WhatsApp o correo. `unitPriceFrom` y `minUnits` son referenciales;
+// el precio real se confirma en la cotizacion.
 // ---------------------------------------------------------------------------
 
-export interface CorporateKit {
+export interface GarmentType {
   id: string;
-  title: string;
-  forWho: string;
-  includes: string[];
-  unitPriceFrom: number; // USD por persona
+  label: string;
+  unitPriceFrom: number; // USD por unidad, referencial
   minUnits: number;
-  glyph: GlyphName;
-  logo: boolean;
 }
 
-export const CORPORATE_KITS: CorporateKit[] = [
-  {
-    id: 'kit-consultorio',
-    title: 'Kit Consultorio',
-    forWho: 'consultorios y clinicas',
-    includes: ['Bata clinica con bordado', 'Gorro quirurgico a juego', 'Pulsera tematica'],
-    unitPriceFrom: 32,
-    minUnits: 5,
-    glyph: 'bata',
-    logo: true,
-  },
-  {
-    id: 'kit-escuela',
-    title: 'Kit Bienvenida Escuela',
-    forWho: 'colegios e institutos',
-    includes: ['Bata de laboratorio', 'Cocuiza artesanal', 'Tarjeta personalizada'],
-    unitPriceFrom: 22,
-    minUnits: 10,
-    glyph: 'caja',
-    logo: true,
-  },
-  {
-    id: 'kit-detalle',
-    title: 'Kit Detalle Corporativo',
-    forWho: 'empresas y aliados',
-    includes: ['Cocuiza artesanal', 'Organizador de madera', 'Envoltorio de regalo'],
-    unitPriceFrom: 18,
-    minUnits: 10,
-    glyph: 'caja',
-    logo: true,
-  },
-  {
-    id: 'kit-premium',
-    title: 'Kit Premium Aliados',
-    forWho: 'clientes y aliados clave',
-    includes: ['Lampara de madera grabada', 'Pulsera tematica', 'Caja de regalo con cinta de cocuiza'],
-    unitPriceFrom: 35,
-    minUnits: 5,
-    glyph: 'lampara',
-    logo: true,
-  },
+export const GARMENT_TYPES: GarmentType[] = [
+  { id: 'linea-medica', label: 'Linea medica y quirurgica (kimonos, batas, pijamas)', unitPriceFrom: 22, minUnits: 5 },
+  { id: 'gastronomia', label: 'Gastronomia (filipinas, delantales, gorros)', unitPriceFrom: 15, minUnits: 5 },
+  { id: 'escolar', label: 'Uniformes escolares', unitPriceFrom: 9, minUnits: 15 },
+  { id: 'corporativo', label: 'Corporativo y Columbia (camisas, chemises, blusas)', unitPriceFrom: 16, minUnits: 10 },
+  { id: 'industrial', label: 'Seguridad industrial (overoles, chalecos)', unitPriceFrom: 20, minUnits: 10 },
+  { id: 'gala', label: 'Gala y tradicion (vestidos, liqui liqui) a medida', unitPriceFrom: 80, minUnits: 1 },
+  { id: 'otro', label: 'Otra prenda / a medida', unitPriceFrom: 0, minUnits: 1 },
 ];
 
 export const CITIES = ['La Victoria', 'Maracay', 'Valencia', 'Caracas'];

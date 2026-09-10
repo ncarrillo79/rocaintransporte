@@ -102,7 +102,7 @@ export function PresalePage() {
       </section>
 
       <p className={styles.foot}>
-        Regalos para equipos con logo: <Link to="/b2b">ver el catalogo corporativo</Link>.
+        Dudas sobre un lote o un pedido a medida? <Link to="/contacto">Escribinos</Link>.
       </p>
     </div>
   );

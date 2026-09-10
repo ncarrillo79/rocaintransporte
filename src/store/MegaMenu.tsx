@@ -1,14 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
+import { BRAND } from '../lib/brand';
 import { Link, useRoute } from '../lib/router';
+import type { BrandId } from '../types';
 import styles from './MegaMenu.module.css';
 
 // ---------------------------------------------------------------------------
-// Navegacion principal + mega-menu.
-// El menu se define aqui como datos: cada entrada apunta a una coleccion real
-// (src/data/collections.ts). Editar labels y destinos sin tocar la logica.
+// Navegacion principal + mega-menu. El menu es distinto por marca: GF Textil
+// solo muestra Trabajo y Gala; Artesika solo Oficio y Navidad. No hay entradas
+// que crucen de una marca a la otra.
+// El menu se define como datos: cada link apunta a una coleccion o pagina real.
 // ---------------------------------------------------------------------------
 
-type MenuWorld = 'trabajo' | 'oficio' | 'gala' | 'navidad' | 'hub';
+type MenuWorld = 'trabajo' | 'oficio' | 'gala' | 'navidad' | 'info';
 
 interface Column {
   title: string;
@@ -20,10 +23,9 @@ interface Entry {
   world: MenuWorld;
   to?: string; // entrada simple (sin panel)
   columns?: Column[]; // entrada con mega-menu
-  bridge?: { title: string; text: string; to: string }; // el puente dentro del menu
 }
 
-const MENU: Entry[] = [
+const GFTEXTIL_MENU: Entry[] = [
   {
     label: 'Uniformes & Textil',
     world: 'trabajo',
@@ -61,11 +63,6 @@ const MENU: Entry[] = [
         links: [{ label: 'Overoles y chalecos', to: '/c/industrial' }],
       },
     ],
-    bridge: {
-      title: 'Es para regalar?',
-      text: 'Un colega, una graduacion, un detalle para el equipo.',
-      to: '/c/regalar-odontologia',
-    },
   },
   {
     label: 'Gala & Tradicion',
@@ -85,6 +82,12 @@ const MENU: Entry[] = [
       },
     ],
   },
+  { label: 'Presupuesto', world: 'info', to: '/cotizar' },
+  { label: 'A medida', world: 'info', to: '/otros' },
+  { label: 'Contacto', world: 'info', to: '/contacto' },
+];
+
+const ARTESIKA_MENU: Entry[] = [
   {
     label: 'Artesania & Regalos',
     world: 'oficio',
@@ -119,9 +122,9 @@ const MENU: Entry[] = [
     world: 'navidad',
     columns: [
       {
-        title: 'Regalos',
+        title: 'Regalos y decoracion',
         links: [
-          { label: 'Regalos personales', to: '/c/navidad' },
+          { label: 'Todo Navidad', to: '/c/navidad' },
           { label: 'Detalles hasta $10', to: '/c/regalos-hasta-10' },
         ],
       },
@@ -129,23 +132,21 @@ const MENU: Entry[] = [
         title: 'Preventa',
         links: [{ label: 'Lotes con cupo y anticipo', to: '/preventa' }],
       },
-      {
-        title: 'Empresas',
-        links: [
-          { label: 'Kits corporativos con logo', to: '/b2b' },
-          { label: 'Solicitar cotizacion', to: '/b2b/cotizar' },
-        ],
-      },
     ],
   },
-  { label: 'Regalar', world: 'hub', to: '/c/regalar-detalles' },
-  { label: 'Corporativo', world: 'hub', to: '/b2b' },
+  { label: 'Contacto', world: 'info', to: '/contacto' },
 ];
+
+const MENU_BY_BRAND: Record<BrandId, Entry[]> = {
+  gftextil: GFTEXTIL_MENU,
+  artesika: ARTESIKA_MENU,
+};
 
 export function PrimaryNav() {
   const [openIdx, setOpenIdx] = useState<number | null>(null);
   const route = useRoute();
   const ref = useRef<HTMLDivElement>(null);
+  const menu = MENU_BY_BRAND[BRAND.id];
 
   // Cerrar al cambiar de ruta.
   useEffect(() => setOpenIdx(null), [route]);
@@ -171,7 +172,7 @@ export function PrimaryNav() {
   return (
     <nav className={styles.nav} aria-label="Principal" ref={ref}>
       <ul className={styles.list}>
-        {MENU.map((entry, i) => {
+        {menu.map((entry, i) => {
           const isOpen = openIdx === i;
           return (
             <li key={entry.label} className={styles.item}>
@@ -214,15 +215,6 @@ export function PrimaryNav() {
                         </ul>
                       </div>
                     ))}
-                    {entry.bridge && (
-                      <div className={styles.bridge}>
-                        <p className={styles.bridgeTitle}>{entry.bridge.title}</p>
-                        <p className={styles.bridgeText}>{entry.bridge.text}</p>
-                        <Link to={entry.bridge.to} className={styles.bridgeLink} onNavigate={close}>
-                          Regalar por profesion &rarr;
-                        </Link>
-                      </div>
-                    )}
                   </div>
                 </div>
               )}

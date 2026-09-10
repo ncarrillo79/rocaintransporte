@@ -13,9 +13,10 @@ export type Route =
   | { name: 'collection'; id: string }
   | { name: 'product'; slug: string }
   | { name: 'presale' }
-  | { name: 'b2b' }
-  | { name: 'quote'; kitId?: string }
+  | { name: 'quote'; garmentId?: string }
   | { name: 'custom' }
+  | { name: 'payment' }
+  | { name: 'contact' }
   | { name: 'notfound' };
 
 function parseHash(): Route {
@@ -26,10 +27,11 @@ function parseHash(): Route {
   if (seg[0] === 'p' && seg[1]) return { name: 'product', slug: decodeURIComponent(seg[1]) };
   if (seg[0] === 'preventa') return { name: 'presale' };
   if (seg[0] === 'otros') return { name: 'custom' };
-  if (seg[0] === 'b2b' && seg[1] === 'cotizar') {
-    return { name: 'quote', kitId: seg[2] ? decodeURIComponent(seg[2]) : undefined };
+  if (seg[0] === 'pago') return { name: 'payment' };
+  if (seg[0] === 'contacto') return { name: 'contact' };
+  if (seg[0] === 'cotizar') {
+    return { name: 'quote', garmentId: seg[1] ? decodeURIComponent(seg[1]) : undefined };
   }
-  if (seg[0] === 'b2b') return { name: 'b2b' };
   return { name: 'notfound' };
 }
 

@@ -77,11 +77,6 @@ export function CollectionPage({ id }: { id: string }) {
         <p className={styles.kicker}>{collection.kicker}</p>
         <h1 className={styles.title}>{collection.title}</h1>
         <p className={styles.blurb}>{collection.blurb}</p>
-        {collection.world === 'hub' && worldsInBase.length > 1 && (
-          <p className={styles.bridgeNote}>
-            Mezcla ropa de trabajo y artesania: el puente por intencion.
-          </p>
-        )}
       </header>
 
       <div className={styles.body}>

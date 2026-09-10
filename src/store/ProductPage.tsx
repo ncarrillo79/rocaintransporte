@@ -1,6 +1,9 @@
 import { useMemo, useState } from 'react';
+import { BRAND } from '../lib/brand';
 import { CONFIG } from '../lib/catalog';
+import { swatchColor } from '../lib/colors';
 import { bsHint, usd } from '../lib/format';
+import { Link } from '../lib/router';
 import { lineLabel } from '../data/lines';
 import type { Product, Specialty } from '../types';
 import { useCart } from './Cart';
@@ -97,24 +100,50 @@ function BuyBox({
       </div>
       <AvailabilityPill product={product} />
 
-      {product.options.map((g) => (
-        <div key={g.id} className={styles.field}>
-          <p className={styles.fieldLab}>{g.label}</p>
-          <div className={styles.opts}>
-            {g.values.map((v) => (
-              <button
-                key={v}
-                type="button"
-                aria-pressed={options[g.id] === v}
-                className={`${styles.opt} ${options[g.id] === v ? styles.optOn : ''}`}
-                onClick={() => setOption(g.id, v)}
-              >
-                {v}
-              </button>
-            ))}
+      {product.options.map((g) => {
+        const isColor = g.id === 'color' || g.id === 'vivo';
+        return (
+          <div key={g.id} className={styles.field}>
+            <p className={styles.fieldLab}>{g.label}</p>
+            <div className={styles.opts}>
+              {g.values.map((v) => {
+                const sw = isColor ? swatchColor(v) : null;
+                return (
+                  <button
+                    key={v}
+                    type="button"
+                    aria-pressed={options[g.id] === v}
+                    className={`${styles.opt} ${isColor ? styles.optColor : ''} ${options[g.id] === v ? styles.optOn : ''}`}
+                    onClick={() => setOption(g.id, v)}
+                  >
+                    {isColor && (
+                      <span
+                        className={styles.swatch}
+                        style={sw ? { background: sw } : undefined}
+                        data-empty={sw ? undefined : 'true'}
+                        aria-hidden="true"
+                      />
+                    )}
+                    {v}
+                  </button>
+                );
+              })}
+            </div>
+            {isColor && (
+              <p className={styles.colorHint}>
+                Otro color o combinacion?{' '}
+                {BRAND.id === 'gftextil' ? (
+                  <>
+                    Indicalo al <Link to="/cotizar">solicitar presupuesto</Link>.
+                  </>
+                ) : (
+                  'Escribinos y lo hacemos a pedido.'
+                )}
+              </p>
+            )}
           </div>
-        </div>
-      ))}
+        );
+      })}
 
       {product.personalizations.map((p) => (
         <label key={p.id} className={styles.pers}>
@@ -133,8 +162,67 @@ function BuyBox({
         Agregar al carrito
       </button>
 
+      {BRAND.id === 'gftextil' && (
+        <p className={styles.quoteHint}>
+          Pedido para un equipo o una prenda a medida?{' '}
+          <Link to="/cotizar">Solicitar presupuesto</Link> ·{' '}
+          <Link to="/otros">Fabricacion a medida</Link>
+        </p>
+      )}
+
       <TrustBlock />
     </div>
+  );
+}
+
+function SizeChartSection({ product }: { product: Product }) {
+  const chart = product.sizeChart;
+  if (!chart) return null;
+  return (
+    <section className={styles.specs}>
+      <h2 className={styles.specsTitle}>Tabla de talles</h2>
+      {chart.note && <p className={styles.desc}>{chart.note}</p>}
+      <div className={styles.sizeWrap}>
+        <table className={styles.sizeTable}>
+          <thead>
+            <tr>
+              {chart.headers.map((h) => (
+                <th key={h}>{h}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {chart.rows.map((r) => (
+              <tr key={r.label}>
+                <th scope="row">{r.label}</th>
+                {r.values.map((v, i) => (
+                  <td key={i}>{v}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p className={styles.sizeNote}>Medidas en centimetros. Referenciales; puede variar segun el corte.</p>
+    </section>
+  );
+}
+
+function CustomerPhotosSection({ product }: { product: Product }) {
+  const photos = product.customerPhotos;
+  if (!photos || photos.length === 0) return null;
+  return (
+    <section className={styles.specs}>
+      <h2 className={styles.specsTitle}>Fotos de nuestras clientas</h2>
+      <div className={styles.custPhotos}>
+        {photos.map((p, i) => (
+          <figure key={i} className={styles.custPhoto}>
+            <img src={p.image} alt={p.note ?? 'Foto de clienta con la prenda'} loading="lazy" />
+            {p.note && <figcaption>{p.note}</figcaption>}
+          </figure>
+        ))}
+      </div>
+    </section>
   );
 }
 
@@ -157,6 +245,8 @@ export function ProductPage({ product }: { product: Product }) {
     () => ['Inicio', lineLabel(product.line), product.title],
     [product.line, product.title],
   );
+
+  const descTitle = BRAND.id === 'artesika' ? 'Sobre la pieza' : 'Descripcion';
 
   return (
     <article className={styles.page}>
@@ -181,8 +271,9 @@ export function ProductPage({ product }: { product: Product }) {
       </div>
 
       <section className={styles.specs}>
-        <h2 className={styles.specsTitle}>Ficha tecnica</h2>
-        <p className={styles.desc}>{product.description}</p>
+        <h2 className={styles.specsTitle}>{descTitle}</h2>
+        {product.description && <p className={styles.desc}>{product.description}</p>}
+        {product.longDescription && <p className={styles.desc}>{product.longDescription}</p>}
         <dl className={styles.specList}>
           {product.specs.map((s) => (
             <div key={s.label} className={styles.specRow}>
@@ -192,6 +283,9 @@ export function ProductPage({ product }: { product: Product }) {
           ))}
         </dl>
       </section>
+
+      <SizeChartSection product={product} />
+      <CustomerPhotosSection product={product} />
     </article>
   );
 }

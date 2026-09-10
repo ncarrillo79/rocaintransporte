@@ -82,6 +82,24 @@ export interface ProductOptionGroup {
   required?: boolean;
 }
 
+/**
+ * Tabla de talles de la ficha (inspirada en dracherie.com.br, sin login).
+ * `headers` es la fila de encabezado (Talla, Busto, Cintura, ...); cada fila
+ * lleva su etiqueta (S, M, L, ...) y los valores en el mismo orden que headers
+ * sin contar la primera columna.
+ */
+export interface SizeChart {
+  note?: string;
+  headers: string[];
+  rows: { label: string; values: string[] }[];
+}
+
+/** Foto enviada por una clienta con la prenda puesta (estilo Shein). */
+export interface CustomerPhoto {
+  image: string; // ruta desde la raiz del sitio: /img/...
+  note?: string;
+}
+
 export interface Personalization {
   id: string;
   label: string;
@@ -104,7 +122,14 @@ export interface Product {
   options: ProductOptionGroup[];
   personalizations: Personalization[];
   specs: { label: string; value: string }[];
-  description: string;
+  /** Resumen corto. Si falta, la ficha usa `longDescription`. */
+  description?: string;
+  /** Descripcion ampliada: composicion del tejido, corte, cierre, detalles de diseno. */
+  longDescription?: string;
+  /** Tabla de talles (prendas de confeccion). Ausente en piezas sin talla. */
+  sizeChart?: SizeChart;
+  /** Fotos de clientas con la prenda puesta. Placeholder hasta subir las reales. */
+  customerPhotos?: CustomerPhoto[];
 }
 
 /** Un combo curado: producto ancla + complementos a precio de paquete. */
@@ -129,12 +154,20 @@ export interface StoreConfig {
   currency: 'USD';
   /** Tasa Bs/USD si se quiere mostrar precio en bolivares; null => "segun tasa del dia". */
   bsRate: number | null;
-  /** Numero de WhatsApp Business en formato internacional sin "+", para cotizaciones. */
+  /**
+   * Numero de WhatsApp por defecto (formato internacional sin "+"). Cada marca
+   * define el suyo en src/data/brands.ts; este queda como respaldo.
+   */
   whatsapp: string;
   /** Umbral de envio nacional gratis, en USD. */
   freeShippingThreshold: number;
   couriers: string[];
   pickupCities: string[];
+  /**
+   * Metodos de pago aceptados (solo el nombre; los datos de cuenta se comunican
+   * aparte, nunca en el codigo). Se listan en la pagina #/pago y en el carrito.
+   */
+  paymentMethods: string[];
   season: {
     christmasEnabled: boolean;
     depositPct: number; // 0.5 = 50 % de anticipo

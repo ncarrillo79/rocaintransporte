@@ -1,0 +1,107 @@
+.page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 4rem;
+}
+
+.head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 2rem;
+}
+.kicker {
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--brand-accent);
+  margin: 0;
+}
+.title {
+  font-family: var(--serif);
+  font-size: clamp(1.7rem, 4vw, 2.3rem);
+  font-weight: 600;
+  margin: 0;
+}
+.blurb {
+  font-size: 0.98rem;
+  color: var(--ink-soft);
+  max-width: 62ch;
+  margin: 0.2rem 0 0;
+}
+
+.methods {
+  list-style: none;
+  margin: 0 0 2rem;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+.method {
+  border: 1px solid var(--hairline-strong);
+  background: var(--surface);
+  border-radius: 999px;
+  padding: 0.45rem 0.95rem;
+  font-size: 0.9rem;
+}
+
+.block {
+  margin-bottom: 2rem;
+}
+.h2 {
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0 0 0.8rem;
+}
+.steps {
+  margin: 0;
+  padding-left: 1.2rem;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+}
+.steps li {
+  margin-bottom: 0.45rem;
+}
+
+.contactList {
+  list-style: none;
+  margin: 0 0 2rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+.contactList li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1rem;
+  border-bottom: 1px solid var(--hairline);
+  padding-bottom: 0.9rem;
+}
+.cLabel {
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  min-width: 8rem;
+}
+.cValue {
+  font-size: 0.95rem;
+  color: var(--ink);
+}
+
+.note {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.foot {
+  margin-top: 2rem;
+  font-size: 0.88rem;
+  color: var(--muted);
+}

@@ -1,4 +1,4 @@
-import { CONFIG } from '../lib/catalog';
+import { BRAND } from '../lib/brand';
 import { Link } from '../lib/router';
 import styles from './CustomOrderPage.module.css';
 
@@ -15,7 +15,7 @@ const WA_TEXT =
   'Hola, quiero consultar por una confeccion a medida. Prenda / uso: ; Cantidad: ; Tela y color: ; Tallas: ; Fecha: ; Bordado o logo: ';
 
 export function CustomOrderPage() {
-  const wa = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(WA_TEXT)}`;
+  const wa = `https://wa.me/${BRAND.whatsapp}?text=${encodeURIComponent(WA_TEXT)}`;
 
   return (
     <div className={styles.page}>
@@ -46,9 +46,6 @@ export function CustomOrderPage() {
         <a className={styles.waBtn} href={wa} target="_blank" rel="noreferrer">
           Consultar por WhatsApp
         </a>
-        <p className={styles.note}>
-          El numero se configura en <code>src/data/config.ts</code>.
-        </p>
       </section>
 
       <p className={styles.foot}>

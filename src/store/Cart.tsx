@@ -304,8 +304,7 @@ export function CartDrawer() {
             Ir a pagar
           </button>
           <p className={styles.footNote}>
-            El pago se verifica antes de despachar. Metodos: Pago Movil, transferencia, Zelle,
-            Binance/USDT.
+            El pago se verifica antes de despachar. Metodos: {CONFIG.paymentMethods.join(', ')}.
           </p>
         </footer>
       </aside>

@@ -21,36 +21,6 @@
   margin: 0;
 }
 
-.sibling {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.6rem 1.25rem;
-  justify-content: space-between;
-  padding: 0.9rem 1.1rem;
-  border: 1px solid var(--hairline);
-  border-left: 3px solid var(--brand-accent);
-  border-radius: var(--radius);
-  background: var(--surface);
-}
-.sibling p {
-  margin: 0;
-  font-size: 0.88rem;
-  color: var(--ink-soft);
-  max-width: 62ch;
-}
-.siblingBtn {
-  flex: none;
-  font-family: var(--mono);
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: var(--brand-accent);
-  text-decoration: none;
-  white-space: nowrap;
-}
-.siblingBtn:hover {
-  text-decoration: underline;
-}
 .h1 {
   font-family: var(--serif);
   font-size: clamp(1.9rem, 5vw, 2.8rem);
@@ -65,15 +35,55 @@
   margin: 0 0 1.25rem;
 }
 
+/* Categorias con foto (primera pantalla). GF Textil: grilla densa tipo Shein.
+   Artesika: foto mas grande, menos densidad, tipo Etsy. */
+.catGrid {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(3, 1fr);
+}
+:global(html[data-brand='artesika']) .catGrid {
+  gap: 1.25rem;
+  grid-template-columns: repeat(4, 1fr);
+}
+@media (max-width: 720px) {
+  .catGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.catCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: var(--ink);
+}
+.catMedia {
+  display: block;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+:global(html[data-brand='artesika']) .catMedia {
+  border-radius: var(--radius-lg);
+}
+.catLabel {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+:global(html[data-brand='artesika']) .catLabel {
+  font-family: var(--serif);
+  font-weight: 500;
+  text-align: center;
+}
+.catCard:hover .catLabel {
+  color: var(--brand-accent);
+}
+
 .doors {
   display: grid;
   gap: 1rem;
-  grid-template-columns: repeat(4, 1fr);
-}
-@media (max-width: 860px) {
-  .doors {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  grid-template-columns: repeat(2, 1fr);
 }
 @media (max-width: 460px) {
   .doors {
@@ -173,6 +183,54 @@
   margin: 0.4rem 0 0;
 }
 
+/* GF Textil: bloque destacado "lo fabricamos a medida". */
+.made {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.5rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.3rem 1.4rem;
+  background: var(--trabajo-soft);
+  border: 1px solid var(--trabajo);
+  border-radius: var(--radius-lg);
+}
+.madeText {
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  margin: 0.4rem 0 0;
+  max-width: 58ch;
+}
+.madeLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+.madeBtn {
+  flex: none;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--brand-btn-ink);
+  background: var(--brand-btn);
+  border: 1px solid var(--brand-btn);
+  border-radius: 5px;
+  padding: 0.65rem 1.1rem;
+  text-decoration: none;
+}
+.madeBtnAlt {
+  flex: none;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--trabajo);
+  background: var(--surface);
+  border: 1px solid var(--trabajo);
+  border-radius: 5px;
+  padding: 0.65rem 1.1rem;
+  text-decoration: none;
+}
+
 .xmas {
   display: flex;
   flex-wrap: wrap;
@@ -220,8 +278,34 @@
   text-decoration: none;
 }
 
+/* Artesika: bloque "hecho a mano" (storytelling tipo Etsy). */
+.story {
+  border-left: 3px solid var(--brand-accent);
+  padding: 0.4rem 0 0.4rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.storyText {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  max-width: 62ch;
+  margin: 0;
+}
+
 .grid {
   display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 0.8rem;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+}
+:global(html[data-brand='artesika']) .grid {
+  gap: 1.4rem;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+@media (max-width: 480px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }

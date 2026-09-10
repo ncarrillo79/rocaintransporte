@@ -1,58 +1,59 @@
 import { useMemo, useState, type FormEvent } from 'react';
-import { CITIES, CORPORATE_KITS } from '../data/corporate';
-import { CONFIG } from '../lib/catalog';
+import { CITIES, GARMENT_TYPES } from '../data/corporate';
+import { BRAND } from '../lib/brand';
 import { round2, usd } from '../lib/format';
 import { Link } from '../lib/router';
 import styles from './QuoteForm.module.css';
 
-const depositPct = CONFIG.season.depositPct;
+// ---------------------------------------------------------------------------
+// Solicitar presupuesto (GF Textil): pedidos por volumen o confeccion a medida.
+// No envia nada: arma un resumen de texto para WhatsApp Business o correo.
+// ---------------------------------------------------------------------------
 
-export function QuoteForm({ kitId }: { kitId?: string }) {
-  const preset = CORPORATE_KITS.find((k) => k.id === kitId);
+export function QuoteForm({ garmentId }: { garmentId?: string }) {
+  const preset = GARMENT_TYPES.find((g) => g.id === garmentId);
 
-  const [kit, setKit] = useState(preset?.id ?? CORPORATE_KITS[0].id);
-  const selectedKit = CORPORATE_KITS.find((k) => k.id === kit) ?? CORPORATE_KITS[0];
+  const [tipo, setTipo] = useState(preset?.id ?? GARMENT_TYPES[0].id);
+  const selected = GARMENT_TYPES.find((g) => g.id === tipo) ?? GARMENT_TYPES[0];
 
   const [empresa, setEmpresa] = useState('');
   const [contacto, setContacto] = useState('');
   const [email, setEmail] = useState('');
   const [telefono, setTelefono] = useState('');
-  const [cantidad, setCantidad] = useState(selectedKit.minUnits);
+  const [cantidad, setCantidad] = useState(selected.minUnits);
+  const [tallas, setTallas] = useState('');
+  const [telaColor, setTelaColor] = useState('');
   const [fecha, setFecha] = useState('');
   const [ciudad, setCiudad] = useState(CITIES[0]);
-  const [logo, setLogo] = useState(true);
+  const [logo, setLogo] = useState(false);
   const [logoNota, setLogoNota] = useState('');
   const [mensaje, setMensaje] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const estimate = round2(cantidad * selectedKit.unitPriceFrom);
-  const deposit = round2(estimate * depositPct);
+  const estimate = selected.unitPriceFrom > 0 ? round2(cantidad * selected.unitPriceFrom) : 0;
 
   const valid =
-    empresa.trim() !== '' &&
     contacto.trim() !== '' &&
     (email.trim() !== '' || telefono.trim() !== '') &&
-    cantidad >= selectedKit.minUnits;
+    cantidad >= 1;
 
   const errors: string[] = [];
   if (submitted && !valid) {
-    if (!empresa.trim()) errors.push('Falta el nombre de la empresa o institucion.');
     if (!contacto.trim()) errors.push('Falta la persona de contacto.');
     if (!email.trim() && !telefono.trim()) errors.push('Deja al menos un correo o un telefono.');
-    if (cantidad < selectedKit.minUnits)
-      errors.push(`La cantidad minima para este kit es ${selectedKit.minUnits}.`);
+    if (cantidad < 1) errors.push('Indica una cantidad.');
   }
 
   const summary = useMemo(
     () =>
       [
-        'COTIZACION - Regalos corporativos de Navidad',
-        `Kit: ${selectedKit.title}`,
-        `Cantidad: ${cantidad} (minimo ${selectedKit.minUnits})`,
-        `Personalizacion con logo: ${logo ? 'Si' : 'No'}${
-          logo && logoNota ? ` - ${logoNota}` : ''
-        }`,
+        'SOLICITUD DE PRESUPUESTO - GF Textil',
+        `Tipo de prenda: ${selected.label}`,
+        `Cantidad: ${cantidad}`,
+        `Tallas: ${tallas || 'a definir'}`,
+        `Tela y color: ${telaColor || 'a definir'}`,
+        `Bordado / logo: ${logo ? 'Si' : 'No'}${logo && logoNota ? ` - ${logoNota}` : ''}`,
         `Fecha de entrega deseada: ${fecha || 'a definir'}`,
         `Ciudad: ${ciudad}`,
         `Empresa / institucion: ${empresa || '-'}`,
@@ -60,13 +61,13 @@ export function QuoteForm({ kitId }: { kitId?: string }) {
         `Correo: ${email || '-'}`,
         `Telefono: ${telefono || '-'}`,
         mensaje ? `Mensaje: ${mensaje}` : '',
-        `Estimado: desde ${usd(estimate)} (anticipo ${Math.round(
-          depositPct * 100,
-        )} %: ${usd(deposit)})`,
+        estimate > 0
+          ? `Estimado referencial: desde ${usd(estimate)} (se confirma en la cotizacion)`
+          : '',
       ]
         .filter(Boolean)
         .join('\n'),
-    [selectedKit, cantidad, logo, logoNota, fecha, ciudad, empresa, contacto, email, telefono, mensaje, estimate, deposit],
+    [selected, cantidad, tallas, telaColor, logo, logoNota, fecha, ciudad, empresa, contacto, email, telefono, mensaje, estimate],
   );
 
   function onSubmit(e: FormEvent) {
@@ -75,10 +76,10 @@ export function QuoteForm({ kitId }: { kitId?: string }) {
     setCopied(false);
   }
 
-  function changeKit(id: string) {
-    setKit(id);
-    const k = CORPORATE_KITS.find((x) => x.id === id);
-    if (k && cantidad < k.minUnits) setCantidad(k.minUnits);
+  function changeTipo(id: string) {
+    setTipo(id);
+    const g = GARMENT_TYPES.find((x) => x.id === id);
+    if (g && cantidad < g.minUnits) setCantidad(g.minUnits);
   }
 
   async function copy() {
@@ -91,42 +92,51 @@ export function QuoteForm({ kitId }: { kitId?: string }) {
   }
 
   const showSummary = submitted && valid;
-  const wa = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(summary)}`;
+  const wa = `https://wa.me/${BRAND.whatsapp}?text=${encodeURIComponent(summary)}`;
   const mail = `mailto:?subject=${encodeURIComponent(
-    'Cotizacion regalos corporativos',
+    'Solicitud de presupuesto - GF Textil',
   )}&body=${encodeURIComponent(summary)}`;
 
   return (
     <div className={styles.page}>
       <header className={styles.head}>
-        <p className={styles.kicker}>Corporativo - Navidad</p>
-        <h1 className={styles.title}>Solicitar cotizacion</h1>
+        <p className={styles.kicker}>Presupuesto</p>
+        <h1 className={styles.title}>Solicitar presupuesto</h1>
         <p className={styles.blurb}>
-          Completa los datos y genera un resumen para enviar por WhatsApp Business o correo. Nada
-          se envia de forma automatica.
+          Para pedidos por volumen o prendas a medida que no estan en el catalogo. Completa
+          los datos y genera un resumen para enviar por WhatsApp o correo. Nada se envia de
+          forma automatica.
         </p>
       </header>
 
       <form className={styles.form} onSubmit={onSubmit}>
         <div className={styles.grid}>
           <label className={styles.field}>
-            <span>Kit</span>
-            <select value={kit} onChange={(e) => changeKit(e.target.value)}>
-              {CORPORATE_KITS.map((k) => (
-                <option key={k.id} value={k.id}>
-                  {k.title}
+            <span>Tipo de prenda</span>
+            <select value={tipo} onChange={(e) => changeTipo(e.target.value)}>
+              {GARMENT_TYPES.map((g) => (
+                <option key={g.id} value={g.id}>
+                  {g.label}
                 </option>
               ))}
             </select>
           </label>
           <label className={styles.field}>
-            <span>Cantidad (min. {selectedKit.minUnits})</span>
+            <span>Cantidad{selected.minUnits > 1 ? ` (sugerido min. ${selected.minUnits})` : ''}</span>
             <input
               type="number"
               min={1}
               value={cantidad}
               onChange={(e) => setCantidad(Number(e.target.value) || 0)}
             />
+          </label>
+          <label className={styles.field}>
+            <span>Tallas (rango o desglose)</span>
+            <input value={tallas} onChange={(e) => setTallas(e.target.value)} placeholder="Ej: 4 S, 6 M, 3 L / o a medida" />
+          </label>
+          <label className={styles.field}>
+            <span>Tela y color deseados</span>
+            <input value={telaColor} onChange={(e) => setTelaColor(e.target.value)} />
           </label>
           <label className={styles.field}>
             <span>Fecha de entrega deseada</span>
@@ -143,7 +153,7 @@ export function QuoteForm({ kitId }: { kitId?: string }) {
             </select>
           </label>
           <label className={styles.field}>
-            <span>Empresa o institucion</span>
+            <span>Empresa o institucion (opcional)</span>
             <input value={empresa} onChange={(e) => setEmpresa(e.target.value)} />
           </label>
           <label className={styles.field}>
@@ -162,24 +172,25 @@ export function QuoteForm({ kitId }: { kitId?: string }) {
 
         <label className={styles.check}>
           <input type="checkbox" checked={logo} onChange={(e) => setLogo(e.target.checked)} />
-          Personalizar con logo
+          Lleva bordado o logo
         </label>
         {logo && (
           <label className={styles.field}>
-            <span>Nota sobre el logo (colores, ubicacion, formato del archivo)</span>
+            <span>Nota sobre el bordado / logo (texto, colores, ubicacion, formato del archivo)</span>
             <input value={logoNota} onChange={(e) => setLogoNota(e.target.value)} />
           </label>
         )}
         <label className={styles.field}>
-          <span>Mensaje (opcional)</span>
+          <span>Mensaje / referencia de diseno (opcional)</span>
           <textarea rows={3} value={mensaje} onChange={(e) => setMensaje(e.target.value)} />
         </label>
 
-        <p className={styles.estimate}>
-          Estimado: <strong>desde {usd(estimate)}</strong> &nbsp;·&nbsp; anticipo{' '}
-          {Math.round(depositPct * 100)} %: {usd(deposit)}
-          <span className={styles.estNote}> — referencial, se confirma en la cotizacion</span>
-        </p>
+        {estimate > 0 && (
+          <p className={styles.estimate}>
+            Estimado: <strong>desde {usd(estimate)}</strong>
+            <span className={styles.estNote}> — referencial, se confirma en la cotizacion</span>
+          </p>
+        )}
 
         {errors.length > 0 && (
           <ul className={styles.errors}>
@@ -209,14 +220,11 @@ export function QuoteForm({ kitId }: { kitId?: string }) {
               Enviar por correo
             </a>
           </div>
-          <p className={styles.note}>
-            El numero y el correo de destino se configuran en <code>src/data/config.ts</code>.
-          </p>
         </section>
       )}
 
       <p className={styles.foot}>
-        <Link to="/b2b">Volver al catalogo corporativo</Link>
+        <Link to="/">Volver al inicio</Link>
       </p>
     </div>
   );
