@@ -17,7 +17,10 @@ Incluye:
 - **Selector de especialidad** que reordena los complementos y cambia el kit sin recargar
 - **Presupuesto** (`#/cotizar`, GF Textil) y **preventa navidena** (`#/preventa`, Artesika)
 - **Paginas** `#/pago` (formas de pago) y `#/contacto`
-- **Carrito** (Context + `localStorage`) con **barra de envio nacional gratis**, compartido
+- **Sin carrito**: cada producto y cada accion de compra abre WhatsApp con un
+  texto ya armado (`src/lib/whatsapp.ts`). No hay checkout.
+- **Solo se muestran productos con foto real** (`VISIBLE_POOL` en `catalog.ts`);
+  los que tienen dibujo de linea quedan ocultos hasta que se les cargue una foto.
 
 Todo el catalogo y las colecciones se administran en archivos de datos: no hay
 que tocar componentes.
@@ -106,11 +109,11 @@ npm run dev        # http://localhost:5173
 - **GF Textil** (confeccion profesional: trabajo + gala) -> `gftextil.com`
 - **Artesika** (artesania y regalos: oficio + navidad) -> `artesika.com`
 
-Mismo repo, mismo Worker, mismo carrito y despacho. **La experiencia esta
-separada**: cada marca tiene su catalogo, navegacion, home y cross-sell propios y
-no cruza a la otra (ver "Dos tiendas, una plataforma" arriba). La marca se decide
-por el dominio en `src/lib/brand.ts`; textos, color, `worlds` y `whatsapp` por
-marca en `src/data/brands.ts`. En local, prueba la otra con `?brand=artesika`.
+Mismo repo, mismo Worker. **La experiencia esta separada**: cada marca tiene su
+catalogo, navegacion, home y cross-sell propios y no cruza a la otra (ver "Dos
+tiendas, una plataforma" arriba). La marca se decide por el dominio en
+`src/lib/brand.ts`; textos, color, `worlds` y `whatsapp` por marca en
+`src/data/brands.ts`. En local, prueba la otra con `?brand=artesika`.
 
 ## Desplegar
 
@@ -128,22 +131,22 @@ URL directa del Worker (util para probar sin dominio):
 `https://tienda-puente.ncarrillo79.workers.dev` (agrega `?brand=artesika` para
 ver la otra marca).
 
-No hay backend: el boton "Ir a pagar" es un marcador. Ver la seccion siguiente
-para conectarlo a una tienda real.
+No hay backend ni checkout: los pedidos entran por WhatsApp. Si en el futuro se
+quiere una tienda real, ver "Conectar a una tienda real" mas abajo.
 
 ### Pendiente para el lanzamiento
 
 - [ ] **Redireccion `www` -> raiz**: hoy `gftextil.com` y `www.gftextil.com`
   responden por separado. Unificar (mejor SEO) con Cloudflare -> dominio ->
   *Rules -> Redirect Rules* -> "redirect www to root". Idem `artesika.com`.
-- [ ] **Checkout real**: el boton "Ir a pagar" no hace nada. Conectar a Shopify
-  / pasarela (ver "Conectar a una tienda real" mas abajo).
-- [ ] **Correo `@gftextil.com` / `@artesika.com`**: Cloudflare no da buzones.
-  Si se necesita, *Email Routing* de Cloudflare (reenvio gratis) o Zoho Mail.
-  Los registros `MX` / `TXT` viejos de Namecheap quedaron intactos.
-- [ ] **Campana navidena (Artesika)**: revisar `CONFIG.season` en
-  `src/data/config.ts` (cupos) y `presale.ts`. Las fechas estaban vigentes al
-  2026-09-10; `christmasEnabled: true`.
+- [ ] **Pedidos por WhatsApp**: cargar el numero real por marca en
+  `src/data/brands.ts` (`whatsapp`). Hoy las dos usan el mismo placeholder.
+- [ ] **Correo `contacto@gftextil.com` / `contacto@artesika.com`**: activar
+  *Email Routing* de Cloudflare en cada dominio (reenvio gratis a un Gmail).
+- [ ] **Campana navidena (Artesika)**: revisar fechas en `CONFIG.season` y
+  `presale.ts`. Vigentes al 2026-09-10; `christmasEnabled: true`.
+- [ ] **Fotos**: subir fotos de los productos ocultos para que aparezcan
+  (ver `CONTENIDO-PENDIENTE.md`).
 - [ ] **Limpiar runs viejos de GitHub Actions**: quedaron 2 en rojo del deploy
   por FTP a Namecheap (ya eliminado). Solo es cosmetico:
   `gh run delete <id>` para cada uno.
@@ -191,14 +194,13 @@ src/
     MegaMenu.tsx           Navegacion: un menu por marca (GFTEXTIL_MENU / ARTESIKA_MENU)
     CollectionPage.tsx     Grilla + facetas (mundo / especialidad / precio / stock)
     ProductCard.tsx        Tarjeta de producto (variante visual por data-brand)
-    ProductPage.tsx        Ficha: galeria, compra, tabla de talles, fotos de clientas
-    CrossSell.tsx          Complementos + kit + Navidad (solo Artesika), intra-marca
-    PresalePage.tsx        Preventa Artesika: fechas limite + lotes con cupo y anticipo
+    ProductPage.tsx        Ficha: galeria, tabla de talles, "Consultar por WhatsApp"
+    CrossSell.tsx          Complementos + kit (intra-marca), sin carrito
+    PresalePage.tsx        Preventa Artesika: fechas + lotes, "Reservar por WhatsApp"
     InfoPages.tsx          #/pago (formas de pago) y #/contacto
-    QuoteForm.tsx          Presupuesto GF Textil -> resumen para WhatsApp / correo
+    QuoteForm.tsx          Presupuesto GF Textil: pagina guia + boton de WhatsApp
     CustomOrderPage.tsx    "A medida": consulta por WhatsApp (#/otros)
-    Cart.tsx               Estado del carrito + cajon + barra de envio gratis
-    StoreChrome.tsx        Encabezado de la tienda
+    StoreChrome.tsx        Encabezado (con link a WhatsApp) + footer
     ui.tsx                 Primitivas (Pill, ImagePanel, Glyph)
     *.module.css           Estilos por componente
   styles/
