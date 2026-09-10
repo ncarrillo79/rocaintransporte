@@ -52,6 +52,7 @@ export function PaymentPage() {
 
 export function ContactPage() {
   const wa = `https://wa.me/${BRAND.whatsapp}`;
+  const email = BRAND.id === 'artesika' ? 'contacto@artesika.com' : 'contacto@gftextil.com';
   return (
     <div className={styles.page}>
       <header className={styles.head}>
@@ -71,13 +72,13 @@ export function ContactPage() {
         </li>
         <li>
           <span className={styles.cLabel}>Correo</span>
-          <span className={styles.cValue}>
-            {BRAND.id === 'artesika' ? 'hola@artesika.com' : 'hola@gftextil.com'} (por confirmar)
-          </span>
+          <a className={styles.cValue} href={`mailto:${email}`}>
+            {email}
+          </a>
         </li>
         <li>
           <span className={styles.cLabel}>Horario</span>
-          <span className={styles.cValue}>Lunes a viernes, 9:00 a 17:00 (por confirmar)</span>
+          <span className={styles.cValue}>Lunes a viernes, 9:00 a 17:00</span>
         </li>
         <li>
           <span className={styles.cLabel}>Retiro en tienda</span>

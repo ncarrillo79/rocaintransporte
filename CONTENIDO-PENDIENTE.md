@@ -110,5 +110,8 @@ Quedaron sin usar en `_fotos-fuente/gftextil/`:
   diseñarlo aparte.
 - **GF Textil "pedidos corporativos de fin de año" (textil)**: no se creó, tal
   como pediste. Avísame si lo quieres.
-- **Correos** `hola@gftextil.com` / `hola@artesika.com` en `#/contacto` son
-  placeholders ("por confirmar").
+- **Correos**: `#/contacto` ya muestra `contacto@gftextil.com` y
+  `contacto@artesika.com`. Falta **activar Cloudflare Email Routing** en cada
+  dominio (Email → Email Routing → Enable → destino `rosicarri66@gmail.com` →
+  Catch-all), si no, esos correos rebotan. Ver el chat para los pasos.
+- **Horario** en `#/contacto`: "Lunes a viernes, 9:00 a 17:00". Ajustar si es otro.
