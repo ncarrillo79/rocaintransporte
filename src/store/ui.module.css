@@ -31,8 +31,23 @@
 
 .photo {
   border-radius: var(--radius);
-  object-fit: cover;
+  /* contain = se ve la foto completa (sin recorte); las bandas quedan con
+     el mismo fondo que el marcador de posicion. Se usa en miniaturas,
+     tarjetas de grilla y la tira de venta cruzada (proporcion fija). */
+  object-fit: contain;
   width: 100%;
+  background: var(--surface-2);
+}
+
+/* Imagen grande de la ficha: a su proporcion real, sin recorte ni bandas. */
+.photoNatural {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 72vh;
+  margin: 0 auto;
+  border-radius: var(--radius);
 }
 
 .pill {

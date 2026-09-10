@@ -31,7 +31,7 @@ function Gallery({ product }: { product: Product }) {
   const [active, setActive] = useState(0);
   return (
     <div className={styles.gallery}>
-      <ImagePanel image={product.images[active]} ratio="4 / 5" />
+      <ImagePanel image={product.images[active]} natural />
       {product.images.length > 1 && (
         <div className={styles.thumbs}>
           {product.images.map((img, i) => (

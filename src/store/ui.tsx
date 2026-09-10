@@ -35,12 +35,18 @@ export function ImagePanel({
   image,
   ratio = '4 / 5',
   compact = false,
+  natural = false,
 }: {
   image: ProductImage;
   ratio?: string;
   compact?: boolean;
+  /** Foto a su proporcion real, sin recorte ni bandas (para la imagen grande). */
+  natural?: boolean;
 }) {
   if (image.kind === 'photo') {
+    if (natural) {
+      return <img className={styles.photoNatural} src={image.src} alt={image.alt} />;
+    }
     return (
       <img
         className={styles.photo}
