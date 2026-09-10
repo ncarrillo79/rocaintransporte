@@ -43,11 +43,12 @@ Se usa en **todo**: el botón "Consultar por WhatsApp" de cada ficha, el link
 Estos ya tienen ficha completa pero **no se ven** hasta que les pongas una foto
 real en `src/data/products.ts`. Varios son importantes:
 
-- **GF Textil**: Kimono odontológico, Filipina de chef, Delantal de cocina,
-  Gorro de cocina, Mandil de mesonero, Camisa escolar, Mono deportivo escolar,
-  Bata de laboratorio escolar, Chemise corporativa, Blusa administrativa,
-  Overol industrial, Chaleco de seguridad, **Vestido de gala**, **Liqui liqui
-  (dama y caballero)**, Gorro quirúrgico.
+- **GF Textil**: Kimono odontológico, Gorro de cocina, Mandil de mesonero,
+  Camisa escolar, Mono deportivo escolar, Bata de laboratorio escolar, Chemise
+  corporativa, Blusa administrativa, Overol industrial, Chaleco de seguridad,
+  **Vestido de gala**, **Liqui liqui (dama y caballero)**, Gorro quirúrgico.
+  - Ya tienen foto y aparecen: **Filipina de chef** (foto rosada + negra) y
+    **Delantal de cocina con peto** (foto de los dos delantales negros).
 - **Artesika**: Pulsera Molar / Caduceo / Lámpara / Chef, Llavero de diente,
   Cocuiza clásica, Lámpara de madera, Organizador de consultorio.
 
@@ -95,6 +96,34 @@ de talles, descripción) a partir de tus fotos. Falta que revises:
     quedaron en su línea clínica / corporativa, pero son sobre todo pedidos por
     lote. Si prefieres tratarlos solo como "presupuesto", quítalos del catálogo.
 
+## 6b. Fichas nuevas de Artesika (fotos del 2026-09-09) — revisar precio y datos
+Con las fotos que agregaste se crearon **8 fichas nuevas** en `src/data/products.ts`.
+Tienen estructura completa (título, línea, opciones, specs) pero **precio, medidas
+y materiales son de ejemplo** (dicen "revisar" en la descripción). Confirmá:
+
+| Ficha | Línea | Precio ejemplo | Fotos |
+|---|---|---|---|
+| Muñeca de trapo artesanal | artesania | $18 | 2 (vestido de día + traje regional) |
+| Conejo de trapo artesanal | artesania | $12 | 3 (trío de lunares + 2 con ropita) |
+| Pesebre / Nacimiento artesanal | decoracion | $45 | 1 |
+| Muñeco de nieve decorativo | decoracion | $28 | 1 |
+| Pie de árbol navideño (falda) | decoracion | $35 | 1 |
+| Adorno de puerta navideño (moño) | decoracion | $18 | 1 |
+| Papá Noel y Sra. Claus en columpio | decoracion | $60 | 1 |
+| Colgante "Ho Ho Ho" de Papá Noel | decoracion | $22 | 1 |
+
+Además se enriquecieron fichas que ya existían:
+- **Papá Noel decorativo** (`muneco-papa-noel`): ahora tiene fotos reales (de pie
+  con cartel, en escalera, y pareja con Sra. Claus) y opción de **presentación**.
+- **Reno con suéter** y **Pareja de renos**: se sumó la variante dorada a la galería.
+- **Filipina de chef**: fotos rosada (manga larga) y negra (manga corta) + opción de manga.
+- **Delantal de cocina con peto**: foto real de los dos delantales negros.
+
+Foto que quedó **sin usar a propósito**: `public/img/gftextil/filipina-chef-negra-2.jpg`
+(misma filipina negra pero con el logo bordado "Petrana Pastry" bien visible; usé la
+versión con el logo tapado). Si querés mostrar el bordado de un cliente real como
+ejemplo, cambiá esa foto en la ficha `filipina-chef`.
+
 ## 7. (Resuelto) Conjunto de bebé a crochet
 Se había creado como producto de Artesika a partir de `IMG-20230212-WA0040.jpg`.
 **Lo retiraste**: la ficha y la foto (`conjunto-bebe-crochet.jpg`) ya no están en
@@ -106,6 +135,11 @@ La carpeta original que tenías en `public/img/fotos_gfTextil/` se movió a
 **`_fotos-fuente/gftextil/`** (fuera de `public/`, para que el video y las fotos
 personales NO se publiquen). Las fotos que sí se usan se copiaron con nombres
 limpios a `public/img/gftextil/` y `public/img/fotos_artesika/`.
+
+Las 20 imágenes que estaban en `public/img/` con nombre de WhatsApp (`WhatsApp
+Image 2026-...jpeg`) ya se renombraron a nombres limpios y se conectaron a fichas
+(ver 6b). No queda ninguna foto en `public/img/` sin usar salvo
+`filipina-chef-negra-2.jpg`, que se dejó a propósito.
 
 Quedaron sin usar en `_fotos-fuente/gftextil/`:
 
