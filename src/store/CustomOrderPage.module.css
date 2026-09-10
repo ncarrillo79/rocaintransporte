@@ -1,5 +1,5 @@
 .page {
-  max-width: 720px;
+  max-width: 760px;
   margin: 0 auto;
   padding: 2rem 1.25rem 4rem;
 }
@@ -15,7 +15,7 @@
   font-size: 0.74rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--gala);
+  color: var(--brand-accent);
   margin: 0;
 }
 .title {

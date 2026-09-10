@@ -1,79 +1,97 @@
 .home {
-  max-width: 1060px;
+  max-width: 1100px;
   margin: 0 auto;
-  padding: 2rem 1.25rem 4rem;
+  padding: 2.75rem 1.5rem 4.5rem;
   display: flex;
   flex-direction: column;
-  gap: 2.5rem;
+  gap: 3.25rem;
 }
 
 .intro {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.55rem;
+  padding-bottom: 0.5rem;
 }
 .kicker {
   font-family: var(--mono);
-  font-size: 0.74rem;
-  letter-spacing: 0.1em;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--brand-accent);
   margin: 0;
 }
-
 .h1 {
   font-family: var(--serif);
-  font-size: clamp(1.9rem, 5vw, 2.8rem);
+  font-size: clamp(2rem, 5.5vw, 3.1rem);
   font-weight: 600;
-  margin: 0.2rem 0 0.3rem;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  margin: 0.35rem 0 0.2rem;
+  max-width: 20ch;
 }
 .lead {
-  font-family: var(--serif);
-  font-size: 1.1rem;
+  font-size: 1.05rem;
+  line-height: 1.65;
   color: var(--ink-soft);
-  max-width: 52ch;
-  margin: 0 0 1.25rem;
+  max-width: 56ch;
+  margin: 0.3rem 0 0;
+}
+:global(html[data-brand='artesika']) .lead {
+  font-family: var(--serif);
+  font-size: 1.12rem;
 }
 
-/* Categorias con foto (primera pantalla). GF Textil: grilla densa tipo Shein.
-   Artesika: foto mas grande, menos densidad, tipo Etsy. */
+/* Categorias con foto (primera pantalla). */
 .catGrid {
   display: grid;
-  gap: 0.75rem;
+  gap: 1rem;
   grid-template-columns: repeat(3, 1fr);
 }
 :global(html[data-brand='artesika']) .catGrid {
-  gap: 1.25rem;
+  gap: 1.4rem;
   grid-template-columns: repeat(4, 1fr);
 }
-@media (max-width: 720px) {
-  .catGrid {
+@media (max-width: 760px) {
+  .catGrid,
+  :global(html[data-brand='artesika']) .catGrid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 0.9rem;
   }
 }
 .catCard {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.6rem;
   text-decoration: none;
   color: var(--ink);
 }
 .catMedia {
   display: block;
-  border: 1px solid var(--hairline);
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
   overflow: hidden;
+  box-shadow: var(--card-shadow);
 }
 :global(html[data-brand='artesika']) .catMedia {
-  border-radius: var(--radius-lg);
+  box-shadow: none;
+}
+.catMedia img,
+.catMedia > * {
+  transition: transform 0.3s ease;
+}
+.catCard:hover .catMedia img,
+.catCard:hover .catMedia > * {
+  transform: scale(1.04);
 }
 .catLabel {
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   font-weight: 600;
+  letter-spacing: 0.01em;
 }
 :global(html[data-brand='artesika']) .catLabel {
   font-family: var(--serif);
   font-weight: 500;
+  font-size: 1rem;
   text-align: center;
 }
 .catCard:hover .catLabel {
@@ -85,7 +103,7 @@
   gap: 1rem;
   grid-template-columns: repeat(2, 1fr);
 }
-@media (max-width: 460px) {
+@media (max-width: 520px) {
   .doors {
     grid-template-columns: 1fr;
   }
@@ -93,53 +111,46 @@
 .door {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
-  padding: 1.15rem 1.2rem 1.1rem;
+  gap: 0.45rem;
+  padding: 1.4rem 1.5rem;
   background: var(--surface);
   border: 1px solid var(--hairline);
-  border-top: 3px solid var(--muted);
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
   text-decoration: none;
   color: var(--ink);
+  box-shadow: var(--card-shadow);
+  transition: transform 0.15s ease;
 }
-.door[data-world='trabajo'] {
-  border-top-color: var(--trabajo);
-}
-.door[data-world='oficio'] {
-  border-top-color: var(--oficio);
-}
-.door[data-world='gala'] {
-  border-top-color: var(--gala);
-}
-.door[data-world='navidad'] {
-  border-top-color: var(--navidad);
+.door:hover {
+  transform: translateY(-2px);
 }
 .doorTitle {
   font-family: var(--serif);
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   font-weight: 600;
 }
 .doorText {
-  font-size: 0.88rem;
+  font-size: 0.9rem;
+  line-height: 1.55;
   color: var(--ink-soft);
   flex: 1;
 }
 .doorGo {
   font-family: var(--mono);
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   font-weight: 600;
+  letter-spacing: 0.02em;
   color: var(--brand-accent);
 }
 
 .trust {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem 1.5rem;
-  padding: 0.9rem 1.1rem;
-  background: var(--surface-2);
-  border-radius: var(--radius);
-  font-family: var(--mono);
-  font-size: 0.76rem;
+  gap: 0.4rem 1.75rem;
+  padding: 1rem 0;
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+  font-size: 0.82rem;
   color: var(--muted);
 }
 .trust strong {
@@ -150,12 +161,13 @@
 .band {
   display: flex;
   flex-direction: column;
-  gap: 0.9rem;
+  gap: 1.15rem;
 }
 .h2 {
   font-family: var(--serif);
-  font-size: 1.4rem;
+  font-size: clamp(1.4rem, 3vw, 1.7rem);
   font-weight: 600;
+  letter-spacing: -0.005em;
   margin: 0;
 }
 
@@ -167,7 +179,7 @@
 .chip {
   border: 1px solid var(--hairline-strong);
   border-radius: 999px;
-  padding: 0.4rem 0.9rem;
+  padding: 0.42rem 0.95rem;
   font-size: 0.86rem;
   text-decoration: none;
   color: var(--ink-soft);
@@ -177,29 +189,25 @@
   border-color: var(--brand-accent);
   color: var(--brand-accent);
 }
-.custom {
-  font-size: 0.86rem;
-  color: var(--muted);
-  margin: 0.4rem 0 0;
-}
 
-/* GF Textil: bloque destacado "lo fabricamos a medida". */
+/* GF Textil: bloque "lo fabricamos a medida". */
 .made {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem 1.5rem;
+  gap: 1.25rem 2rem;
   align-items: center;
   justify-content: space-between;
-  padding: 1.3rem 1.4rem;
-  background: var(--trabajo-soft);
-  border: 1px solid var(--trabajo);
+  padding: 1.75rem 1.9rem;
+  background: var(--brand-tint, var(--trabajo-soft));
+  border-left: 4px solid var(--brand-accent);
   border-radius: var(--radius-lg);
 }
 .madeText {
-  font-size: 0.92rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
   color: var(--ink-soft);
-  margin: 0.4rem 0 0;
-  max-width: 58ch;
+  margin: 0.5rem 0 0;
+  max-width: 56ch;
 }
 .madeLinks {
   display: flex;
@@ -210,12 +218,12 @@
   flex: none;
   font-family: var(--mono);
   font-size: 0.8rem;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--brand-btn-ink);
   background: var(--brand-btn);
   border: 1px solid var(--brand-btn);
-  border-radius: 5px;
-  padding: 0.65rem 1.1rem;
+  border-radius: 6px;
+  padding: 0.7rem 1.2rem;
   text-decoration: none;
 }
 .madeBtnAlt {
@@ -226,43 +234,44 @@
   color: var(--trabajo);
   background: var(--surface);
   border: 1px solid var(--trabajo);
-  border-radius: 5px;
-  padding: 0.65rem 1.1rem;
+  border-radius: 6px;
+  padding: 0.7rem 1.2rem;
   text-decoration: none;
 }
 
 .xmas {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 1.25rem 2rem;
   align-items: center;
   justify-content: space-between;
-  padding: 1.15rem 1.25rem;
+  padding: 1.75rem 1.9rem;
   background: var(--navidad-soft);
-  border: 1px solid var(--navidad);
-  border-radius: 8px;
+  border-left: 4px solid var(--navidad);
+  border-radius: var(--radius-lg);
 }
 .xmasText {
-  font-size: 0.88rem;
+  font-size: 0.92rem;
+  line-height: 1.6;
   color: var(--ink-soft);
-  margin: 0.3rem 0 0;
-  max-width: 60ch;
+  margin: 0.4rem 0 0;
+  max-width: 58ch;
 }
 .xmasLinks {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.6rem;
 }
 .xmasBtn {
   flex: none;
   font-family: var(--mono);
   font-size: 0.78rem;
-  font-weight: 600;
+  font-weight: 700;
   color: #fff;
-  background: #8a3b2f;
-  border: 1px solid #8a3b2f;
-  border-radius: 5px;
-  padding: 0.6rem 1rem;
+  background: var(--navidad);
+  border: 1px solid var(--navidad);
+  border-radius: 6px;
+  padding: 0.65rem 1.15rem;
   text-decoration: none;
 }
 .xmasBtnAlt {
@@ -273,39 +282,41 @@
   color: var(--navidad);
   background: var(--surface);
   border: 1px solid var(--navidad);
-  border-radius: 5px;
-  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  padding: 0.65rem 1.15rem;
   text-decoration: none;
 }
 
-/* Artesika: bloque "hecho a mano" (storytelling tipo Etsy). */
+/* Artesika: storytelling "hecho a mano". */
 .story {
-  border-left: 3px solid var(--brand-accent);
-  padding: 0.4rem 0 0.4rem 1.4rem;
+  border-left: 4px solid var(--brand-accent);
+  padding: 0.5rem 0 0.5rem 1.6rem;
   display: flex;
   flex-direction: column;
-  gap: 0.7rem;
+  gap: 0.75rem;
 }
 .storyText {
   font-family: var(--serif);
-  font-size: 1.05rem;
-  line-height: 1.6;
+  font-size: 1.1rem;
+  line-height: 1.7;
   color: var(--ink-soft);
-  max-width: 62ch;
+  max-width: 60ch;
   margin: 0;
 }
 
 .grid {
   display: grid;
-  gap: 0.8rem;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1.1rem;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
 }
 :global(html[data-brand='artesika']) .grid {
-  gap: 1.4rem;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.6rem;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
 }
 @media (max-width: 480px) {
-  .grid {
+  .grid,
+  :global(html[data-brand='artesika']) .grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 0.9rem;
   }
 }

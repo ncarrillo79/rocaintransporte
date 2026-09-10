@@ -2,73 +2,63 @@
   display: flex;
   flex-direction: column;
   border: 1px solid var(--hairline);
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
   overflow: hidden;
   background: var(--surface);
+  box-shadow: var(--card-shadow);
+  transition: transform 0.16s ease, box-shadow 0.16s ease;
 }
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(34, 39, 31, 0.08), 0 22px 44px -20px rgba(34, 39, 31, 0.3);
+}
+
+/* Artesika: menos "tarjeta", mas foto (tipo Etsy). */
 :global(html[data-brand='artesika']) .card {
-  border-radius: var(--radius-lg);
   border-color: transparent;
   background: transparent;
+  box-shadow: none;
+}
+:global(html[data-brand='artesika']) .card:hover {
+  transform: translateY(-2px);
+  box-shadow: none;
 }
 
 .media {
   display: block;
+  overflow: hidden;
 }
 
 .body {
-  padding: 0.7rem 0.8rem 0.8rem;
+  padding: 0.8rem 0.9rem 0.95rem;
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 0.35rem;
   flex: 1;
 }
-
-.world {
-  font-family: var(--mono);
-  font-size: 0.66rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--muted);
-  border-left: 2px solid var(--hairline-strong);
-  padding-left: 0.4rem;
-}
-.world[data-world='trabajo'] {
-  border-left-color: var(--trabajo);
-}
-.world[data-world='oficio'] {
-  border-left-color: var(--oficio);
-}
-.world[data-world='gala'] {
-  border-left-color: var(--gala);
-}
-.world[data-world='navidad'] {
-  border-left-color: var(--navidad);
+:global(html[data-brand='artesika']) .body {
+  padding: 0.85rem 0.15rem 0.5rem;
 }
 
 .name {
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   font-weight: 600;
-  line-height: 1.25;
+  line-height: 1.3;
   color: var(--ink);
   text-decoration: none;
+}
+.name:hover {
+  color: var(--brand-accent);
 }
 :global(html[data-brand='artesika']) .name {
   font-family: var(--serif);
   font-weight: 500;
-  font-size: 0.98rem;
-}
-:global(html[data-brand='artesika']) .media {
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-}
-.name:hover {
-  text-decoration: underline;
+  font-size: 1.02rem;
 }
 
 .price {
   font-family: var(--mono);
-  font-size: 0.84rem;
+  font-size: 0.86rem;
   color: var(--ink-soft);
 }
 
@@ -78,14 +68,12 @@
   font-family: var(--mono);
   font-size: 0.74rem;
   font-weight: 600;
-  border: 1px solid var(--trabajo);
-  color: var(--trabajo);
-  background: transparent;
-  border-radius: 4px;
-  padding: 0.28rem 0.65rem;
-  cursor: pointer;
+  letter-spacing: 0.02em;
+  color: var(--brand-accent);
   text-decoration: none;
+  padding-top: 0.15rem;
 }
 .btn:hover {
-  background: var(--trabajo-soft);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }

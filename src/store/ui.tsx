@@ -49,9 +49,10 @@ export function ImagePanel({
     }
     return (
       <img
-        className={styles.photo}
+        className={`${styles.photo} ${compact ? styles.photoCover : ''}`}
         src={image.src}
         alt={image.alt}
+        loading="lazy"
         style={{ aspectRatio: ratio }}
       />
     );

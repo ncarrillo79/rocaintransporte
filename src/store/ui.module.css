@@ -1,16 +1,14 @@
 .glyph {
-  width: 46%;
-  max-width: 120px;
-  opacity: 0.32;
-  color: var(--trabajo);
+  width: 42%;
+  max-width: 110px;
+  opacity: 0.28;
+  color: var(--brand-accent);
 }
 
 .panel {
   border: 1px solid var(--hairline);
   border-radius: var(--radius);
-  background:
-    repeating-linear-gradient(135deg, transparent 0 14px, rgba(30, 91, 87, 0.05) 14px 15px),
-    var(--surface-2);
+  background: var(--surface-2);
   display: grid;
   place-items: center;
   position: relative;
@@ -31,12 +29,17 @@
 
 .photo {
   border-radius: var(--radius);
-  /* contain = se ve la foto completa (sin recorte); las bandas quedan con
-     el mismo fondo que el marcador de posicion. Se usa en miniaturas,
-     tarjetas de grilla y la tira de venta cruzada (proporcion fija). */
   object-fit: contain;
   width: 100%;
+  display: block;
   background: var(--surface-2);
+}
+
+/* En grillas, tarjetas y miniaturas la foto llena el marco (recorta lo justo).
+   La imagen grande de la ficha usa `photoNatural`, sin recorte. */
+.photoCover {
+  object-fit: cover;
+  object-position: center;
 }
 
 /* Imagen grande de la ficha: a su proporcion real, sin recorte ni bandas. */

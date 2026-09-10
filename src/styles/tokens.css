@@ -38,10 +38,29 @@
   --radius: 6px;
   --radius-lg: 10px;
   --shadow: 0 1px 2px rgba(34, 39, 31, 0.06), 0 8px 24px -12px rgba(34, 39, 31, 0.18);
+  --card-shadow: 0 1px 2px rgba(34, 39, 31, 0.04), 0 12px 30px -16px rgba(34, 39, 31, 0.22);
+
+  /* Footer: franja oscura del tono de la marca. Por defecto GF Textil (verde). */
+  --footer-bg: #14332f;
+  --footer-ink: #eef1ea;
+  --footer-muted: #9fb4ae;
+  --footer-line: rgba(255, 255, 255, 0.14);
 
   --serif: 'Spectral', Georgia, 'Times New Roman', serif;
   --sans: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+}
+
+/* Tinte cálido para Artesika (identidad de marca, no cambia con el tema). */
+:root[data-brand='artesika'] {
+  --ground: #f4f0e6;
+  --footer-bg: #33261a;
+  --footer-ink: #f2ebdf;
+  --footer-muted: #bda98f;
+  --footer-line: rgba(255, 255, 255, 0.13);
+}
+:root[data-brand='gftextil'] {
+  --ground: #f2f3ef;
 }
 
 @media (prefers-color-scheme: dark) {
