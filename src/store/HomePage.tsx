@@ -58,12 +58,6 @@ const CATEGORIES: Record<BrandId, { label: string; collectionId: string }[]> = {
   ],
 };
 
-const BY_PROFESSION = [
-  { label: 'Para un odontologo', to: '/c/regalar-odontologia' },
-  { label: 'Para enfermeria', to: '/c/regalar-enfermeria' },
-  { label: 'Para un chef', to: '/c/regalar-gastronomia' },
-  { label: 'Detalles hasta $10', to: '/c/regalos-hasta-10' },
-];
 
 /** Imagen representativa de una categoria: la primera foto real que encuentre. */
 function categoryImage(collectionId: string): ProductImage {
@@ -165,19 +159,6 @@ export function HomePage() {
             nombre, unas iniciales o el color que quieras regalar. Piezas pensadas para durar y
             para contar una historia.
           </p>
-        </section>
-      )}
-
-      {isArtesika && (
-        <section className={styles.band}>
-          <h2 className={styles.h2}>Regala por profesion</h2>
-          <div className={styles.chips}>
-            {BY_PROFESSION.map((p) => (
-              <Link key={p.to} to={p.to} className={styles.chip}>
-                {p.label}
-              </Link>
-            ))}
-          </div>
         </section>
       )}
 

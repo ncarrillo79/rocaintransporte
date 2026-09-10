@@ -21,28 +21,36 @@ export function productWorld(p: Product): World {
   return LINES[p.line].world;
 }
 
-/** Catalogo visible en la marca activa. */
+/** Todos los productos de la marca activa (incluye los que aun no tienen foto). */
 export const BRAND_POOL: Product[] = PRODUCTS.filter((p) =>
   BRAND.worlds.includes(productWorld(p)),
 );
 
-/** Un kit pertenece a la marca solo si su ancla y todos sus componentes lo son. */
+const hasPhoto = (p: Product) => p.images.some((i) => i.kind === 'photo');
+
+/**
+ * Lo que se MUESTRA: solo productos con foto real. Los que estan con dibujo
+ * de linea quedan ocultos hasta que se les cargue una foto (reaparecen solos).
+ */
+export const VISIBLE_POOL: Product[] = BRAND_POOL.filter(hasPhoto);
+
+/** Un kit se muestra solo si su ancla y todos sus componentes son de la marca. */
 const inPool = (id: string) => BRAND_POOL.some((p) => p.id === id);
 export const BRAND_KITS: Kit[] = KITS.filter(
   (k) => inPool(k.anchorProductId) && k.componentProductIds.every(inPool),
 );
 
-/** Busca en TODO el catalogo, sin filtrar por marca. Solo para calculos internos. */
+/** Busca en TODO el catalogo, sin filtros. Solo para calculos internos (kits). */
 function findProductAny(id: string): Product | undefined {
   return PRODUCTS.find((p) => p.id === id);
 }
 
 export function getProduct(id: string): Product | undefined {
-  return BRAND_POOL.find((p) => p.id === id);
+  return VISIBLE_POOL.find((p) => p.id === id);
 }
 
 export function getProductBySlug(slug: string): Product | undefined {
-  return BRAND_POOL.find((p) => p.slug === slug);
+  return VISIBLE_POOL.find((p) => p.slug === slug);
 }
 
 // Orden de los complementos dentro de la ficha: primero el mismo mundo que la
@@ -65,13 +73,13 @@ export function getCrossSell(
   const wanted = specialty ?? product.specialties[0] ?? null;
   const sharesSpecialty = (p: Product) => wanted !== null && p.specialties.includes(wanted);
 
-  const primary = BRAND_POOL.filter(
+  const primary = VISIBLE_POOL.filter(
     (p) => p.id !== product.id && p.roles.includes('add_on') && sharesSpecialty(p),
   ).sort((a, b) => worldRank(product, a) - worldRank(product, b));
 
   if (primary.length >= limit) return primary.slice(0, limit);
 
-  const filler = BRAND_POOL.filter(
+  const filler = VISIBLE_POOL.filter(
     (p) =>
       p.id !== product.id &&
       !primary.some((x) => x.id === p.id) &&
@@ -108,19 +116,12 @@ export function priceKit(kit: Kit): KitPricing {
   return { listTotal, kitTotal, savings: round2(listTotal - kitTotal), anchor, components };
 }
 
-/** Sugerencias baratas para empujar la barra de envio gratis. */
-export function cheapAddOns(excludeIds: string[], limit = 3): Product[] {
-  return BRAND_POOL.filter((p) => p.roles.includes('add_on') && !excludeIds.includes(p.id))
-    .sort((a, b) => a.price - b.price)
-    .slice(0, limit);
-}
-
 // ---------------------------------------------------------------------------
 // Colecciones y filtrado de catalogo.
 // ---------------------------------------------------------------------------
 
-/** Aplica un filtro declarativo. El pool por defecto ya esta acotado a la marca. */
-export function filterProducts(f: ProductFilter, pool: Product[] = BRAND_POOL): Product[] {
+/** Aplica un filtro declarativo. Por defecto sobre lo visible (con foto). */
+export function filterProducts(f: ProductFilter, pool: Product[] = VISIBLE_POOL): Product[] {
   return pool.filter((p) => {
     if (f.worlds && f.worlds.length > 0 && !f.worlds.includes(productWorld(p))) return false;
     if (f.lines && f.lines.length > 0 && !f.lines.includes(p.line)) return false;

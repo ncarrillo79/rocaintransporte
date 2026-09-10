@@ -1,8 +1,8 @@
 import { CAMPAIGN_MILESTONES, PRESALE_LOTS } from '../data/presale';
 import { CONFIG } from '../lib/catalog';
-import { round2, usd } from '../lib/format';
+import { usd } from '../lib/format';
 import { Link } from '../lib/router';
-import { useCart } from './Cart';
+import { waLink } from '../lib/whatsapp';
 import { Glyph } from './ui';
 import styles from './PresalePage.module.css';
 
@@ -12,17 +12,14 @@ function daysUntil(iso: string): number {
 }
 
 export function PresalePage() {
-  const { add } = useCart();
-  const depositPct = CONFIG.season.depositPct;
-
   return (
     <div className={styles.page}>
       <header className={styles.head}>
-        <p className={styles.kicker}>Mundo 3 - Navidad</p>
+        <p className={styles.kicker}>Navidad</p>
         <h1 className={styles.title}>Preventa artesanal</h1>
         <p className={styles.blurb}>
-          Produccion programada por lotes, con fecha comprometida y cupo real. Reservas con{' '}
-          {Math.round(depositPct * 100)} % de anticipo; el saldo se paga contra despacho.
+          {CONFIG.season.deadlineNote} La produccion es por lotes, con fecha comprometida.
+          Para reservar, escribinos por WhatsApp y coordinamos el anticipo.
         </p>
       </header>
 
@@ -48,11 +45,9 @@ export function PresalePage() {
         <h2 className={styles.h2}>Lotes disponibles</h2>
         <ul className={styles.lots}>
           {PRESALE_LOTS.map((lot) => {
-            const left = Math.max(0, lot.slotsTotal - lot.slotsTaken);
-            const pct = Math.round((lot.slotsTaken / lot.slotsTotal) * 100);
-            const deposit = round2(lot.unitPrice * depositPct);
-            const balance = round2(lot.unitPrice - deposit);
-            const soldOut = left === 0;
+            const wa = waLink(
+              `Hola, quiero reservar en la preventa de Navidad: ${lot.title} (entrega ${lot.deliveryLabel}, ${usd(lot.unitPrice)}).`,
+            );
             return (
               <li key={lot.id} className={styles.lot}>
                 <div className={styles.lotMedia}>
@@ -64,36 +59,11 @@ export function PresalePage() {
                   <p className={styles.lotMeta}>
                     Entrega: {lot.deliveryLabel} &nbsp;·&nbsp; Precio: {usd(lot.unitPrice)}
                   </p>
-                  <div className={styles.slotTrack} aria-hidden="true">
-                    <span className={styles.slotFill} style={{ width: `${pct}%` }} />
-                  </div>
-                  <p className={styles.slotText}>
-                    {soldOut
-                      ? 'Lote completo - lista de espera'
-                      : `Quedan ${left} de ${lot.slotsTotal} en este lote`}
-                  </p>
                 </div>
                 <div className={styles.lotAction}>
-                  <span className={styles.deposit}>Anticipo {usd(deposit)}</span>
-                  <span className={styles.balance}>saldo {usd(balance)}</span>
-                  <button
-                    type="button"
-                    className={styles.reserveBtn}
-                    disabled={soldOut}
-                    onClick={() =>
-                      add({
-                        kind: 'reservation',
-                        refId: lot.id,
-                        title: `Reserva Navidad - ${lot.title}`,
-                        unitPrice: deposit,
-                        note: `Anticipo ${Math.round(depositPct * 100)} % - saldo ${usd(
-                          balance,
-                        )} - entrega ${lot.deliveryLabel}`,
-                      })
-                    }
-                  >
-                    {soldOut ? 'Sin cupo' : `Reservar (${usd(deposit)})`}
-                  </button>
+                  <a className={styles.reserveBtn} href={wa} target="_blank" rel="noreferrer">
+                    Reservar por WhatsApp
+                  </a>
                 </div>
               </li>
             );

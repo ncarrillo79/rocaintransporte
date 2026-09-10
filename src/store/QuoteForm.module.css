@@ -182,3 +182,16 @@
   font-size: 0.88rem;
   color: var(--muted);
 }
+
+.block {
+  margin-top: 1.8rem;
+}
+.list {
+  margin: 0;
+  padding-left: 1.2rem;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+}
+.list li {
+  margin-bottom: 0.4rem;
+}

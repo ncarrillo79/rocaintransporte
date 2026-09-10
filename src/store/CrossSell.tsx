@@ -1,15 +1,14 @@
-import { BRAND } from '../lib/brand';
-import { CONFIG, getCrossSell, getKitFor, priceKit, productWorld, worldLabel } from '../lib/catalog';
-import { round2, usd } from '../lib/format';
+import { getCrossSell, getKitFor, priceKit, productWorld, worldLabel } from '../lib/catalog';
+import { usd } from '../lib/format';
+import { Link } from '../lib/router';
+import { waLink } from '../lib/whatsapp';
 import { SPECIALTIES } from '../data/specialties';
 import type { Product, Specialty } from '../types';
-import { useCart } from './Cart';
 import { ImagePanel } from './ui';
 import styles from './CrossSell.module.css';
 
 // ===========================================================================
-// PUENTE 0 - Selector de especialidad
-// Reordena los complementos y cambia el kit sin recargar la ficha.
+// Selector de especialidad: reordena los complementos y cambia el kit.
 // ===========================================================================
 
 export function SpecialtySelector({
@@ -43,7 +42,7 @@ export function SpecialtySelector({
 }
 
 // ===========================================================================
-// PUENTE 1 - "Combina con tu especialidad"
+// "Combina con tu especialidad" - complementos de la misma marca.
 // ===========================================================================
 
 export function CrossSellStrip({
@@ -53,7 +52,6 @@ export function CrossSellStrip({
   product: Product;
   specialty: Specialty;
 }) {
-  const { add } = useCart();
   const items = getCrossSell(product, specialty, 3);
   if (items.length === 0) return null;
 
@@ -63,26 +61,21 @@ export function CrossSellStrip({
         <h2 id="xsell-title" className={styles.blockTitle}>
           Combina con tu especialidad
         </h2>
-        <span className={styles.blockVia}>se llena por la etiqueta #{specialty} - rol add-on</span>
       </div>
       <ul className={styles.strip}>
         {items.map((p) => (
           <li key={p.id} className={styles.mini}>
-            <ImagePanel image={p.images[0]} ratio="3 / 2" compact />
+            <Link to={`/p/${p.slug}`}>
+              <ImagePanel image={p.images[0]} ratio="3 / 2" compact />
+            </Link>
             <div className={styles.miniBody}>
               <span className={styles.miniName}>{p.shortName}</span>
               <span className={styles.miniMeta}>
                 {worldLabel(productWorld(p))} - {usd(p.price)}
               </span>
-              <button
-                type="button"
-                className={styles.addBtn}
-                onClick={() =>
-                  add({ kind: 'addon', refId: p.id, title: p.shortName, unitPrice: p.price })
-                }
-              >
-                + Anadir
-              </button>
+              <Link to={`/p/${p.slug}`} className={styles.addBtn}>
+                Ver
+              </Link>
             </div>
           </li>
         ))}
@@ -92,7 +85,7 @@ export function CrossSellStrip({
 }
 
 // ===========================================================================
-// PUENTE 2 - Kit (combo curado a precio de paquete)
+// Kit (combo curado a precio de paquete). Se consulta por WhatsApp.
 // ===========================================================================
 
 export function KitBundle({
@@ -104,10 +97,19 @@ export function KitBundle({
   specialty: Specialty;
   selectedOptions: Record<string, string>;
 }) {
-  const { add } = useCart();
   const kit = getKitFor(product, specialty);
   if (!kit) return null;
   const pricing = priceKit(kit);
+
+  const piezas = [
+    pricing.anchor?.shortName,
+    ...pricing.components.map((c) => c.shortName),
+  ].filter(Boolean);
+  const wa = waLink(
+    `Hola, me interesa el ${kit.title} (${piezas.join(' + ')})` +
+      (selectedOptions.talla ? ` - talla ${selectedOptions.talla}` : '') +
+      (selectedOptions.color ? ` - ${selectedOptions.color}` : ''),
+  );
 
   return (
     <section className={styles.kit} aria-labelledby="kit-title">
@@ -134,95 +136,9 @@ export function KitBundle({
           <span className={styles.kitOld}>Suelto {usd(pricing.listTotal)}</span>
           <span className={styles.kitNew}>{usd(pricing.kitTotal)}</span>
           <span className={styles.kitSave}>ahorras {usd(pricing.savings)}</span>
-          <button
-            type="button"
-            className={styles.kitBtn}
-            onClick={() =>
-              add({
-                kind: 'kit',
-                refId: kit.id,
-                title: kit.title,
-                unitPrice: pricing.kitTotal,
-                options: selectedOptions,
-              })
-            }
-          >
-            Agregar el kit
-          </button>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// ===========================================================================
-// Navidad dentro de la ficha (envoltorio + reserva con anticipo).
-// Solo Artesika (la marca duena del mundo navidad). Se apaga entero con
-// CONFIG.season.christmasEnabled = false.
-// ===========================================================================
-
-export function ChristmasBridge({
-  product,
-  specialty,
-  selectedOptions,
-}: {
-  product: Product;
-  specialty: Specialty;
-  selectedOptions: Record<string, string>;
-}) {
-  const { add } = useCart();
-  const season = CONFIG.season;
-  if (!BRAND.worlds.includes('navidad') || !season.christmasEnabled) return null;
-
-  const kit = getKitFor(product, specialty);
-  const base = kit ? priceKit(kit).kitTotal : product.price;
-  const deposit = round2(base * season.depositPct);
-  const balance = round2(base - deposit);
-
-  return (
-    <section className={styles.xmas} aria-labelledby="xmas-title">
-      <span className={styles.xmasMark} aria-hidden="true">
-        {'\u{1F384}'}
-      </span>
-      <div className={styles.xmasMain}>
-        <h2 id="xmas-title" className={styles.xmasTitle}>
-          Es un regalo para un colega?
-        </h2>
-        <p className={styles.xmasText}>
-          {season.deadlineNote} Cupos de produccion esta semana:{' '}
-          <strong>{season.weeklySlots}</strong>.
-        </p>
-        <div className={styles.xmasActs}>
-          {CONFIG.giftWraps.map((w) => (
-            <button
-              key={w.id}
-              type="button"
-              className={styles.xmasBtn}
-              onClick={() =>
-                add({ kind: 'addon', refId: w.id, title: w.label, unitPrice: w.price })
-              }
-            >
-              + {w.label} ({usd(w.price)})
-            </button>
-          ))}
-          <button
-            type="button"
-            className={styles.xmasBtnSolid}
-            onClick={() =>
-              add({
-                kind: 'reservation',
-                refId: kit ? kit.id : product.id,
-                title: `Reserva Navidad - ${kit ? kit.title : product.shortName}`,
-                unitPrice: deposit,
-                options: selectedOptions,
-                note: `Anticipo ${Math.round(season.depositPct * 100)} % - saldo ${usd(
-                  balance,
-                )} contra despacho`,
-              })
-            }
-          >
-            Reservar para Navidad ({usd(deposit)})
-          </button>
+          <a className={styles.kitBtn} href={wa} target="_blank" rel="noreferrer">
+            Consultar el kit
+          </a>
         </div>
       </div>
     </section>

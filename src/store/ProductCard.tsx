@@ -3,17 +3,13 @@ import { productWorld, worldLabel } from '../lib/catalog';
 import { usd } from '../lib/format';
 import { Link } from '../lib/router';
 import type { Product } from '../types';
-import { useCart } from './Cart';
 import { ImagePanel } from './ui';
 import styles from './ProductCard.module.css';
 
-// Tarjeta de producto para grillas (home y colecciones).
-// Si la pieza tiene opciones obligatorias (talla, color) manda a la ficha;
-// si no, deja anadir al carrito desde la grilla.
+// Tarjeta de producto para grillas (home y colecciones). Sin carrito: siempre
+// lleva a la ficha, y desde ahi se consulta por WhatsApp.
 // Artesika usa foto mas alta (4/5, tipo Etsy); GF Textil mas compacta (4/3).
 export function ProductCard({ product }: { product: Product }) {
-  const { add } = useCart();
-  const needsOptions = product.options.some((o) => o.required);
   const mediaRatio = BRAND.id === 'artesika' ? '4 / 5' : '4 / 3';
 
   return (
@@ -29,26 +25,9 @@ export function ProductCard({ product }: { product: Product }) {
           {product.shortName}
         </Link>
         <span className={styles.price}>{usd(product.price)}</span>
-        {needsOptions ? (
-          <Link to={`/p/${product.slug}`} className={styles.btn}>
-            Ver opciones
-          </Link>
-        ) : (
-          <button
-            type="button"
-            className={styles.btn}
-            onClick={() =>
-              add({
-                kind: 'addon',
-                refId: product.id,
-                title: product.shortName,
-                unitPrice: product.price,
-              })
-            }
-          >
-            + Anadir
-          </button>
-        )}
+        <Link to={`/p/${product.slug}`} className={styles.btn}>
+          Ver
+        </Link>
       </div>
     </article>
   );

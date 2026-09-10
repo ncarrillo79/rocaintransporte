@@ -4,10 +4,10 @@ import { CONFIG } from '../lib/catalog';
 import { swatchColor } from '../lib/colors';
 import { bsHint, usd } from '../lib/format';
 import { Link } from '../lib/router';
+import { waProduct } from '../lib/whatsapp';
 import { lineLabel } from '../data/lines';
 import type { Product, Specialty } from '../types';
-import { useCart } from './Cart';
-import { ChristmasBridge, CrossSellStrip, KitBundle, SpecialtySelector } from './CrossSell';
+import { CrossSellStrip, KitBundle, SpecialtySelector } from './CrossSell';
 import { ImagePanel, Pill } from './ui';
 import styles from './ProductPage.module.css';
 
@@ -77,19 +77,8 @@ function BuyBox({
   personalizations: string[];
   togglePersonalization: (id: string) => void;
 }) {
-  const { add } = useCart();
   const chosen = product.personalizations.filter((p) => personalizations.includes(p.id));
-
-  function addToCart() {
-    add({
-      kind: 'product',
-      refId: product.id,
-      title: product.title,
-      unitPrice: product.price,
-      options,
-      addons: chosen.map((p) => ({ id: p.id, label: p.label, price: p.price })),
-    });
-  }
+  const wa = waProduct(product.title, options, chosen);
 
   return (
     <div className={styles.buybox}>
@@ -158,14 +147,14 @@ function BuyBox({
         </label>
       ))}
 
-      <button type="button" className={styles.cta} onClick={addToCart}>
-        Agregar al carrito
-      </button>
+      <a className={styles.cta} href={wa} target="_blank" rel="noreferrer">
+        Consultar por WhatsApp
+      </a>
 
       {BRAND.id === 'gftextil' && (
         <p className={styles.quoteHint}>
           Pedido para un equipo o una prenda a medida?{' '}
-          <Link to="/cotizar">Solicitar presupuesto</Link> ·{' '}
+          <Link to="/cotizar">Pedir presupuesto</Link> ·{' '}
           <Link to="/otros">Fabricacion a medida</Link>
         </p>
       )}
@@ -267,7 +256,6 @@ export function ProductPage({ product }: { product: Product }) {
         <SpecialtySelector options={product.specialties} value={specialty} onChange={setSpecialty} />
         <CrossSellStrip product={product} specialty={specialty} />
         <KitBundle product={product} specialty={specialty} selectedOptions={options} />
-        <ChristmasBridge product={product} specialty={specialty} selectedOptions={options} />
       </div>
 
       <section className={styles.specs}>

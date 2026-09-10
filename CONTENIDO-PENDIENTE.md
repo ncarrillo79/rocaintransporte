@@ -3,15 +3,23 @@
 Lo que falta para dejar las dos tiendas listas para publicar. Nada de esto bloquea
 el resto del trabajo; son datos que tienes que confirmar tú.
 
-## 1. Números de WhatsApp reales por marca
+> **El sitio ya NO tiene carrito.** Cada producto y cada acción de compra abre
+> WhatsApp con un texto ya armado (nombre del producto + opciones). La preventa y
+> el presupuesto también son un botón de WhatsApp, sin formulario.
+>
+> **Solo se muestran los productos que tienen foto real.** Los que están con
+> dibujo de línea quedan ocultos y reaparecen solos cuando les cargues una foto
+> en `src/data/products.ts` (`images: [{ kind: 'photo', src: '/img/...' }]`).
+
+## 1. Números de WhatsApp reales por marca  ← lo más importante
 `src/data/brands.ts` → campo `whatsapp` de cada marca. Hoy las dos usan
 `584243018032` como placeholder. Cargar:
 
 - **GF Textil**: número real.
 - **Artesika**: número real (si es distinto).
 
-Se usa en: formulario de presupuesto (`#/cotizar`), "fabricación a medida"
-(`#/otros`) y la página de contacto (`#/contacto`).
+Se usa en **todo**: el botón "Consultar por WhatsApp" de cada ficha, el link
+"WhatsApp" del encabezado, la preventa, el presupuesto, "a medida" y contacto.
 
 ## 2. Métodos y datos de pago  ✅ cargado
 `src/data/config.ts` → `paymentMethods`. Ahora:
@@ -22,14 +30,30 @@ Se usa en: formulario de presupuesto (`#/cotizar`), "fabricación a medida"
   `#/pago` y la nota del carrito solo listan los métodos.
 - Si más adelante se agregan Zelle / Binance u otra cuenta, se suma a esa lista.
 
-## 3. Fechas y cupos de la campaña de Navidad (Artesika)
-`src/data/config.ts` → `CONFIG.season` y `src/data/presale.ts`.
+## 3. Fechas de la campaña de Navidad (Artesika)
+`src/data/config.ts` → `CONFIG.season.deadlineNote` y `src/data/presale.ts`
+(`CAMPAIGN_MILESTONES` + `PRESALE_LOTS`).
 
 - A la fecha de este trabajo (2026-09-10) las fechas están **vigentes**
-  (`deadlineNote`: 28-nov / 20-dic; hitos 2026-11-21 … 2026-12-23) y
-  `christmasEnabled: true`.
-- Confirmar antes de la temporada: `weeklySlots` (hoy 8) y el `slotsTotal` /
-  `slotsTaken` de cada lote en `presale.ts` (son cifras de ejemplo).
+  (28-nov / 20-dic; hitos 2026-11-21 … 2026-12-23) y `christmasEnabled: true`.
+- Ya **no** hay lógica de cupos ni anticipo: la preventa es un texto + botón de
+  WhatsApp. `weeklySlots` y `slotsTaken` quedaron en los datos pero no se muestran.
+
+## 3b. Productos ocultos por falta de foto — subir foto para que aparezcan
+Estos ya tienen ficha completa pero **no se ven** hasta que les pongas una foto
+real en `src/data/products.ts`. Varios son importantes:
+
+- **GF Textil**: Kimono odontológico, Filipina de chef, Delantal de cocina,
+  Gorro de cocina, Mandil de mesonero, Camisa escolar, Mono deportivo escolar,
+  Bata de laboratorio escolar, Chemise corporativa, Blusa administrativa,
+  Overol industrial, Chaleco de seguridad, **Vestido de gala**, **Liqui liqui
+  (dama y caballero)**, Gorro quirúrgico.
+- **Artesika**: Pulsera Molar / Caduceo / Lámpara / Chef, Llavero de diente,
+  Cocuiza clásica, Lámpara de madera, Organizador de consultorio.
+
+Poné la foto en `public/img/gftextil/` o `public/img/fotos_artesika/` y cambiá el
+`images` del producto de `{ kind: 'placeholder', ... }` a
+`{ kind: 'photo', src: '/img/...' }`. Reaparece solo.
 
 ## 4. Fotos de clientas (GF Textil)
 Las fichas nuevas llevan una sección **"Fotos de nuestras clientas"**. Como

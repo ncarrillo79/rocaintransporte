@@ -95,24 +95,16 @@ const ARTESIKA_MENU: Entry[] = [
       {
         title: 'Piezas',
         links: [
-          { label: 'Todas las artesanias', to: '/c/artesania' },
-          { label: 'Cocuizas / espardenas', to: '/c/artesania' },
-          { label: 'Lamparas de madera', to: '/c/artesania' },
+          { label: 'Toda la artesania', to: '/c/artesania' },
+          { label: 'Bisuteria y pulseras', to: '/c/bisuteria' },
+          { label: 'Decoracion', to: '/c/decoracion' },
         ],
       },
       {
-        title: 'Regalar por profesion',
+        title: 'Regalos',
         links: [
-          { label: 'Para un odontologo', to: '/c/regalar-odontologia' },
-          { label: 'Para enfermeria', to: '/c/regalar-enfermeria' },
-          { label: 'Para un chef', to: '/c/regalar-gastronomia' },
-        ],
-      },
-      {
-        title: 'Por presupuesto',
-        links: [
-          { label: 'Regalos hasta $10', to: '/c/regalos-hasta-10' },
           { label: 'Detalles para regalar', to: '/c/regalar-detalles' },
+          { label: 'Regalos hasta $10', to: '/c/regalos-hasta-10' },
         ],
       },
     ],

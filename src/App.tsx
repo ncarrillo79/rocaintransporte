@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { BRAND } from './lib/brand';
 import { getProductBySlug } from './lib/catalog';
 import { useRoute } from './lib/router';
-import { CartDrawer } from './store/Cart';
 import { CollectionPage } from './store/CollectionPage';
 import { CustomOrderPage } from './store/CustomOrderPage';
 import { HomePage } from './store/HomePage';
@@ -34,7 +33,6 @@ export function App() {
       {route.name === 'contact' && <ContactPage />}
       {route.name === 'notfound' && <NotFound />}
       <StoreFooter />
-      <CartDrawer />
     </PageShell>
   );
 }
