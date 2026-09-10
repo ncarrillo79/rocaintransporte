@@ -65,12 +65,20 @@ Si no hay suficientes, el hueco se rellena con piezas que tengan
 
 ### Poner una foto real
 
-1. Copia la imagen a `public/img/` (por ej. `public/img/pulsera-lapiz.jpg`).
-2. Cambia el `images` del producto:
+1. Copia la imagen a `public/img/`. Nombre en minusculas, sin espacios ni
+   tildes, con guiones; ideal el `id` del producto (`pulsera-lapiz.jpg`,
+   `pulsera-lapiz-2.jpg` para la segunda foto).
+2. Formato JPG o WebP, ancho ~1200-1600 px, comprimida (< 300-400 KB). El
+   deploy entero tiene un tope de 25 MB.
+3. Cambia el `images` del producto (el `src` lleva barra inicial, es ruta
+   desde la raiz del sitio):
 
 ```ts
-images: [{ kind: 'photo', src: 'img/pulsera-lapiz.jpg', alt: 'Pulsera con dije de lapiz' }],
+images: [{ kind: 'photo', src: '/img/pulsera-lapiz.jpg', alt: 'Pulsera con dije de lapiz' }],
 ```
+
+Se pueden poner varias fotos: cada `{ kind: 'photo', ... }` mas en el array
+es otra imagen de la galeria.
 
 ---
 
