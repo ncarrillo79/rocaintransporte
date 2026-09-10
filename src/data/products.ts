@@ -801,6 +801,36 @@ export const PRODUCTS: Product[] = [
     ],
     description: 'Dupla de renos decorativos hechos a mano, a juego, para recibidor o mesa.',
   },
+  {
+    id: 'muneco-papa-noel',
+    slug: 'muneco-papa-noel-decorativo',
+    title: 'Muneco de Papa Noel decorativo',
+    shortName: 'Papa Noel decorativo',
+    line: 'decoracion',
+    price: 30,
+    images: [
+      {
+        kind: 'photo',
+        src: '/img/fotos_artesika/Renosvarios.jpeg',
+        alt: 'Coleccion navidena Artesika: munecos de Papa Noel junto a renos y farol de pie',
+      },
+    ],
+    availability: { kind: 'made_to_order', leadDays: [7, 14] },
+    specialties: [],
+    occasions: ['navidad', 'agradecimiento'],
+    roles: ['gift'],
+    options: [
+      { id: 'tamano', label: 'Tamano', values: ['Mediano (aprox. 35 cm)', 'Grande (aprox. 55 cm)'], required: true },
+    ],
+    personalizations: [],
+    specs: [
+      { label: 'Material', value: 'Tela y peluche con relleno de fibra, base rigida' },
+      { label: 'Hecho a mano', value: 'Cada pieza tiene pequenas diferencias' },
+    ],
+    description: 'Papa Noel decorativo cosido a mano, a juego con la coleccion navidena de renos y farol.',
+    longDescription:
+      'Muneco de Papa Noel decorativo, cosido y vestido a mano, con relleno de fibra y base para que se pare solo. Combina con los renos y el farol de la misma coleccion. Pieza de temporada, para recibidor, mesa o vidriera. La foto muestra varias piezas de la coleccion juntas.',
+  },
 
   // =====================================================================
   // GF TEXTIL - fichas generadas a partir de fotos reales del taller
@@ -1517,8 +1547,7 @@ export const PRODUCTS: Product[] = [
   },
 
   // =====================================================================
-  // ARTESIKA - piezas identificadas en las fotos (bisuteria y tejido).
-  // La ficha del conjunto de bebe se asigno automaticamente: revisar.
+  // ARTESIKA - piezas de bisuteria identificadas en las fotos.
   // =====================================================================
   {
     id: 'pulsera-ojo-turco-par',
@@ -1574,36 +1603,6 @@ export const PRODUCTS: Product[] = [
     description: 'Pulseras artesanales de piedras naturales y dijes, hechas con tecnica de alambrismo. Cada una es unica.',
     longDescription:
       'Serie de pulseras trabajadas a mano con alambrismo: piedras naturales engarzadas, cuentas de vidrio de colores y dijes de zamak (media luna, mano de Fatima, borlas). Por ser hechas una a una, no hay dos iguales; se puede pedir una gama de color y la artesana arma la pieza dentro de ese rango.',
-  },
-  {
-    id: 'conjunto-bebe-crochet',
-    slug: 'conjunto-de-bebe-tejido-a-crochet',
-    title: 'Conjunto de bebe tejido a crochet (gorrito + cubrepanal + botas)',
-    shortName: 'Conjunto bebe crochet',
-    line: 'artesania',
-    price: 20,
-    images: [
-      { kind: 'photo', src: '/img/fotos_artesika/conjunto-bebe-crochet.jpg', alt: 'Bebe con gorrito, cubrepanal y botitas tejidos a crochet en tonos verdes' },
-    ],
-    availability: { kind: 'made_to_order', leadDays: [7, 14] },
-    specialties: [],
-    occasions: ['cumpleanos', 'agradecimiento', 'navidad'],
-    roles: ['gift'],
-    options: [
-      { id: 'edad', label: 'Edad', values: ['0-3 meses', '3-6 meses', '6-12 meses'], required: true },
-      { id: 'tematica', label: 'Tematica', values: ['Personaje verde', 'Colores lisos', 'A convenir'], required: true },
-    ],
-    personalizations: [
-      { id: 'nombre', label: 'Nombre bordado en el gorrito', price: 4 },
-    ],
-    specs: [
-      { label: 'Incluye', value: 'Gorrito + cubrepanal + par de botitas' },
-      { label: 'Material', value: 'Hilo de algodon tejido a crochet' },
-      { label: 'Uso', value: 'Sesion de fotos y regalo de nacimiento' },
-    ],
-    description: 'Conjunto de gorrito, cubrepanal y botitas tejido a crochet, pensado para sesiones de fotos y regalo de nacimiento.',
-    longDescription:
-      'Set de tres piezas tejido a mano a crochet en hilo de algodon: gorrito con orejas, cubrepanal y botitas a juego. Se teje por rango de edad y en la tematica o los colores que pidas. Pieza de regalo y de recuerdo, no de uso diario.',
   },
 ];
 

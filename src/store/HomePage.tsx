@@ -81,7 +81,11 @@ export function HomePage() {
   const hasChristmas = BRAND.worlds.includes('navidad');
   const doors = DOORS.filter((d) => BRAND.worlds.includes(d.world));
   const categories = CATEGORIES[BRAND.id];
-  const featured = getCollectionProducts(BRAND.homeCollectionId).slice(0, isArtesika ? 4 : 8);
+  // Destacados: primero los que tienen foto real, sin cambiar el orden relativo.
+  const hasPhoto = (p: { images: { kind: string }[] }) => p.images.some((i) => i.kind === 'photo');
+  const featured = [...getCollectionProducts(BRAND.homeCollectionId)]
+    .sort((a, b) => Number(hasPhoto(b)) - Number(hasPhoto(a)))
+    .slice(0, isArtesika ? 6 : 8);
 
   return (
     <div className={styles.home}>

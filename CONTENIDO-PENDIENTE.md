@@ -71,10 +71,10 @@ de talles, descripción) a partir de tus fotos. Falta que revises:
     quedaron en su línea clínica / corporativa, pero son sobre todo pedidos por
     lote. Si prefieres tratarlos solo como "presupuesto", quítalos del catálogo.
 
-## 7. Producto asignado automáticamente a Artesika — revisar
-- **`conjunto-bebe-crochet`** (foto `IMG-20230212-WA0040.jpg`, estaba en la
-  carpeta `fotos_gfTextil`): es tejido a crochet hecho a mano, así que se asignó
-  a **Artesika**, línea `artesania`. Confirmar marca y línea, o mover.
+## 7. (Resuelto) Conjunto de bebé a crochet
+Se había creado como producto de Artesika a partir de `IMG-20230212-WA0040.jpg`.
+**Lo retiraste**: la ficha y la foto (`conjunto-bebe-crochet.jpg`) ya no están en
+el catálogo ni en el deploy. El archivo original queda en `_fotos-fuente/`.
 
 ## 8. Fotos disponibles sin ficha
 
