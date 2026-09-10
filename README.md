@@ -85,16 +85,41 @@ En local, prueba la otra marca con `?brand=artesika`.
 
 ## Desplegar
 
-Destino: **Cloudflare Pages** (gratis, uso comercial permitido) con los dos
-dominios registrados en **Namecheap**. Pasos detallados en
-[`DEPLOY.md`](./DEPLOY.md).
+Ya esta en produccion: **Cloudflare Worker** `tienda-puente` (solo assets
+estaticos, gratis, uso comercial permitido). El repo esta conectado a Git, asi
+que **cada push a `main` buildea y publica solo** en 1-2 min. Config del deploy
+en `wrangler.jsonc` (evita la autodeteccion de framework de `wrangler deploy`).
+Pasos historicos y de dominios en [`DEPLOY.md`](./DEPLOY.md).
 
-En corto: conectas el repo a Cloudflare Pages una vez (build `npm run build`,
-salida `dist`); cada push a `main` publica solo. Los dos dominios apuntan al
-mismo proyecto.
+Dominios activos, los 4 con HTTPS, apuntando al mismo Worker:
+`gftextil.com`, `www.gftextil.com`, `artesika.com`, `www.artesika.com`.
+Nameservers de ambos dominios movidos de Namecheap a Cloudflare.
+
+URL directa del Worker (util para probar sin dominio):
+`https://tienda-puente.ncarrillo79.workers.dev` (agrega `?brand=artesika` para
+ver la otra marca).
 
 No hay backend: el boton "Ir a pagar" es un marcador. Ver la seccion siguiente
 para conectarlo a una tienda real.
+
+### Pendiente para el lanzamiento
+
+- [ ] **Redireccion `www` -> raiz**: hoy `gftextil.com` y `www.gftextil.com`
+  responden por separado. Unificar (mejor SEO) con Cloudflare -> dominio ->
+  *Rules -> Redirect Rules* -> "redirect www to root". Idem `artesika.com`.
+- [ ] **Checkout real**: el boton "Ir a pagar" no hace nada. Conectar a Shopify
+  / pasarela (ver "Conectar a una tienda real" mas abajo).
+- [ ] **Correo `@gftextil.com` / `@artesika.com`**: Cloudflare no da buzones.
+  Si se necesita, *Email Routing* de Cloudflare (reenvio gratis) o Zoho Mail.
+  Los registros `MX` / `TXT` viejos de Namecheap quedaron intactos.
+- [ ] **Campana navidena**: revisar `CONFIG.season` en `src/data/config.ts`
+  (anticipo, cupos, fecha limite) y `christmasEnabled` antes de encender el
+  bloque de Navidad.
+- [ ] **Limpiar runs viejos de GitHub Actions**: quedaron 2 en rojo del deploy
+  por FTP a Namecheap (ya eliminado). Solo es cosmetico:
+  `gh run delete <id>` para cada uno.
+- [ ] **Numero de WhatsApp real** en `CONFIG.whatsapp` (`src/data/config.ts`)
+  para el boton de cotizacion B2B y el pedido a medida.
 
 ---
 
