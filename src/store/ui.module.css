@@ -35,10 +35,12 @@
   background: var(--surface-2);
 }
 
-/* En grillas, tarjetas y miniaturas la foto llena el marco (recorta lo justo).
-   La imagen grande de la ficha usa `photoNatural`, sin recorte. */
+/* En grillas, tarjetas y miniaturas: la foto se ve COMPLETA dentro del marco
+   (sin recortar cabeza/pies de piezas altas), centrada, con el fondo de
+   `.photo` rellenando los bordes. La imagen grande de la ficha usa
+   `photoNatural`, sin recorte ni bandas. */
 .photoCover {
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
 }
 

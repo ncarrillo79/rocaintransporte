@@ -1,7 +1,7 @@
 import { BRAND } from '../lib/brand';
 import { CONFIG, getCollectionProducts } from '../lib/catalog';
 import { Link } from '../lib/router';
-import type { BrandId, ProductImage, World } from '../types';
+import type { BrandId, Product, ProductImage, World } from '../types';
 import { ProductCard } from './ProductCard';
 import { ImagePanel } from './ui';
 import styles from './HomePage.module.css';
@@ -58,9 +58,36 @@ const CATEGORIES: Record<BrandId, { label: string; collectionId: string }[]> = {
   ],
 };
 
+// Imagen fija por categoria: evita que dos categorias muestren la misma foto
+// (pasaba en Artesika: "primera con foto" caia dos veces en el mismo producto)
+// y deja elegir a mano la foto mas llamativa de cada una.
+const CATEGORY_IMAGE_OVERRIDE: Partial<Record<string, ProductImage>> = {
+  bisuteria: {
+    kind: 'photo',
+    src: '/img/fotos_artesika/pulseras-piedras-serie.jpg',
+    alt: 'Serie de pulseras artesanales con piedras naturales, cuentas de colores y dijes dorados',
+  },
+  decoracion: {
+    kind: 'photo',
+    src: '/img/fotos_artesika/Farol.jpeg',
+    alt: 'Farol navideno rojo de pie, decorado con flores de pascua y lazos plateados',
+  },
+  'regalar-detalles': {
+    kind: 'photo',
+    src: '/img/fotos_artesika/muneca-trapo-1.jpg',
+    alt: 'Muneca de trapo artesanal con pelo rizado y vestido floreado',
+  },
+  navidad: {
+    kind: 'photo',
+    src: '/img/fotos_artesika/papa-noel-de-pie-1.jpg',
+    alt: 'Muneco de Papa Noel de pie, con traje rojo satinado y un cartel de Feliz Navidad',
+  },
+};
 
-/** Imagen representativa de una categoria: la primera foto real que encuentre. */
+/** Imagen representativa de una categoria: fija si esta en el mapa, si no la primera foto real que encuentre. */
 function categoryImage(collectionId: string): ProductImage {
+  const override = CATEGORY_IMAGE_OVERRIDE[collectionId];
+  if (override) return override;
   const products = getCollectionProducts(collectionId);
   for (const p of products) {
     const photo = p.images.find((i) => i.kind === 'photo');
@@ -70,16 +97,36 @@ function categoryImage(collectionId: string): ProductImage {
   return { kind: 'placeholder', glyph: 'caja', caption: 'FOTO por subir' };
 }
 
+// Destacados elegidos a mano para Artesika: en temporada de Navidad se
+// prioriza la coleccion navidena (Papa Noel, renos, pesebre) para llamar la
+// atencion de una vez. El resto de marcas sigue el orden normal del catalogo.
+const FEATURED_IDS: Partial<Record<BrandId, string[]>> = {
+  artesika: [
+    'muneco-papa-noel',
+    'pareja-renos-decorativos',
+    'papa-noel-sra-claus-columpio',
+    'reno-decorativo-sueter',
+    'muneco-nieve-decorativo',
+    'farol-navideno-pie',
+  ],
+};
+
 export function HomePage() {
   const isArtesika = BRAND.id === 'artesika';
   const hasChristmas = BRAND.worlds.includes('navidad');
   const doors = DOORS.filter((d) => BRAND.worlds.includes(d.world));
   const categories = CATEGORIES[BRAND.id];
-  // Destacados: primero los que tienen foto real, sin cambiar el orden relativo.
-  const hasPhoto = (p: { images: { kind: string }[] }) => p.images.some((i) => i.kind === 'photo');
-  const featured = [...getCollectionProducts(BRAND.homeCollectionId)]
-    .sort((a, b) => Number(hasPhoto(b)) - Number(hasPhoto(a)))
-    .slice(0, isArtesika ? 6 : 8);
+  const featuredCount = isArtesika ? 6 : 8;
+  const pool = getCollectionProducts(BRAND.homeCollectionId);
+  // Destacados: si la marca tiene una lista a mano (FEATURED_IDS), esos van
+  // primero en ese orden; el resto de la coleccion completa los cupos que falten.
+  const featuredIds = FEATURED_IDS[BRAND.id];
+  const featured: Product[] = featuredIds
+    ? [
+        ...featuredIds.map((id) => pool.find((p) => p.id === id)).filter((p): p is Product => Boolean(p)),
+        ...pool.filter((p) => !featuredIds.includes(p.id)),
+      ].slice(0, featuredCount)
+    : pool.slice(0, featuredCount);
 
   return (
     <div className={styles.home}>
