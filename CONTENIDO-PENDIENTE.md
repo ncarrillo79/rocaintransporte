@@ -11,12 +11,10 @@ el resto del trabajo; son datos que tienes que confirmar tú.
 > dibujo de línea quedan ocultos y reaparecen solos cuando les cargues una foto
 > en `src/data/products.ts` (`images: [{ kind: 'photo', src: '/img/...' }]`).
 
-## 1. Números de WhatsApp reales por marca  ← lo más importante
-`src/data/brands.ts` → campo `whatsapp` de cada marca. Hoy las dos usan
-`584243018032` como placeholder. Cargar:
-
-- **GF Textil**: número real.
-- **Artesika**: número real (si es distinto).
+## 1. Números de WhatsApp por marca  ✅ confirmado (2026-09-10)
+`src/data/brands.ts` → campo `whatsapp` de cada marca. Las dos usan
+`584243018032` **a propósito**: es el número de las dos socias, lo atiende la
+misma persona. No hace falta cargar un número distinto por marca.
 
 Se usa en **todo**: el botón "Consultar por WhatsApp" de cada ficha, el link
 "WhatsApp" del encabezado, la preventa, el presupuesto, "a medida" y contacto.

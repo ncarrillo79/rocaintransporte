@@ -58,7 +58,8 @@ export const BRANDS: Record<BrandId, Brand> = {
     button: '#1e5b57',
     homeCollectionId: 'uniformes',
     worlds: ['trabajo', 'gala'],
-    // PENDIENTE: numero real de WhatsApp de GF Textil (ver CONTENIDO-PENDIENTE.md).
+    // Numero real, confirmado. Es el mismo de Artesika a proposito: lo atienden
+    // las dos socias desde el mismo telefono.
     whatsapp: '584243018032',
     hostnames: ['gftextil.com', 'www.gftextil.com'],
     sibling: {
@@ -79,7 +80,8 @@ export const BRANDS: Record<BrandId, Brand> = {
     button: '#8a5f22',
     homeCollectionId: 'artesania',
     worlds: ['oficio', 'navidad'],
-    // PENDIENTE: numero real de WhatsApp de Artesika (ver CONTENIDO-PENDIENTE.md).
+    // Numero real, confirmado. Es el mismo de GF Textil a proposito: lo
+    // atienden las dos socias desde el mismo telefono.
     whatsapp: '584243018032',
     hostnames: ['artesika.com', 'www.artesika.com'],
     sibling: {
