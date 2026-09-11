@@ -46,9 +46,13 @@ real en `src/data/products.ts`. Varios son importantes:
 - **GF Textil**: Kimono odontológico, Gorro de cocina, Mandil de mesonero,
   Camisa escolar, Mono deportivo escolar, Bata de laboratorio escolar, Chemise
   corporativa, Blusa administrativa, Overol industrial, Chaleco de seguridad,
-  **Vestido de gala**, **Liqui liqui (dama y caballero)**, Gorro quirúrgico.
-  - Ya tienen foto y aparecen: **Filipina de chef** (foto rosada + negra) y
-    **Delantal de cocina con peto** (foto de los dos delantales negros).
+  **Vestido de gala**, **Liqui liqui dama**, Gorro quirúrgico.
+  - Ya tienen foto y aparecen: **Filipina de chef** (rosada + negra + roja),
+    **Delantal de cocina con peto** (los dos delantales negros) y **Liqui liqui
+    caballero** (kaki, blanco y foto de pareja).
+  - **Liqui liqui dama** sigue oculto: la única foto disponible es la de la
+    pareja (traje típico tricolor, no un liqui liqui liso). Falta una foto
+    propia del liqui liqui de dama.
 - **Artesika**: Pulsera Molar / Caduceo / Lámpara / Chef, Llavero de diente,
   Cocuiza clásica, Lámpara de madera, Organizador de consultorio.
 
@@ -116,13 +120,32 @@ Además se enriquecieron fichas que ya existían:
 - **Papá Noel decorativo** (`muneco-papa-noel`): ahora tiene fotos reales (de pie
   con cartel, en escalera, y pareja con Sra. Claus) y opción de **presentación**.
 - **Reno con suéter** y **Pareja de renos**: se sumó la variante dorada a la galería.
-- **Filipina de chef**: fotos rosada (manga larga) y negra (manga corta) + opción de manga.
+- **Filipina de chef**: fotos rosada (manga larga), negra (manga corta) y roja +
+  opción de manga.
 - **Delantal de cocina con peto**: foto real de los dos delantales negros.
+- **Liqui liqui caballero**: dejó de estar oculto — fotos kaki, blanco y de pareja.
 
 Foto que quedó **sin usar a propósito**: `public/img/gftextil/filipina-chef-negra-2.jpg`
 (misma filipina negra pero con el logo bordado "Petrana Pastry" bien visible; usé la
 versión con el logo tapado). Si querés mostrar el bordado de un cliente real como
 ejemplo, cambiá esa foto en la ficha `filipina-chef`.
+
+## 6c. Lote de 24 fotos GF Textil (2026-09-10) — la mayoría NO se usó
+De las 24 que subiste: 8 eran copias de fotos ya en el repo. De las 16 restantes,
+**12 eran imágenes de internet** (una con marca de agua de **iStock**, otras de
+catálogos de otras marcas de uniformes / scrubs con modelos de estudio). Esas 12
+se **borraron**: publicarlas violaría licencias y mostraría prendas ajenas como
+propias.
+
+Se conservaron y conectaron **4**:
+- `filipina-chef-roja-1.jpg` → ficha *Filipina de chef* (galería).
+- `liquiliqui-caballero-1.jpg` (kaki), `liquiliqui-caballero-blanco-1.jpg`,
+  `liquiliqui-caballero-2.jpg` (pareja) → ficha *Liqui liqui caballero*.
+
+**Para las fichas que siguen ocultas** (kimonos, batas de médico, scrubs, chef,
+delantal, gorro de cocina) hacen falta **fotos propias del taller**: prenda real
+sobre maniquí o persona, sin marca de agua y sin logo de otra empresa. Con eso se
+conectan igual que las demás.
 
 ## 7. (Resuelto) Conjunto de bebé a crochet
 Se había creado como producto de Artesika a partir de `IMG-20230212-WA0040.jpg`.

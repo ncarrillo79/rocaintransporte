@@ -207,6 +207,7 @@ export const PRODUCTS: Product[] = [
     images: [
       { kind: 'photo', src: '/img/gftextil/filipina-chef-rosada-1.jpg', alt: 'Filipina de chef rosada de manga larga con vivo y botones beige, cuello mao y bordado en el pecho' },
       { kind: 'photo', src: '/img/gftextil/filipina-chef-negra-1.jpg', alt: 'Filipina de chef negra de manga corta y doble botonadura sobre maniqui, con panuelo de cocina a juego' },
+      { kind: 'photo', src: '/img/gftextil/filipina-chef-roja-1.jpg', alt: 'Filipina de chef roja de manga larga y doble botonadura sobre maniqui' },
     ],
     availability: { kind: 'in_stock', dispatchDays: [1, 3] },
     specialties: ['gastronomia'],
@@ -214,7 +215,7 @@ export const PRODUCTS: Product[] = [
     roles: ['anchor'],
     options: [
       { id: 'talla', label: 'Talla', values: TALLAS_ROPA, required: true },
-      { id: 'color', label: 'Color', values: ['Blanco', 'Negro', 'Rosado', 'Vino', 'A convenir'], required: true },
+      { id: 'color', label: 'Color', values: ['Blanco', 'Negro', 'Rojo', 'Rosado', 'Vino', 'A convenir'], required: true },
       { id: 'manga', label: 'Manga', values: ['Larga', 'Corta'], required: true },
     ],
     personalizations: [
@@ -487,21 +488,25 @@ export const PRODUCTS: Product[] = [
     shortName: 'Liqui liqui caballero',
     line: 'gala',
     price: 85,
-    images: [{ kind: 'placeholder', glyph: 'camisa', caption: 'FOTO - liqui liqui caballero' }],
+    images: [
+      { kind: 'photo', src: '/img/gftextil/liquiliqui-caballero-1.jpg', alt: 'Chaqueta de liqui liqui caballero color kaki, de cuello alto y cinco botones, con vivos en el pecho' },
+      { kind: 'photo', src: '/img/gftextil/liquiliqui-caballero-blanco-1.jpg', alt: 'Liqui liqui blanco de caballero con botones dorados, puesto en un evento' },
+      { kind: 'photo', src: '/img/gftextil/liquiliqui-caballero-2.jpg', alt: 'Caballero con liqui liqui kaki completo junto a una dama con traje tipico venezolano' },
+    ],
     availability: { kind: 'made_to_order', leadDays: [15, 25] },
     specialties: [],
     occasions: ['graduacion'],
     roles: ['anchor'],
     options: [
       { id: 'talla', label: 'Talla', values: ['S', 'M', 'L', 'XL', 'XXL', 'A medida'], required: true },
-      { id: 'color', label: 'Color', values: ['Blanco', 'Beige', 'Negro', 'Gris'], required: true },
+      { id: 'color', label: 'Color', values: ['Blanco', 'Beige', 'Kaki', 'Negro', 'Gris'], required: true },
     ],
     personalizations: [{ id: 'medida', label: 'Ajuste a medida', price: 20 }],
     specs: [
       { label: 'Incluye', value: 'Chaqueta de cuello alto + pantalon' },
       { label: 'Confeccion', value: 'Tradicional venezolana (ejemplo)' },
     ],
-    description: 'Traje liqui liqui de caballero. Confeccion a medida. Datos de ejemplo.',
+    description: 'Traje liqui liqui de caballero. Confeccion a medida. Precio de ejemplo: revisar.',
   },
   {
     id: 'liquiliqui-dama',
