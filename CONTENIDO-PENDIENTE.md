@@ -107,14 +107,28 @@ y materiales son de ejemplo** (dicen "revisar" en la descripción). Confirmá:
 
 | Ficha | Línea | Precio ejemplo | Fotos |
 |---|---|---|---|
-| Muñeca de trapo artesanal | artesania | $18 | 2 (vestido de día + traje regional) |
+| Muñeca de trapo artesanal | artesania | $16 | 2 (vestido de día + traje regional) |
 | Conejo de trapo artesanal | artesania | $12 | 3 (trío de lunares + 2 con ropita) |
-| Pesebre / Nacimiento artesanal | decoracion | $45 | 1 |
+| Pesebre / Nacimiento artesanal | decoracion | $32 | 1 |
 | Muñeco de nieve decorativo | decoracion | $28 | 1 |
-| Pie de árbol navideño (falda) | decoracion | $35 | 1 |
-| Adorno de puerta navideño (moño) | decoracion | $18 | 1 |
-| Papá Noel y Sra. Claus en columpio | decoracion | $60 | 1 |
-| Colgante "Ho Ho Ho" de Papá Noel | decoracion | $22 | 1 |
+| Pie de árbol navideño (falda) | decoracion | $30 | 1 |
+| Adorno de puerta navideño (lazo) | decoracion | $16 | 1 |
+| Papá Noel y Sra. Claus en columpio | decoracion | $55 | 1 |
+| Colgante "Ho Ho Ho" de Papá Noel | decoracion | $20 | 1 |
+
+**Cómo se fijaron estos precios (2026-09-10):** contraste rápido con MercadoLibre
+Venezuela + la propia línea navideña de Artesika ya cargada (farol $55, pareja de
+renos $56, reno $30, Papá Noel $30, cojines $16). Referencias de mercado: muñeca
+de trapo ~$10-15; pesebre de yute ~$7-48 (los elaborados >$29); muñeco de nieve
+~$8-15 el importado chico (acá va alineado al reno/Papá Noel de la casa). **Son
+estimaciones para arrancar: el precio real lo pones vos según material + horas de
+trabajo.**
+
+Ajustes de texto que hice de paso:
+- `muneco-papa-noel`: la opción "Pareja con Sra. Claus" se quitó del selector
+  (costaba lo mismo que un muñeco solo, engañoso). Ahora la pareja se cotiza
+  aparte por WhatsApp y la foto queda como referencia en la galería.
+- "Adorno de puerta (moño)" pasó a "(lazo)" para que se lea claro sin la ñ.
 
 Además se enriquecieron fichas que ya existían:
 - **Papá Noel decorativo** (`muneco-papa-noel`): ahora tiene fotos reales (de pie

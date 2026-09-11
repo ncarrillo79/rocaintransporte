@@ -645,7 +645,7 @@ export const PRODUCTS: Product[] = [
     title: 'Muneca de trapo artesanal',
     shortName: 'Muneca de trapo',
     line: 'artesania',
-    price: 18,
+    price: 16,
     images: [
       {
         kind: 'photo',
@@ -931,16 +931,16 @@ export const PRODUCTS: Product[] = [
     roles: ['gift'],
     options: [
       { id: 'tamano', label: 'Tamano', values: ['Mediano (aprox. 35 cm)', 'Grande (aprox. 55 cm)'], required: true },
-      { id: 'presentacion', label: 'Presentacion', values: ['Papa Noel de pie', 'Papa Noel en escalera', 'Pareja Papa Noel y Sra. Claus'], required: true },
+      { id: 'presentacion', label: 'Presentacion', values: ['Papa Noel de pie', 'Papa Noel en escalera'], required: true },
     ],
     personalizations: [],
     specs: [
       { label: 'Material', value: 'Tela y peluche con relleno de fibra, base rigida' },
       { label: 'Hecho a mano', value: 'Cada pieza tiene pequenas diferencias' },
     ],
-    description: 'Papa Noel decorativo cosido a mano, a juego con la coleccion navidena de renos y farol.',
+    description: 'Papa Noel decorativo cosido a mano, a juego con la coleccion navidena de renos y farol. Precio por muneco: revisar.',
     longDescription:
-      'Muneco de Papa Noel decorativo, cosido y vestido a mano, con relleno de fibra y base para que se pare solo. Se hace de pie, trepando una escalera o en pareja con la Sra. Claus. Combina con los renos y el farol de la misma coleccion. Pieza de temporada, para recibidor, mesa o vidriera.',
+      'Muneco de Papa Noel decorativo, cosido y vestido a mano, con relleno de fibra y base para que se pare solo. Se hace de pie o trepando una escalera. Tambien se hace la pareja con la Sra. Claus (foto de referencia en la galeria), que se cotiza aparte por WhatsApp. Combina con los renos y el farol de la misma coleccion. Pieza de temporada, para recibidor, mesa o vidriera.',
   },
   {
     id: 'pesebre-artesanal',
@@ -948,7 +948,7 @@ export const PRODUCTS: Product[] = [
     title: 'Pesebre / Nacimiento artesanal',
     shortName: 'Pesebre artesanal',
     line: 'decoracion',
-    price: 45,
+    price: 32,
     images: [
       {
         kind: 'photo',
@@ -1003,7 +1003,7 @@ export const PRODUCTS: Product[] = [
     title: 'Pie de arbol navideno (falda para el arbol)',
     shortName: 'Pie de arbol',
     line: 'decoracion',
-    price: 35,
+    price: 30,
     images: [
       {
         kind: 'photo',
@@ -1028,15 +1028,15 @@ export const PRODUCTS: Product[] = [
   {
     id: 'adorno-puerta-navideno',
     slug: 'adorno-de-puerta-navideno',
-    title: 'Adorno de puerta navideno (mono)',
+    title: 'Adorno de puerta navideno (lazo)',
     shortName: 'Adorno de puerta',
     line: 'decoracion',
-    price: 18,
+    price: 16,
     images: [
       {
         kind: 'photo',
         src: '/img/fotos_artesika/adorno-puerta-navideno-1.jpg',
-        alt: 'Adorno colgante para puerta: mono grande rojo con vivo dorado, ramas doradas, pina y frutos rojos, sobre cinta larga',
+        alt: 'Adorno colgante para puerta: lazo grande rojo con vivo dorado, ramas doradas, pina y frutos rojos, sobre cinta larga',
       },
     ],
     availability: { kind: 'made_to_order', leadDays: [5, 10] },
@@ -1051,7 +1051,7 @@ export const PRODUCTS: Product[] = [
       { label: 'Material', value: 'Cinta de raso, follaje artificial y frutos (ejemplo)' },
       { label: 'Largo', value: 'Aprox. 80 cm con la cinta (ejemplo)' },
     ],
-    description: 'Mono decorativo para colgar en la puerta o el respaldo de una silla. Precio y medidas de ejemplo: revisar.',
+    description: 'Lazo decorativo para colgar en la puerta o el respaldo de una silla. Precio y medidas de ejemplo: revisar.',
   },
   {
     id: 'papa-noel-sra-claus-columpio',
@@ -1059,7 +1059,7 @@ export const PRODUCTS: Product[] = [
     title: 'Papa Noel y Sra. Claus en columpio',
     shortName: 'Papa Noel en columpio',
     line: 'decoracion',
-    price: 60,
+    price: 55,
     images: [
       {
         kind: 'photo',
@@ -1086,7 +1086,7 @@ export const PRODUCTS: Product[] = [
     title: 'Colgante "Ho Ho Ho" de Papa Noel',
     shortName: 'Colgante Ho Ho Ho',
     line: 'decoracion',
-    price: 22,
+    price: 20,
     images: [
       {
         kind: 'photo',
