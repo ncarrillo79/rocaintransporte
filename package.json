@@ -1,9 +1,9 @@
 {
-  "name": "tienda-puente",
+  "name": "rocaintransporte",
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "Ficha de producto con puentes de venta cruzada, selector de especialidad y barra de envio en el carrito.",
+  "description": "Landing de transporte ejecutivo para Rocain Transporte y Ejecutivos.",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
