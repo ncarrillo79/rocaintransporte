@@ -41,7 +41,7 @@
 
 /* Portada a pantalla completa */
 .hero { position: relative; min-height: 100svh; display: flex; align-items: flex-end; color: white; padding: 8rem max(1.5rem, calc((100% - 1180px)/2)) 4.5rem; isolation: isolate; }
-.heroMedia { position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(6,18,36,.55) 0%, rgba(6,18,36,.1) 35%, rgba(6,18,36,.85) 100%), url('/img/rocain/hero-rocain.jpg') center 40%/cover; }
+.heroMedia { position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(6,18,36,.55) 0%, rgba(6,18,36,.1) 35%, rgba(6,18,36,.85) 100%), url('/img/rocain/hero-rocain.jpg') center 55%/cover; }
 .heroInner { max-width: 44rem; }
 .heroTag { display: inline-flex; align-items: center; gap: .6rem; margin: 0 0 1.4rem; padding: .45rem .9rem; border-radius: 999px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); font-size: .95rem; }
 .liveDot { position: relative; width: .5rem; height: .5rem; border-radius: 50%; background: var(--wa); }
@@ -79,7 +79,9 @@
 .bentoCard { position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; padding: 1.6rem; border-radius: var(--r-lg); background: var(--paper); border: 1px solid var(--line); color: var(--ink); text-decoration: none; transition: transform .3s ease, box-shadow .3s ease; }
 .bentoCard:hover { transform: translateY(-4px); box-shadow: 0 1.2rem 2.4rem rgba(11,27,46,.12); }
 .large { grid-column: span 2; grid-row: span 2; }
-.tall { grid-column: span 2; grid-row: span 2; }
+.tall { grid-column: span 2; grid-row: span 2; background: var(--navy); color: white; border: 0; }
+.tall p { color: rgba(255,255,255,.75) !important; }
+.tall .bentoArrow { background: rgba(255,255,255,.14); color: white; }
 .small { grid-column: span 1; }
 .wide { grid-column: span 1; background: var(--navy); color: white; border: 0; }
 .wide p { color: rgba(255,255,255,.7) !important; }
