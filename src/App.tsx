@@ -4,6 +4,8 @@ import styles from './TransportPage.module.css';
 const WHATSAPP = '584127400296';
 const PHONE = '+58 424 301 8032';
 const EMAIL = 'rocaintransporte1@gmail.com';
+// Destino del formulario. PRUEBA: volver a EMAIL cuando se confirme que funciona.
+const FORM_EMAIL = 'ncarrillo79@gmail.com';
 
 const services = [
   {
@@ -37,40 +39,57 @@ function whatsapp(message: string) {
   return `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(message)}`;
 }
 
-function emailRequest(subject: string, body: string) {
-  return `mailto:${EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-}
+// FormSubmit reenvía el formulario al correo de Rocain sin abrir la app de correo del cliente.
+const FORM_ENDPOINT = `https://formsubmit.co/ajax/${FORM_EMAIL}`;
+
+type FormStatus = 'idle' | 'sending' | 'sent' | 'error';
 
 export function App() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<FormStatus>('idle');
 
   useEffect(() => {
     document.title = 'Rocain | Transporte ejecutivo';
   }, []);
 
+  // Escape cierra el aviso de solicitud enviada.
+  useEffect(() => {
+    if (status !== 'sent') return;
+    const onKey = (event: KeyboardEvent) => { if (event.key === 'Escape') setStatus('idle'); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [status]);
+
   const closeMenu = () => setMenuOpen(false);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const form = new FormData(event.currentTarget);
-    const name = String(form.get('name') ?? '').trim();
-    const phone = String(form.get('phone') ?? '').trim();
-    const service = String(form.get('service') ?? '').trim();
-    const date = String(form.get('date') ?? '').trim();
-    const details = String(form.get('details') ?? '').trim();
-    const message = [
-      'Hola Rocain, quiero solicitar un traslado.',
-      `Nombre: ${name}`,
-      `Teléfono: ${phone}`,
-      `Servicio: ${service}`,
-      date ? `Fecha estimada: ${date}` : '',
-      details ? `Detalles: ${details}` : '',
-    ].filter(Boolean).join('\n');
+    const formElement = event.currentTarget;
+    const form = new FormData(formElement);
+    const field = (key: string) => String(form.get(key) ?? '').trim();
 
-    setSubmitted(true);
-    window.location.href = emailRequest('Solicitud de cotización - Rocain', message);
-    event.currentTarget.reset();
+    setStatus('sending');
+    try {
+      const response = await fetch(FORM_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          _subject: 'Solicitud de cotización - Rocain',
+          _template: 'table',
+          _captcha: 'false',
+          Nombre: field('name'),
+          'Teléfono': field('phone'),
+          Servicio: field('service'),
+          'Fecha estimada': field('date') || 'No indicada',
+          Detalles: field('details') || 'Sin detalles',
+        }),
+      });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      setStatus('sent');
+      formElement.reset();
+    } catch {
+      setStatus('error');
+    }
   }
 
   return (
@@ -196,11 +215,28 @@ export function App() {
               <span>Cuéntanos un poco más <small>(opcional)</small></span>
               <textarea name="details" rows={3} placeholder="Origen, destino, cantidad de pasajeros..." />
             </label>
-            <button className={styles.formButton} type="submit">Solicitar cotización <span>↗</span></button>
-            {submitted && <p className={styles.formSuccess} role="status">Se abrió tu correo con la solicitud preparada para enviarla.</p>}
+            <button className={styles.formButton} type="submit" disabled={status === 'sending'}>
+              {status === 'sending' ? 'Enviando...' : <>Solicitar cotización <span>↗</span></>}
+            </button>
+            {status === 'error' && (
+              <p className={styles.formSuccess} role="alert">
+                No pudimos enviar tu solicitud. Escríbenos por <a href={whatsapp('Hola Rocain, quiero cotizar un traslado.')} target="_blank" rel="noreferrer">WhatsApp</a>.
+              </p>
+            )}
           </form>
         </section>
       </main>
+
+      {status === 'sent' && (
+        <div className={styles.modalBackdrop} onClick={() => setStatus('idle')}>
+          <div className={styles.modal} role="dialog" aria-modal="true" aria-labelledby="modal-title" onClick={(event) => event.stopPropagation()}>
+            <span className={styles.modalIcon} aria-hidden="true">✓</span>
+            <h3 id="modal-title">¡Solicitud enviada!</h3>
+            <p>Gracias por escribirnos. Recibimos tu solicitud y te contactaremos muy pronto.</p>
+            <button className={styles.formButton} type="button" onClick={() => setStatus('idle')} autoFocus>Entendido</button>
+          </div>
+        </div>
+      )}
 
       <footer className={styles.footer}>
         <a className={styles.logo} href="#inicio"><span className={styles.logoMark}>R</span><span><strong>ROCAIN</strong><small>TRANSPORTE & EJECUTIVOS</small></span></a>

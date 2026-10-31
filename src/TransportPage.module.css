@@ -74,6 +74,14 @@ h1 em, h2 em { color: var(--gold); font-style: normal; }
 .formButton { justify-self: start; border: 0; background: var(--navy); color: white; padding: .9rem 1.1rem; cursor: pointer; font-weight: 700; font-size: .78rem; }
 .formButton span { color: var(--gold); margin-left: .5rem; }
 .formSuccess { grid-column: 1 / -1; margin: 0; font-size: .72rem; font-weight: 600; }
+.modalBackdrop { position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; padding: 1rem; background: rgba(9,27,43,.6); animation: fadeIn .2s ease; }
+.modal { width: min(100%, 24rem); background: var(--cream); color: var(--navy); padding: 2.2rem 2rem; text-align: center; border-top: 4px solid var(--gold); box-shadow: 0 1.5rem 3rem rgba(6,19,31,.35); animation: popIn .25s ease; }
+.modal h3 { font: 700 1.4rem 'Manrope', sans-serif; margin: 1rem 0 .6rem; }
+.modal p { color: #4f5f63; font-size: .9rem; line-height: 1.6; margin: 0 0 1.6rem; }
+.modal .formButton { justify-self: auto; }
+.modalIcon { display: inline-grid; place-items: center; width: 3.2rem; height: 3.2rem; border-radius: 50%; background: var(--gold); color: white; font-size: 1.5rem; font-weight: 700; }
+@keyframes fadeIn { from { opacity: 0; } }
+@keyframes popIn { from { opacity: 0; transform: translateY(.75rem) scale(.96); } }
 .footer { background: var(--navy); color: var(--muted); display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 2rem 5.5vw; font-size: .65rem; }
 .footer .logo { color: white; }
 .backTop { color: var(--gold); text-decoration: none; }
