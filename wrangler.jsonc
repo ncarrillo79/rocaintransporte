@@ -4,6 +4,8 @@
   // (era la autodeteccion la que exigia Vite >= 6).
   "name": "rocaintransporte",
   "compatibility_date": "2026-09-09",
+  // Mantiene activa la URL de prueba rocaintransporte.ncarrillo79.workers.dev.
+  "workers_dev": true,
   // Dominios propios: wrangler los conecta (DNS + HTTPS) al desplegar.
   "routes": [
     { "pattern": "rocaintransporte.com", "custom_domain": true },
