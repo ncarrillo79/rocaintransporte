@@ -8,32 +8,51 @@ const EMAIL = 'rocaintransporte1@gmail.com';
 // Destino del formulario. PRUEBA: volver a EMAIL cuando se confirme que funciona.
 const FORM_EMAIL = 'ncarrillo79@gmail.com';
 
+// EDITAR: cifras de ejemplo. Reemplazar por datos reales de Rocain antes de publicar.
+const stats = [
+  { value: '24/7', label: 'Atención todos los días, a cualquier hora' },
+  { value: '+500', label: 'Traslados realizados' },
+  { value: '+10', label: 'Años de experiencia' },
+  { value: 'Nacional', label: 'Cobertura en toda Venezuela' },
+];
+
 const services = [
   {
-    number: '01',
-    title: 'Traslados ejecutivos',
-    text: 'Movilidad discreta y puntual para directivos, equipos de trabajo y visitantes.',
-    icon: '↗',
-  },
-  {
-    number: '02',
     title: 'Aeropuerto',
-    text: 'Te esperamos, monitoreamos tu vuelo y te llevamos directo a tu destino.',
-    icon: '✦',
+    text: 'Te esperamos en Maiquetía con tu nombre, seguimos tu vuelo y te llevamos directo a tu destino.',
+    image: '/img/rocain/aeropuerto.jpg',
+    size: 'large',
   },
   {
-    number: '03',
-    title: 'Turismo y eventos',
-    text: 'Recorre Aragua y Venezuela con comodidad, seguridad y atención personalizada.',
-    icon: '◌',
+    title: 'Hoteles y reuniones',
+    text: 'Puntuales a la puerta del hotel, la oficina o la sala de conferencias.',
+    image: '/img/rocain/hotel.jpg',
+    size: 'tall',
   },
+  { title: 'Residencia del ejecutivo', text: 'Rutas fijas casa–oficina para directivos y equipos.', size: 'small' },
+  { title: 'Turismo', text: 'Recorre Aragua y Venezuela con chofer y vehículo a tu medida.', size: 'small' },
+  { title: 'Centros comerciales', text: 'Compras y diligencias sin preocuparte por estacionar.', size: 'small' },
+  { title: 'Conferencias y eventos', text: 'Traslado de grupos e invitados con horario coordinado.', size: 'wide' },
+];
+
+const steps = [
+  { title: 'Escríbenos', text: 'Por WhatsApp o con el formulario. Dinos origen, destino, fecha y cuántos viajan.' },
+  { title: 'Confirmamos', text: 'Te enviamos precio, vehículo y nombre del chofer. Sin sorpresas.' },
+  { title: 'Te buscamos', text: 'Llegamos antes de la hora acordada y te llevamos directo a tu destino.' },
 ];
 
 const fleet = [
-  { name: 'SUV 4x4 Cherokee', detail: 'Aventura y capacidad', image: '/img/rocain/cherokee2.jpg' },
-  { name: 'Sedán Aveo', detail: 'Confort para cada trayecto', image: '/img/rocain/aveo.jpg' },
-  { name: 'Camioneta ejecutiva', detail: 'Equipos y traslados', image: '/img/rocain/camionetachina.jpg' },
-  { name: 'Kia Pregio', detail: 'Traslados para grupos', image: '/img/rocain/pregio.jpg' },
+  { name: 'Jeep Grand Cherokee', detail: '4x4 · hasta 4 pasajeros', image: '/img/rocain/cherokee2.jpg' },
+  { name: 'Chevrolet Aveo', detail: 'Sedán · hasta 4 pasajeros', image: '/img/rocain/aveo.jpg' },
+  { name: 'Camioneta ejecutiva', detail: 'Equipos y equipaje', image: '/img/rocain/camionetachina.jpg' },
+  { name: 'Kia Pregio', detail: 'Grupos · hasta 12 pasajeros', image: '/img/rocain/pregio.jpg' },
+];
+
+// EDITAR: testimonios de ejemplo. Reemplazar por opiniones reales de clientes antes de publicar.
+const testimonials = [
+  { quote: 'Llegaron antes que mi vuelo y el chofer ya sabía que venía retrasado. Así da gusto viajar.', name: 'Nombre del cliente', role: 'Gerente comercial · Maracay' },
+  { quote: 'Los usamos para mover a nuestros invitados en cada evento. Puntuales y muy atentos.', name: 'Nombre del cliente', role: 'Coordinadora de eventos · Caracas' },
+  { quote: 'Mi ruta diaria a la oficina dejó de ser un problema. Siempre el mismo chofer, siempre a tiempo.', name: 'Nombre del cliente', role: 'Director de planta · La Victoria' },
 ];
 
 function WhatsAppIcon({ className }: { className?: string }) {
@@ -55,10 +74,38 @@ type FormStatus = 'idle' | 'sending' | 'sent' | 'error';
 
 export function App() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const [status, setStatus] = useState<FormStatus>('idle');
+  const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     document.title = 'Rocain | Transporte ejecutivo';
+  }, []);
+
+  // El menú pasa a fondo sólido al bajar de la portada.
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // Aparición suave de los bloques marcados con data-reveal al entrar en pantalla.
+  useEffect(() => {
+    const items = document.querySelectorAll<HTMLElement>('[data-reveal]');
+    if (!('IntersectionObserver' in window)) {
+      items.forEach((item) => item.setAttribute('data-reveal', 'in'));
+      return;
+    }
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.setAttribute('data-reveal', 'in');
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.15 });
+    items.forEach((item) => observer.observe(item));
+    return () => observer.disconnect();
   }, []);
 
   // Escape cierra el aviso de solicitud enviada.
@@ -71,11 +118,10 @@ export function App() {
 
   const closeMenu = () => setMenuOpen(false);
 
-  const formRef = useRef<HTMLFormElement>(null);
-
   // Lleva al formulario con desplazamiento suave y deja el cursor en "Nombre".
   function goToForm(event: MouseEvent<HTMLAnchorElement>) {
     event.preventDefault();
+    closeMenu();
     const form = formRef.current;
     if (!form) return;
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -115,111 +161,135 @@ export function App() {
 
   return (
     <div className={styles.page}>
-      <header className={styles.header}>
+      <header className={`${styles.header} ${scrolled || menuOpen ? styles.headerSolid : ''}`}>
         <a className={styles.logo} href="#inicio" onClick={closeMenu} aria-label="Rocain, ir al inicio">
           <span className={styles.logoMark}>R</span>
-          <span><strong>ROCAIN</strong><small>TRANSPORTE & EJECUTIVOS</small></span>
+          <span><strong>Rocain</strong><small>Transporte & Ejecutivos</small></span>
         </a>
-        <button className={styles.menuButton} type="button" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen} aria-label="Abrir menú">
-          <span /><span />
-        </button>
         <nav className={`${styles.nav} ${menuOpen ? styles.navOpen : ''}`} aria-label="Navegación principal">
           <a href="#servicios" onClick={closeMenu}>Servicios</a>
-          <a href="#flota" onClick={closeMenu}>Nuestra flota</a>
-          <a href="#nosotros" onClick={closeMenu}>Nosotros</a>
+          <a href="#como-funciona" onClick={closeMenu}>Cómo funciona</a>
+          <a href="#flota" onClick={closeMenu}>Flota</a>
           <a href="#contacto" onClick={closeMenu}>Contacto</a>
-          <a className={styles.navCta} href={whatsapp('Hola Rocain, quiero solicitar un traslado.')} target="_blank" rel="noreferrer" onClick={closeMenu}>Cotizar traslado <span>↗</span></a>
+          <a className={styles.navCta} href="#cotizar" onClick={goToForm}>Cotizar</a>
         </nav>
+        <button className={styles.menuButton} type="button" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen} aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}>
+          <span /><span />
+        </button>
       </header>
 
       <main>
         <section className={styles.hero} id="inicio">
-          <div className={styles.heroContent}>
-            <p className={styles.eyebrow}><span /> La Victoria, Aragua · Atención 24 horas</p>
-            <h1>Tu tiempo.<br /><em>Nuestro compromiso.</em></h1>
-            <p className={styles.heroLead}>Transporte ejecutivo pensado para quienes valoran llegar a tiempo, viajar seguros y sentirse bien atendidos.</p>
+          <div className={styles.heroMedia} aria-hidden="true" />
+          <div className={styles.heroInner}>
+            <p className={styles.heroTag}><span className={styles.liveDot} aria-hidden="true" /> Disponibles ahora · La Victoria, Aragua</p>
+            <h1>Llegar a tiempo es <em>nuestro trabajo.</em></h1>
+            <p className={styles.heroLead}>Traslados ejecutivos al aeropuerto de Maiquetía, hoteles, reuniones y viajes por todo el país. Chofer profesional y vehículo a tu medida, las 24 horas.</p>
             <div className={styles.heroActions}>
-              <a className={styles.heroWhatsapp} href={whatsapp('Hola Rocain, necesito información sobre un traslado.')} target="_blank" rel="noreferrer"><WhatsAppIcon className={styles.waIcon} /> Planifica tu viaje</a>
-              <a className={styles.textButton} href="#servicios">Conoce nuestros servicios <span>↓</span></a>
+              <a className={styles.btnWhatsapp} href={whatsapp('Hola Rocain, necesito información sobre un traslado.')} target="_blank" rel="noreferrer"><WhatsAppIcon className={styles.waIcon} /> Planifica tu viaje</a>
+              <a className={styles.quoteCta} href="#cotizar" onClick={goToForm}>
+                <span className={styles.quoteCtaText}>
+                  <small>Sin compromiso</small>
+                  <strong>Cotiza en 1 minuto</strong>
+                </span>
+                <span className={styles.quoteCtaArrow} aria-hidden="true">→</span>
+              </a>
             </div>
-            <a className={styles.quoteCta} href="#cotizar" onClick={goToForm}>
-              <span className={styles.quoteCtaDot} aria-hidden="true" />
-              <span className={styles.quoteCtaText}>
-                <small>Sin compromiso · Respuesta rápida</small>
-                <strong>Solicita tu cotización en 1 minuto</strong>
-              </span>
-              <span className={styles.quoteCtaArrow} aria-hidden="true">→</span>
-            </a>
-            <div className={styles.heroMeta}>
-              <span><strong>24/7</strong> disponibilidad</span>
-              <span><strong>RIF</strong> J-295074251</span>
-              <span><strong>NACIONAL</strong> cobertura</span>
-            </div>
-          </div>
-          <div className={styles.heroVisual}>
-            <div className={styles.heroImage} />
-            <div className={styles.heroBadge}><span>R</span><strong>Viaja tranquilo.<br />Nosotros nos encargamos.</strong></div>
-            <div className={styles.heroLocation}><span>●</span> La Victoria, Aragua</div>
           </div>
         </section>
 
-        <section className={styles.servicesSection} id="servicios">
-          <div className={styles.sectionIntro}>
-            <p className={styles.eyebrow}>Lo hacemos simple</p>
-            <h2>Un servicio a la altura<br /><em>de tu destino.</em></h2>
+        <section className={styles.statsBand} aria-label="Rocain en cifras">
+          {stats.map((stat) => (
+            <div className={styles.stat} key={stat.label} data-reveal>
+              <strong>{stat.value}</strong>
+              <span>{stat.label}</span>
+            </div>
+          ))}
+        </section>
+
+        <section className={styles.section} id="servicios">
+          <div className={styles.sectionHead} data-reveal>
+            <h2>¿A dónde te <em>llevamos?</em></h2>
+            <p>Del aeropuerto a la reunión, de la casa a la oficina. Un solo número para todos tus traslados.</p>
           </div>
-          <div className={styles.serviceGrid}>
+          <div className={styles.bento}>
             {services.map((service) => (
-              <article className={styles.serviceCard} key={service.number}>
-                <div className={styles.serviceTop}><span>{service.number}</span><b>{service.icon}</b></div>
-                <h3>{service.title}</h3>
-                <p>{service.text}</p>
-                <a href={whatsapp(`Hola Rocain, me interesa el servicio de ${service.title}.`)} target="_blank" rel="noreferrer">Solicitar servicio <span>↗</span></a>
-              </article>
+              <a
+                key={service.title}
+                className={`${styles.bentoCard} ${styles[service.size]} ${service.image ? styles.bentoPhoto : ''}`}
+                href={whatsapp(`Hola Rocain, me interesa el servicio de ${service.title}.`)}
+                target="_blank"
+                rel="noreferrer"
+                data-reveal
+              >
+                {service.image && <img src={service.image} alt="" loading="lazy" />}
+                <div className={styles.bentoBody}>
+                  <h3>{service.title}</h3>
+                  <p>{service.text}</p>
+                </div>
+                <span className={styles.bentoArrow} aria-hidden="true">→</span>
+              </a>
             ))}
           </div>
         </section>
 
-        <section className={styles.fleetSection} id="flota">
-          <div className={styles.sectionIntro}>
-            <p className={styles.eyebrow}>La flota Rocain</p>
-            <h2>El vehículo correcto<br /><em>para cada ocasión.</em></h2>
+        <section className={`${styles.section} ${styles.stepsSection}`} id="como-funciona">
+          <div className={styles.sectionHead} data-reveal>
+            <h2>Reservar es <em>así de simple.</em></h2>
+          </div>
+          <ol className={styles.steps}>
+            {steps.map((step, index) => (
+              <li className={styles.step} key={step.title} data-reveal>
+                <span className={styles.stepNumber}>{index + 1}</span>
+                <h3>{step.title}</h3>
+                <p>{step.text}</p>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        <section className={styles.section} id="flota">
+          <div className={styles.sectionHead} data-reveal>
+            <h2>Nuestra <em>flota.</em></h2>
+            <p>Elegimos el vehículo según cuántos viajan y cuánto equipaje llevan.</p>
           </div>
           <div className={styles.fleetGrid}>
             {fleet.map((car) => (
-              <article className={styles.fleetCard} key={car.name}>
-                <img src={car.image} alt={car.name} loading="lazy" />
-                <div><p>{car.detail}</p><h3>{car.name}</h3></div>
+              <article className={styles.fleetCard} key={car.name} data-reveal>
+                <div className={styles.fleetImage}><img src={car.image} alt={car.name} loading="lazy" /></div>
+                <h3>{car.name}</h3>
+                <p>{car.detail}</p>
               </article>
             ))}
           </div>
         </section>
 
-        <section className={styles.aboutSection} id="nosotros">
-          <div className={styles.aboutVisual}><div className={styles.aboutImage} /><span>01 — 03</span></div>
-          <div className={styles.aboutCopy}>
-            <p className={styles.eyebrow}>Más que transporte</p>
-            <h2>La tranquilidad<br /><em>también se transporta.</em></h2>
-            <p>En Rocain entendemos que un traslado es mucho más que ir de un punto a otro. Es cuidar tu tiempo, anticiparnos a tus necesidades y hacer que cada recorrido sea cómodo.</p>
-            <p>Atendemos empresas, ejecutivos, familias y viajeros desde La Victoria, Aragua, con cobertura nacional y coordinación directa.</p>
-            <a className={styles.outlineButton} href="#contacto">Conoce Rocain <span>↗</span></a>
+        <section className={`${styles.section} ${styles.testimonialsSection}`} id="opiniones">
+          <div className={styles.sectionHead} data-reveal>
+            <h2>Lo que dicen <em>nuestros clientes.</em></h2>
+          </div>
+          <div className={styles.testimonials}>
+            {testimonials.map((item) => (
+              <figure className={styles.testimonial} key={item.quote} data-reveal>
+                <blockquote>“{item.quote}”</blockquote>
+                <figcaption><strong>{item.name}</strong><span>{item.role}</span></figcaption>
+              </figure>
+            ))}
           </div>
         </section>
 
         <section className={styles.contactSection} id="contacto">
-          <div>
-            <p className={styles.eyebrow}>¿Tienes un viaje en mente?</p>
-            <h2>Hablemos de<br /><em>tu próximo destino.</em></h2>
-          </div>
-          <div className={styles.contactDetails}>
-            <p>Cuéntanos qué necesitas y te ayudaremos a planificarlo.</p>
+          <div className={styles.contactIntro} data-reveal>
+            <h2>¿Tienes un viaje en <em>mente?</em></h2>
+            <p>Escríbenos por WhatsApp o déjanos tus datos. Respondemos rápido, a cualquier hora.</p>
             <div className={styles.contactNumbers}>
               <a className={styles.contactLink} href={whatsapp('Hola Rocain, quiero cotizar un traslado.')} target="_blank" rel="noreferrer"><WhatsAppIcon className={styles.waIcon} /> +58 412 740 0296</a>
               <a className={styles.contactLink} href={whatsapp('Hola Rocain, quiero cotizar un traslado.', WHATSAPP_2)} target="_blank" rel="noreferrer"><WhatsAppIcon className={styles.waIcon} /> {PHONE}</a>
             </div>
             <a className={styles.contactMail} href={`mailto:${EMAIL}`}>{EMAIL}</a>
           </div>
-          <form className={styles.contactForm} id="cotizar" ref={formRef} onSubmit={handleSubmit}>
+          <form className={styles.contactForm} id="cotizar" ref={formRef} onSubmit={handleSubmit} data-reveal>
+            <h3>Solicita tu cotización</h3>
             <label>
               Nombre completo
               <input name="name" type="text" placeholder="¿Cómo te llamas?" required />
@@ -232,8 +302,8 @@ export function App() {
               ¿Qué servicio necesitas?
               <select name="service" defaultValue="" required>
                 <option value="" disabled>Selecciona una opción</option>
-                <option>Traslado ejecutivo</option>
                 <option>Traslado al aeropuerto</option>
+                <option>Traslado ejecutivo</option>
                 <option>Turismo y eventos</option>
                 <option>Servicio corporativo</option>
               </select>
@@ -247,10 +317,10 @@ export function App() {
               <textarea name="details" rows={3} placeholder="Origen, destino, cantidad de pasajeros..." />
             </label>
             <button className={styles.formButton} type="submit" disabled={status === 'sending'}>
-              {status === 'sending' ? 'Enviando...' : <>Solicitar cotización <span>↗</span></>}
+              {status === 'sending' ? 'Enviando...' : <>Solicitar cotización <span aria-hidden="true">→</span></>}
             </button>
             {status === 'error' && (
-              <p className={styles.formSuccess} role="alert">
+              <p className={styles.formError} role="alert">
                 No pudimos enviar tu solicitud. Escríbenos por <a href={whatsapp('Hola Rocain, quiero cotizar un traslado.')} target="_blank" rel="noreferrer">WhatsApp</a>.
               </p>
             )}
@@ -270,10 +340,11 @@ export function App() {
       )}
 
       <footer className={styles.footer}>
-        <a className={styles.logo} href="#inicio"><span className={styles.logoMark}>R</span><span><strong>ROCAIN</strong><small>TRANSPORTE & EJECUTIVOS</small></span></a>
-        <p>© {new Date().getFullYear()} Rocain Transporte y Ejecutivos, S.A. · RIF J-295074251</p>
+        <a className={styles.logo} href="#inicio"><span className={styles.logoMark}>R</span><span><strong>Rocain</strong><small>Transporte & Ejecutivos</small></span></a>
+        <p>© {new Date().getFullYear()} Rocain Transporte y Ejecutivos, S.A. · RIF J-295074251 · La Victoria, Aragua</p>
         <a href="#inicio" className={styles.backTop}>Volver arriba ↑</a>
       </footer>
+
       <a
         className={styles.whatsappFloat}
         href={whatsapp('Hola Rocain, quiero cotizar un traslado.')}
