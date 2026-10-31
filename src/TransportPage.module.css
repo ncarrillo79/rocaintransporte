@@ -64,8 +64,9 @@ h1 em, h2 em { color: var(--gold); font-style: normal; }
 .contactMail { display: inline-block; color: var(--navy); margin-top: .6rem; font-size: .8rem; }
 .contactForm { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; background: rgba(255,255,255,.2); padding: 1.5rem; }
 .contactForm label { display: flex; flex-direction: column; gap: .45rem; color: var(--navy); font-size: .68rem; font-weight: 700; }
-.contactForm label span { font-weight: 400; opacity: .7; }
+.contactForm label small { font-size: inherit; font-weight: 400; opacity: .7; }
 .contactForm input, .contactForm select, .contactForm textarea { width: 100%; border: 1px solid rgba(9,27,43,.35); border-radius: 0; background: rgba(255,255,255,.6); color: var(--navy); padding: .8rem .75rem; font: .82rem 'DM Sans', sans-serif; outline: none; }
+.contactForm input, .contactForm select { height: 2.85rem; }
 .contactForm textarea { resize: vertical; }
 .contactForm input:focus, .contactForm select:focus, .contactForm textarea:focus { border-color: var(--navy); background: white; }
 .contactForm input::placeholder, .contactForm textarea::placeholder { color: #64737a; }

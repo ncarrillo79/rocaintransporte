@@ -189,11 +189,11 @@ export function App() {
               </select>
             </label>
             <label>
-              Fecha estimada <span>(opcional)</span>
+              <span>Fecha estimada <small>(opcional)</small></span>
               <input name="date" type="date" />
             </label>
             <label className={styles.formWide}>
-              Cuéntanos un poco más <span>(opcional)</span>
+              <span>Cuéntanos un poco más <small>(opcional)</small></span>
               <textarea name="details" rows={3} placeholder="Origen, destino, cantidad de pasajeros..." />
             </label>
             <button className={styles.formButton} type="submit">Solicitar cotización <span>↗</span></button>
