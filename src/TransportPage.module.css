@@ -1,15 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
 
-.page { --navy: #12363b; --navy-light: #1d4b4d; --gold: #c97958; --cream: #f4f0e8; --muted: #a9b5b1; background: var(--cream); color: var(--navy); font-family: 'DM Sans', sans-serif; overflow: hidden; }
+.page { --navy: #12363b; --navy-light: #1d4b4d; --gold: #c97958; --cream: #f4f0e8; --muted: #a9b5b1; --r-sm: 10px; --r-md: 16px; --r-lg: 24px; background: var(--cream); color: var(--navy); font-family: 'DM Sans', sans-serif; overflow: hidden; }
 .header { position: absolute; z-index: 5; top: 0; width: 100%; max-width: 1440px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; justify-content: space-between; padding: 1.7rem 5.5vw; color: white; }
 .logo { display: flex; align-items: center; gap: .7rem; color: inherit; text-decoration: none; }
-.logoMark { display: grid; place-items: center; width: 2.45rem; height: 2.45rem; border: 1px solid var(--gold); border-radius: 4px; color: var(--gold); font: 800 1.35rem 'Manrope', sans-serif; }
+.logoMark { display: grid; place-items: center; width: 2.45rem; height: 2.45rem; border: 1px solid var(--gold); border-radius: var(--r-sm); color: var(--gold); font: 800 1.35rem 'Manrope', sans-serif; }
 .logo strong { display: block; letter-spacing: .18em; font: 800 1rem 'Manrope', sans-serif; }
 .logo small { display: block; color: var(--muted); font-size: .45rem; letter-spacing: .19em; margin-top: .16rem; }
 .nav { display: flex; align-items: center; gap: 2rem; }
 .nav a { color: #dbe3e7; text-decoration: none; font-size: .83rem; transition: color .2s ease; }
 .nav a:hover { color: var(--gold); }
-.navCta { border: 1px solid rgba(201,121,88,.8); padding: .8rem 1.05rem; color: white !important; }
+.navCta { border: 1px solid rgba(201,121,88,.8); border-radius: 999px; padding: .8rem 1.2rem; color: white !important; }
 .navCta span, .primaryButton span, .textButton span, .outlineButton span, .contactLink span { color: var(--gold); margin-left: .5rem; }
 .menuButton { display: none; }
 .hero { min-height: 730px; display: grid; grid-template-columns: 52% 48%; background: var(--navy); color: white; }
@@ -20,9 +20,9 @@ h1, h2 { font: 700 clamp(2.8rem, 5vw, 5.4rem)/1.02 'Manrope', sans-serif; letter
 h1 em, h2 em { color: var(--gold); font-style: normal; }
 .heroLead { color: #b6c0c5; max-width: 28rem; font-size: 1rem; line-height: 1.75; margin: 1.8rem 0 2.2rem; }
 .heroActions { display: flex; gap: 1.7rem; align-items: center; flex-wrap: wrap; }
-.primaryButton, .outlineButton { display: inline-block; background: var(--gold); color: var(--navy); padding: 1rem 1.25rem; text-decoration: none; font-weight: 700; font-size: .83rem; }
+.primaryButton, .outlineButton { display: inline-block; border-radius: 999px; background: var(--gold); color: var(--navy); padding: 1rem 1.25rem; text-decoration: none; font-weight: 700; font-size: .83rem; }
 .textButton { color: #dbe3e7; text-decoration: none; font-size: .8rem; }
-.quoteCta { position: relative; overflow: hidden; display: flex; align-items: center; gap: 1rem; max-width: 27rem; margin-top: 2.4rem; padding: 1.05rem 1.2rem; border: 1px solid rgba(201,121,88,.75); background: rgba(201,121,88,.1); color: white; text-decoration: none; transition: background .25s ease, border-color .25s ease, transform .25s ease; }
+.quoteCta { position: relative; overflow: hidden; border-radius: var(--r-md); display: flex; align-items: center; gap: 1rem; max-width: 27rem; margin-top: 2.4rem; padding: 1.05rem 1.2rem; border: 1px solid rgba(201,121,88,.75); background: rgba(201,121,88,.1); color: white; text-decoration: none; transition: background .25s ease, border-color .25s ease, transform .25s ease; }
 .quoteCta::after { content: ''; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,.14) 50%, transparent 65%); transform: translateX(-100%); animation: ctaShine 4.5s ease-in-out 1.5s infinite; pointer-events: none; }
 .quoteCta:hover, .quoteCta:focus-visible { background: rgba(201,121,88,.22); border-color: var(--gold); transform: translateY(-2px); }
 .quoteCtaDot { position: relative; flex: none; width: .6rem; height: .6rem; border-radius: 50%; background: var(--gold); }
@@ -39,14 +39,14 @@ h1 em, h2 em { color: var(--gold); font-style: normal; }
 .heroMeta strong { display: block; color: white; font: 700 .9rem 'Manrope', sans-serif; margin-bottom: .2rem; }
 .heroVisual { position: relative; min-height: 730px; }
 .heroImage { position: absolute; inset: 0; background: linear-gradient(90deg, var(--navy) 0%, rgba(9,27,43,.18) 38%, transparent 72%), linear-gradient(0deg, rgba(9,27,43,.56), transparent 48%), url('/img/rocain/collage-rocain.jpeg') center/cover; }
-.heroBadge { position: absolute; left: -2rem; bottom: 10%; background: var(--cream); color: var(--navy); padding: 1rem 1.25rem; display: flex; align-items: center; gap: .75rem; font-size: .7rem; line-height: 1.5; }
-.heroBadge span { border: 1px solid var(--gold); border-radius: 4px; width: 2rem; height: 2rem; display: grid; place-items: center; font-weight: 800; color: var(--gold); }
+.heroBadge { position: absolute; border-radius: var(--r-md); left: -2rem; bottom: 10%; background: var(--cream); color: var(--navy); padding: 1rem 1.25rem; display: flex; align-items: center; gap: .75rem; font-size: .7rem; line-height: 1.5; }
+.heroBadge span { border: 1px solid var(--gold); border-radius: var(--r-sm); width: 2rem; height: 2rem; display: grid; place-items: center; font-weight: 800; color: var(--gold); }
 .heroLocation { position: absolute; right: 7%; bottom: 7%; font-size: .68rem; color: white; letter-spacing: .04em; }
 .heroLocation span { color: var(--gold); margin-right: .35rem; }
 .servicesSection, .fleetSection { padding: 8rem 5.5vw; max-width: 1440px; margin: auto; }
 .sectionIntro { margin-bottom: 3.5rem; }
 .sectionIntro h2, .aboutCopy h2, .contactSection h2 { font-size: clamp(2.4rem, 4vw, 4rem); }
-.serviceGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: #d6d1c7; }
+.serviceGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: #d6d1c7; border-radius: var(--r-lg); overflow: hidden; }
 .serviceCard { background: var(--cream); padding: 2.3rem 2rem; min-height: 285px; display: flex; flex-direction: column; }
 .serviceTop { display: flex; justify-content: space-between; color: #829098; font: .7rem 'Manrope', sans-serif; }
 .serviceTop b { color: var(--gold); font-size: 1.35rem; font-weight: 400; }
@@ -55,7 +55,7 @@ h1 em, h2 em { color: var(--gold); font-style: normal; }
 .serviceCard a { margin-top: auto; color: var(--navy); font-size: .75rem; font-weight: 700; text-decoration: none; }
 .fleetSection { background: var(--navy); color: white; max-width: none; padding-left: max(5.5vw, calc((100vw - 1300px)/2)); padding-right: max(5.5vw, calc((100vw - 1300px)/2)); }
 .fleetGrid { display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; gap: 1rem; }
-.fleetCard { position: relative; min-height: 350px; overflow: hidden; background: var(--navy-light); border-radius: 2px; }
+.fleetCard { position: relative; min-height: 350px; overflow: hidden; background: var(--navy-light); border-radius: var(--r-lg); }
 .fleetCard img { width: 100%; height: 100%; object-fit: cover; opacity: .8; transition: transform .5s ease; }
 .fleetCard:hover img { transform: scale(1.05); }
 .fleetCard > div { position: absolute; bottom: 0; left: 0; right: 0; padding: 1.4rem; background: linear-gradient(transparent, rgba(9,27,43,.95)); }
@@ -63,7 +63,7 @@ h1 em, h2 em { color: var(--gold); font-style: normal; }
 .fleetCard h3 { margin: .35rem 0 0; font-size: 1.2rem; }
 .aboutSection { display: grid; grid-template-columns: 1fr 1fr; gap: 7vw; max-width: 1200px; margin: auto; padding: 9rem 5.5vw; align-items: center; }
 .aboutVisual { position: relative; height: 500px; }
-.aboutImage { height: 100%; background: linear-gradient(0deg, rgba(9,27,43,.35), transparent), url('/img/rocain/pregio.jpg') center/cover; }
+.aboutImage { height: 100%; border-radius: var(--r-lg); background: linear-gradient(0deg, rgba(9,27,43,.35), transparent), url('/img/rocain/pregio.jpg') center/cover; }
 .aboutVisual > span { position: absolute; bottom: -1.5rem; left: -1.5rem; color: var(--gold); font: .65rem 'Manrope', sans-serif; letter-spacing: .15em; }
 .aboutCopy > p:not(.eyebrow) { color: #68777e; max-width: 29rem; font-size: .92rem; line-height: 1.8; margin: 1.6rem 0 0; }
 .outlineButton { margin-top: 2rem; background: transparent; border: 1px solid var(--navy); }
@@ -76,20 +76,20 @@ h1 em, h2 em { color: var(--gold); font-style: normal; }
 .contactNumbers { display: flex; flex-wrap: wrap; gap: .4rem 2rem; }
 .contactLink { white-space: nowrap; }
 .contactMail { display: inline-block; color: var(--navy); margin-top: .6rem; font-size: .8rem; }
-.contactForm { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; background: rgba(255,255,255,.2); padding: 1.5rem; }
+.contactForm { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; background: rgba(255,255,255,.2); padding: 1.5rem; border-radius: var(--r-lg); }
 .contactForm label { display: flex; flex-direction: column; gap: .45rem; color: var(--navy); font-size: .68rem; font-weight: 700; }
 .contactForm label small { font-size: inherit; font-weight: 400; opacity: .7; }
-.contactForm input, .contactForm select, .contactForm textarea { width: 100%; border: 1px solid rgba(9,27,43,.35); border-radius: 0; background: rgba(255,255,255,.6); color: var(--navy); padding: .8rem .75rem; font: .82rem 'DM Sans', sans-serif; outline: none; }
+.contactForm input, .contactForm select, .contactForm textarea { width: 100%; border: 1px solid rgba(9,27,43,.35); border-radius: var(--r-sm); background: rgba(255,255,255,.6); color: var(--navy); padding: .8rem .75rem; font: .82rem 'DM Sans', sans-serif; outline: none; }
 .contactForm input, .contactForm select { height: 2.85rem; }
 .contactForm textarea { resize: vertical; }
 .contactForm input:focus, .contactForm select:focus, .contactForm textarea:focus { border-color: var(--navy); background: white; }
 .contactForm input::placeholder, .contactForm textarea::placeholder { color: #64737a; }
 .formWide { grid-column: 1 / -1; }
-.formButton { justify-self: start; border: 0; background: var(--navy); color: white; padding: .9rem 1.1rem; cursor: pointer; font-weight: 700; font-size: .78rem; }
+.formButton { justify-self: start; border: 0; border-radius: 999px; background: var(--navy); color: white; padding: .9rem 1.1rem; cursor: pointer; font-weight: 700; font-size: .78rem; }
 .formButton span { color: var(--gold); margin-left: .5rem; }
 .formSuccess { grid-column: 1 / -1; margin: 0; font-size: .72rem; font-weight: 600; }
 .modalBackdrop { position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; padding: 1rem; background: rgba(9,27,43,.6); animation: fadeIn .2s ease; }
-.modal { width: min(100%, 24rem); background: var(--cream); color: var(--navy); padding: 2.2rem 2rem; text-align: center; border-top: 4px solid var(--gold); box-shadow: 0 1.5rem 3rem rgba(6,19,31,.35); animation: popIn .25s ease; }
+.modal { width: min(100%, 24rem); border-radius: var(--r-lg); background: var(--cream); color: var(--navy); padding: 2.2rem 2rem; text-align: center; border-top: 4px solid var(--gold); box-shadow: 0 1.5rem 3rem rgba(6,19,31,.35); animation: popIn .25s ease; }
 .modal h3 { font: 700 1.4rem 'Manrope', sans-serif; margin: 1rem 0 .6rem; }
 .modal p { color: #4f5f63; font-size: .9rem; line-height: 1.6; margin: 0 0 1.6rem; }
 .modal .formButton { justify-self: auto; }
@@ -103,7 +103,7 @@ h1 em, h2 em { color: var(--gold); font-style: normal; }
 .whatsappFloat:hover { background: #1ebe5b; transform: translateY(-2px); }
 .whatsappIcon { width: 1.6rem; height: 1.6rem; flex: none; }
 .waIcon { width: 1.1em; height: 1.1em; flex: none; }
-.heroWhatsapp { display: inline-flex; align-items: center; gap: .55rem; background: #25d366; color: white; padding: 1rem 1.25rem; text-decoration: none; font-weight: 700; font-size: .83rem; transition: background .2s ease, transform .2s ease; }
+.heroWhatsapp { display: inline-flex; border-radius: 999px; align-items: center; gap: .55rem; background: #25d366; color: white; padding: 1rem 1.25rem; text-decoration: none; font-weight: 700; font-size: .83rem; transition: background .2s ease, transform .2s ease; }
 .heroWhatsapp:hover { background: #1ebe5b; transform: translateY(-2px); }
 .heroWhatsapp .waIcon { width: 1.25rem; height: 1.25rem; }
 .contactLink { display: inline-flex; align-items: center; gap: .5rem; }
@@ -112,7 +112,7 @@ h1 em, h2 em { color: var(--gold); font-style: normal; }
   .header { padding: 1.2rem 1.3rem; }
   .menuButton { display: flex; flex-direction: column; gap: 5px; background: none; border: 0; padding: .5rem; }
   .menuButton span { width: 1.5rem; height: 1px; background: white; }
-  .nav { display: none; position: absolute; top: 4.7rem; left: 1rem; right: 1rem; background: var(--navy-light); padding: 1.3rem; flex-direction: column; align-items: stretch; gap: 1.2rem; box-shadow: 0 1rem 2rem #06131f; }
+  .nav { display: none; position: absolute; top: 4.7rem; left: 1rem; right: 1rem; background: var(--navy-light); padding: 1.3rem; border-radius: var(--r-md); flex-direction: column; align-items: stretch; gap: 1.2rem; box-shadow: 0 1rem 2rem #06131f; }
   .navOpen { display: flex; }
   .hero { display: block; min-height: auto; }
   .heroContent { padding: 9rem 1.3rem 3rem; }
