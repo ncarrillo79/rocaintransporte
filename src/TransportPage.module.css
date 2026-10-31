@@ -57,10 +57,11 @@ h1 em, h2 em { color: var(--gold); font-style: normal; }
 .contactSection { background: var(--gold); color: var(--navy); display: grid; grid-template-columns: minmax(17rem, .8fr) minmax(24rem, 1fr); justify-content: space-between; align-items: start; gap: 5rem; padding: 6rem max(5.5vw, calc((100vw - 1200px)/2)); }
 .contactSection .eyebrow { color: var(--navy); }
 .contactSection .eyebrow span { background: var(--navy); }
-.contactDetails { max-width: 24rem; }
+.contactDetails { max-width: 30rem; }
 .contactDetails p { font-size: .95rem; line-height: 1.7; margin: 0 0 1.5rem; }
 .contactLink { display: block; color: var(--navy); font: 700 1.4rem 'Manrope', sans-serif; text-decoration: none; }
-.contactPhone { display: block; color: var(--navy); margin-top: .55rem; font-size: .9rem; text-decoration: none; }
+.contactNumbers { display: flex; flex-wrap: wrap; gap: .4rem 2rem; }
+.contactLink { white-space: nowrap; }
 .contactMail { display: inline-block; color: var(--navy); margin-top: .6rem; font-size: .8rem; }
 .contactForm { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; background: rgba(255,255,255,.2); padding: 1.5rem; }
 .contactForm label { display: flex; flex-direction: column; gap: .45rem; color: var(--navy); font-size: .68rem; font-weight: 700; }

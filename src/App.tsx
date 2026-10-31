@@ -2,6 +2,7 @@ import { useEffect, useState, type FormEvent } from 'react';
 import styles from './TransportPage.module.css';
 
 const WHATSAPP = '584127400296';
+const WHATSAPP_2 = '584243018032';
 const PHONE = '+58 424 301 8032';
 const EMAIL = 'rocaintransporte1@gmail.com';
 // Destino del formulario. PRUEBA: volver a EMAIL cuando se confirme que funciona.
@@ -35,8 +36,8 @@ const fleet = [
   { name: 'Kia Pregio', detail: 'Traslados para grupos', image: '/img/rocain/pregio.jpg' },
 ];
 
-function whatsapp(message: string) {
-  return `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(message)}`;
+function whatsapp(message: string, number = WHATSAPP) {
+  return `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
 }
 
 // FormSubmit reenvía el formulario al correo de Rocain sin abrir la app de correo del cliente.
@@ -184,8 +185,10 @@ export function App() {
           </div>
           <div className={styles.contactDetails}>
             <p>Cuéntanos qué necesitas y te ayudaremos a planificarlo.</p>
-            <a className={styles.contactLink} href={whatsapp('Hola Rocain, quiero cotizar un traslado.')} target="_blank" rel="noreferrer">+58 412 740 0296 <span>↗</span></a>
-            <a className={styles.contactPhone} href="tel:+584243018032">{PHONE}</a>
+            <div className={styles.contactNumbers}>
+              <a className={styles.contactLink} href={whatsapp('Hola Rocain, quiero cotizar un traslado.')} target="_blank" rel="noreferrer">+58 412 740 0296 <span>↗</span></a>
+              <a className={styles.contactLink} href={whatsapp('Hola Rocain, quiero cotizar un traslado.', WHATSAPP_2)} target="_blank" rel="noreferrer">{PHONE} <span>↗</span></a>
+            </div>
             <a className={styles.contactMail} href={`mailto:${EMAIL}`}>{EMAIL}</a>
           </div>
           <form className={styles.contactForm} onSubmit={handleSubmit}>
